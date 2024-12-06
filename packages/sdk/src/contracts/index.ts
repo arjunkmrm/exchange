@@ -3,66 +3,17 @@ import { Contract, ethers } from 'ethers'
 
 import { NetworkId } from '../types/common'
 
-import DappMaintenanceABI from './abis/DappMaintenance.json'
 import ERC20ABI from './abis/ERC20.json'
-import ExchangeRatesABI from './abis/ExchangeRates.json'
-import FuturesMarketDataABI from './abis/FuturesMarketData.json'
-import FuturesMarketSettingsABI from './abis/FuturesMarketSettings.json'
-import KwentaArrakisVaultABI from './abis/KwentaArrakisVault.json'
-import KwentaStakingRewardsABI from './abis/KwentaStakingRewards.json'
-import KwentaStakingRewardsV2ABI from './abis/KwentaStakingRewardsV2.json'
-import MultipleMerkleDistributorABI from './abis/MultipleMerkleDistributor.json'
-import MultipleMerkleDistributorOpABI from './abis/MultipleMerkleDistributorOp.json'
-import MultipleMerkleDistributorPerpsV2ABI from './abis/MultipleMerkleDistributorPerpsV2.json'
-import PerpsV2MarketABI from './abis/PerpsV2Market.json'
-import PerpsV2MarketDataABI from './abis/PerpsV2MarketData.json'
-import PerpsV2MarketSettingsABI from './abis/PerpsV2MarketSettings.json'
-import PerpsV3MarketProxyABI from './abis/PerpsV3MarketProxy.json'
-import RewardEscrowABI from './abis/RewardEscrow.json'
-import RewardEscrowV2ABI from './abis/RewardEscrowV2.json'
-import StakingRewardsABI from './abis/StakingRewards.json'
-import SupplyScheduleABI from './abis/SupplySchedule.json'
-import SynthRedeemerABI from './abis/SynthRedeemer.json'
-import SynthUtilABI from './abis/SynthUtil.json'
-import SystemStatusABI from './abis/SystemStatus.json'
-import PerpsV3AccountProxyABI from './abis/PerpsV3AccountProxy.json'
-import EscrowMigratorABI from './abis/EscrowMigrator.json'
-import BoostNftABI from './abis/BoostNFT.json'
 import { ADDRESSES } from './constants'
 import {
-	SmartMarginAccountFactory__factory,
-	ExchangeRates__factory,
-	Exchanger__factory,
-	FuturesMarketData__factory,
-	FuturesMarketSettings__factory,
-	RewardEscrow__factory,
-	Synthetix__factory,
-	SynthRedeemer__factory,
-	SynthSwap__factory,
-	SynthUtil__factory,
-	SystemSettings__factory,
-	SystemStatus__factory,
-	KwentaArrakisVault__factory,
 	ERC20__factory,
-	SupplySchedule__factory,
-	MultipleMerkleDistributor__factory,
-	KwentaStakingRewards__factory,
-	VKwentaRedeemer__factory,
-	StakingRewards__factory,
-	VeKwentaRedeemer__factory,
-	Pyth__factory,
-	BatchClaimer__factory,
-	MultipleMerkleDistributorOp__factory,
-	MultipleMerkleDistributorPerpsV2__factory,
-	PerpsV3MarketProxy__factory,
-	RewardEscrowV2__factory,
-	KwentaStakingRewardsV2__factory,
-	PerpsV3AccountProxy__factory,
-	EscrowMigrator__factory,
-	BoostNFT__factory,
-} from './types'
-import { PerpsV2MarketData__factory } from './types/factories/PerpsV2MarketData__factory'
-import { PerpsV2MarketSettings__factory } from './types/factories/PerpsV2MarketSettings__factory'
+    BTLY__factory,
+    Bank__factory,
+    BitlyExchange__factory,
+    TokenExchange__factory,
+    BitlyExchange,
+    Bank,
+} from './types';
 
 type ContractFactory = {
 	connect: (address: string, provider: ethers.providers.Provider) => Contract
@@ -76,151 +27,30 @@ export type AllContractsMap = Record<
 export const getPerpsV2MarketMulticall = (marketAddress: string) =>
 	new EthCallContract(marketAddress, PerpsV2MarketABI)
 
-export const getContractsByNetwork = (
+export const getContractsByNetwork = async (
 	networkId: NetworkId,
 	provider: ethers.providers.Provider
 ) => {
+    const Exchange: BitlyExchange | undefined = ADDRESSES.Bitly[networkId]
+			? BitlyExchange__factory.connect(ADDRESSES.Bitly[networkId], provider)
+			: undefined;
+    const BankAddress = await Exchange?.bank();
+    const BitlyBank: Bank | undefined = BankAddress
+            ? Bank__factory.connect(BankAddress, provider)
+            : undefined;
 	return {
-		Exchanger: ADDRESSES.Exchanger[networkId]
-			? Exchanger__factory.connect(ADDRESSES.Exchanger[networkId], provider)
-			: undefined,
-		ExchangeRates: ADDRESSES.ExchangeRates[networkId]
-			? ExchangeRates__factory.connect(ADDRESSES.ExchangeRates[networkId], provider)
-			: undefined,
-		SystemStatus: ADDRESSES.SystemStatus[networkId]
-			? SystemStatus__factory.connect(ADDRESSES.SystemStatus[networkId], provider)
-			: undefined,
-		SynthUtil: ADDRESSES.SynthUtil[networkId]
-			? SynthUtil__factory.connect(ADDRESSES.SynthUtil[networkId], provider)
-			: undefined,
-		SystemSettings: ADDRESSES.SystemSettings[networkId]
-			? SystemSettings__factory.connect(ADDRESSES.SystemSettings[networkId], provider)
-			: undefined,
-		SynthRedeemer: ADDRESSES.SynthRedeemer[networkId]
-			? SynthRedeemer__factory.connect(ADDRESSES.SynthRedeemer[networkId], provider)
-			: undefined,
-		FuturesMarketData: ADDRESSES.FuturesMarketData[networkId]
-			? FuturesMarketData__factory.connect(ADDRESSES.FuturesMarketData[networkId], provider)
-			: undefined,
-		PerpsV2MarketData: ADDRESSES.PerpsV2MarketData[networkId]
-			? PerpsV2MarketData__factory.connect(ADDRESSES.PerpsV2MarketData[networkId], provider)
-			: undefined,
-		PerpsV2MarketSettings: ADDRESSES.PerpsV2MarketSettings[networkId]
-			? PerpsV2MarketSettings__factory.connect(ADDRESSES.PerpsV2MarketSettings[networkId], provider)
-			: undefined,
-		Pyth: ADDRESSES.Pyth[networkId]
-			? Pyth__factory.connect(ADDRESSES.Pyth[networkId], provider)
-			: undefined,
-		FuturesMarketSettings: ADDRESSES.FuturesMarketSettings[networkId]
-			? FuturesMarketSettings__factory.connect(ADDRESSES.FuturesMarketSettings[networkId], provider)
-			: undefined,
-		Synthetix: ADDRESSES.Synthetix[networkId]
-			? Synthetix__factory.connect(ADDRESSES.Synthetix[networkId], provider)
-			: undefined,
-		SynthSwap: ADDRESSES.SynthSwap[networkId]
-			? SynthSwap__factory.connect(ADDRESSES.SynthSwap[networkId], provider)
-			: undefined,
-		SUSD: ADDRESSES.SUSD[networkId]
-			? ERC20__factory.connect(ADDRESSES.SUSD[networkId], provider)
-			: undefined,
+		Exchange,
+        BitlyBank,
 		USDC: ADDRESSES.USDC[networkId]
 			? ERC20__factory.connect(ADDRESSES.USDC[networkId], provider)
 			: undefined,
 		USDT: ADDRESSES.USDT[networkId]
 			? ERC20__factory.connect(ADDRESSES.USDT[networkId], provider)
 			: undefined,
-		DAI: ADDRESSES.DAI[networkId]
-			? ERC20__factory.connect(ADDRESSES.DAI[networkId], provider)
+        BTLYToken: ADDRESSES.BTLYToken[networkId]
+            ? BTLY__factory.connect(ADDRESSES.BTLYToken[networkId], provider)
 			: undefined,
-		LUSD: ADDRESSES.LUSD[networkId]
-			? ERC20__factory.connect(ADDRESSES.LUSD[networkId], provider)
-			: undefined,
-		SNXUSD: ADDRESSES.SNXUSD[networkId]
-			? ERC20__factory.connect(ADDRESSES.SNXUSD[networkId], provider)
-			: undefined,
-		SmartMarginAccountFactory: ADDRESSES.SmartMarginAccountFactory[networkId]
-			? SmartMarginAccountFactory__factory.connect(
-					ADDRESSES.SmartMarginAccountFactory[networkId],
-					provider
-			  )
-			: undefined,
-		// TODO: Replace these when we move away from wagmi hooks
-		KwentaArrakisVault: ADDRESSES.KwentaArrakisVault[networkId]
-			? KwentaArrakisVault__factory.connect(ADDRESSES.KwentaArrakisVault[networkId], provider)
-			: undefined,
-		StakingRewards: ADDRESSES.StakingRewards[networkId]
-			? StakingRewards__factory.connect(ADDRESSES.StakingRewards[networkId], provider)
-			: undefined,
-		RewardEscrow: ADDRESSES.RewardEscrow[networkId]
-			? RewardEscrow__factory.connect(ADDRESSES.RewardEscrow[networkId], provider)
-			: undefined,
-		KwentaToken: ADDRESSES.KwentaToken[networkId]
-			? ERC20__factory.connect(ADDRESSES.KwentaToken[networkId], provider)
-			: undefined,
-		SupplySchedule: ADDRESSES.SupplySchedule[networkId]
-			? SupplySchedule__factory.connect(ADDRESSES.SupplySchedule[networkId], provider)
-			: undefined,
-		vKwentaToken: ADDRESSES.vKwentaToken[networkId]
-			? ERC20__factory.connect(ADDRESSES.vKwentaToken[networkId], provider)
-			: undefined,
-		MultipleMerkleDistributor: ADDRESSES.TradingRewards[networkId]
-			? MultipleMerkleDistributor__factory.connect(ADDRESSES.TradingRewards[networkId], provider)
-			: undefined,
-		MultipleMerkleDistributorPerpsV2: ADDRESSES.TradingRewardsPerpsV2[networkId]
-			? MultipleMerkleDistributorPerpsV2__factory.connect(
-					ADDRESSES.TradingRewardsPerpsV2[networkId],
-					provider
-			  )
-			: undefined,
-		MultipleMerkleDistributorStakingV2: ADDRESSES.TradingRewardsStakingV2[networkId]
-			? MultipleMerkleDistributorPerpsV2__factory.connect(
-					ADDRESSES.TradingRewardsStakingV2[networkId],
-					provider
-			  )
-			: undefined,
-		MultipleMerkleDistributorOp: ADDRESSES.OpRewards[networkId]
-			? MultipleMerkleDistributorOp__factory.connect(ADDRESSES.OpRewards[networkId], provider)
-			: undefined,
-		MultipleMerkleDistributorSnxOp: ADDRESSES.SnxOpRewards[networkId]
-			? MultipleMerkleDistributorOp__factory.connect(ADDRESSES.SnxOpRewards[networkId], provider)
-			: undefined,
-		BatchClaimer: ADDRESSES.BatchClaimer[networkId]
-			? BatchClaimer__factory.connect(ADDRESSES.BatchClaimer[networkId], provider)
-			: undefined,
-		veKwentaToken: ADDRESSES.veKwentaToken[networkId]
-			? ERC20__factory.connect(ADDRESSES.veKwentaToken[networkId], provider)
-			: undefined,
-		KwentaStakingRewards: ADDRESSES.KwentaStakingRewards[networkId]
-			? KwentaStakingRewards__factory.connect(ADDRESSES.KwentaStakingRewards[networkId], provider)
-			: undefined,
-		vKwentaRedeemer: ADDRESSES.vKwentaRedeemer[networkId]
-			? VKwentaRedeemer__factory.connect(ADDRESSES.vKwentaRedeemer[networkId], provider)
-			: undefined,
-		veKwentaRedeemer: ADDRESSES.veKwentaRedeemer[networkId]
-			? VeKwentaRedeemer__factory.connect(ADDRESSES.veKwentaRedeemer[networkId], provider)
-			: undefined,
-		KwentaStakingRewardsV2: ADDRESSES.KwentaStakingRewardsV2[networkId]
-			? KwentaStakingRewardsV2__factory.connect(
-					ADDRESSES.KwentaStakingRewardsV2[networkId],
-					provider
-			  )
-			: undefined,
-		RewardEscrowV2: ADDRESSES.RewardEscrowV2[networkId]
-			? RewardEscrowV2__factory.connect(ADDRESSES.RewardEscrowV2[networkId], provider)
-			: undefined,
-		perpsV3MarketProxy: ADDRESSES.PerpsV3MarketProxy[networkId]
-			? PerpsV3MarketProxy__factory.connect(ADDRESSES.PerpsV3MarketProxy[networkId], provider)
-			: undefined,
-		perpsV3AccountProxy: ADDRESSES.PerpsV3AccountProxy[networkId]
-			? PerpsV3AccountProxy__factory.connect(ADDRESSES.PerpsV3AccountProxy[networkId], provider)
-			: undefined,
-		EscrowMigrator: ADDRESSES.EscrowMigrator[networkId]
-			? EscrowMigrator__factory.connect(ADDRESSES.EscrowMigrator[networkId], provider)
-			: undefined,
-		BoostNft: ADDRESSES.BoostNft[networkId]
-			? BoostNFT__factory.connect(ADDRESSES.BoostNft[networkId], provider)
-			: undefined,
-	}
+	};
 }
 
 export const getMulticallContractsByNetwork = (networkId: NetworkId) => {

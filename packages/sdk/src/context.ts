@@ -22,7 +22,7 @@ export interface IContext {
 }
 
 const DEFAULT_CONTEXT: Partial<IContext> = {
-	networkId: 10,
+	networkId: 690,
 }
 
 export default class Context implements IContext {
@@ -42,8 +42,8 @@ export default class Context implements IContext {
 			this.setSigner(context.signer)
 		}
 
-		this.contracts = getContractsByNetwork(context.networkId, context.provider)
-		this.multicallContracts = getMulticallContractsByNetwork(context.networkId)
+		this.contracts = await getContractsByNetwork(context.networkId, context.provider)
+		this.multicallContracts = await getMulticallContractsByNetwork(context.networkId)
 		this.l1MainnetProvider = new ethers.providers.InfuraProvider()
 	}
 
@@ -71,14 +71,6 @@ export default class Context implements IContext {
 		return this.context.walletAddress
 	}
 
-	get isL2() {
-		return [10, 420].includes(this.networkId)
-	}
-
-	get isMainnet() {
-		return [1, 10].includes(this.networkId)
-	}
-
 	public async setProvider(provider: ethers.providers.Provider) {
 		this.context.provider = provider
 		const networkId = (await provider.getNetwork()).chainId as NetworkId
@@ -91,8 +83,8 @@ export default class Context implements IContext {
 
 	public setNetworkId(networkId: NetworkId) {
 		this.context.networkId = networkId
-		this.contracts = getContractsByNetwork(networkId, this.provider)
-		this.multicallContracts = getMulticallContractsByNetwork(networkId)
+		this.contracts = await getContractsByNetwork(networkId, this.provider)
+		this.multicallContracts = await getMulticallContractsByNetwork(networkId)
 		this.events.emit('network_changed', { networkId: networkId })
 	}
 

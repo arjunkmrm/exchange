@@ -1,7 +1,7 @@
 {
 	"name": "@kwenta/sdk",
 	"version": "1.0.13",
-	"description": "SDK for headless interaction with Kwenta",
+	"description": "SDK for headless interaction with Bitly",
 	"main": "dist/index.js",
 	"directories": {
 		"doc": "docs"

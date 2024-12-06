@@ -24,24 +24,86 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
 import BinanceIcon from 'assets/png/rainbowkit/binance.png'
+import RedstoneIcon from 'assets/png/chains/redstone.png';
+import GarnetIcon from 'assets/png/chains/garnet.png';
 import Frame from 'components/Rainbowkit/Frame'
 import Tally from 'components/Rainbowkit/Tally'
 import { BLAST_NETWORK_LOOKUP, STALL_TIMEOUT } from 'constants/network'
+
+export type BitlyChain = Chain & {
+    bitlyAddress: string;
+};
 
 const bscWithIcon: Chain = {
 	...bsc,
 	iconUrl: async () => BinanceIcon,
 }
 
-export const chain = {
-	optimism,
-	mainnet,
-	arbitrum,
-	polygon,
-	avalanche,
-	bsc: bscWithIcon,
-	goerli,
-	optimismGoerli,
+const redstoneWithIcon: BitlyChain = {
+    ...mainnet,
+    id: 690,
+    name: 'Redstone Chain',
+    network: 'redstone',
+    rpcUrls: {
+        default: {
+            http: ['https://rpc.redstonechain.com'],
+            webSocket: ['wss://rpc.redstonechain.com']
+        },
+        public: {
+            http: ['https://rpc.redstonechain.com'],
+            webSocket: ['wss://rpc.redstonechain.com']
+        }
+    },
+    blockExplorers: {
+        default: {
+            name: 'Redstone Explorer',
+            url: 'https://explorer.redstone.xyz'
+        },
+        etherscan: {
+            name: 'Redstone Explorer',
+            url: 'https://explorer.redstone.xyz'
+        }
+    },
+    iconUrl: async () => RedstoneIcon,
+    bitlyAddress: ''
+};
+
+const garnetWithIcon: BitlyChain = {
+    ...mainnet,
+    id: 17069,
+    name: 'Garnet Holesky',
+    network: 'garnet',
+    rpcUrls: {
+        default: {
+            http: ['https://rpc.garnetchain.com'],
+            webSocket: ['wss://rpc.garnetchain.com']
+        },
+        public: {
+            http: ['https://rpc.garnetchain.com'],
+            webSocket: ['wss://rpc.garnetchain.com']
+        }
+    },
+    blockExplorers: {
+        default: {
+            name: 'Redstone Explorer',
+            url: 'https://explorer.garnetchain.com'
+        },
+        etherscan: {
+            name: 'Redstone Explorer',
+            url: 'https://explorer.garnetchain.com'
+        }
+    },
+    iconUrl: async () => GarnetIcon,
+    bitlyAddress: '0x786F2461A238c29352a66f67243eE52EdF42bC14'
+};
+
+export type ChainsType = {
+    [chain: string]: Chain
+};
+
+export const chain: ChainsType = {
+	// redstone: redstoneWithIcon,
+    garnet: garnetWithIcon
 }
 
 const { chains, provider } = configureChains(Object.values(chain), [
@@ -76,7 +138,7 @@ const connectors = connectorsForWallets([
 			safeWallet({ chains }),
 			metaMaskWallet({ projectId, chains }),
 			rainbowWallet({ projectId, chains }),
-			coinbaseWallet({ appName: 'Kwenta', chains }),
+			coinbaseWallet({ appName: 'Bitly', chains }),
 			walletConnectWallet({ projectId, chains }),
 		],
 	},

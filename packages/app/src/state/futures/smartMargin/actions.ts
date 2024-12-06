@@ -137,10 +137,10 @@ export const fetchMarketsV2 = createAsyncThunk<
 	void,
 	ThunkConfig
 >('futures/fetchMarkets', async (_, { getState, extra: { sdk } }) => {
-	const supportedNetwork = selectSmartMarginSupportedNetwork(getState())
+	// const supportedNetwork = selectSmartMarginSupportedNetwork(getState())
 	const networkId = selectNetwork(getState())
 
-	if (!supportedNetwork) return
+	// if (!supportedNetwork) return
 	try {
 		const markets = await sdk.futures.getMarkets()
 		// apply overrides

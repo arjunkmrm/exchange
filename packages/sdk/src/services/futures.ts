@@ -127,13 +127,13 @@ export default class FuturesService {
 	 * ```
 	 */
 	public async getMarkets(networkOverride?: NetworkOverrideOptions) {
-		const enabledMarkets = marketsForNetwork(
-			networkOverride?.networkId || this.sdk.context.networkId,
-			this.sdk.context.logError
-		)
+		// const enabledMarkets = marketsForNetwork(
+		// 	networkOverride?.networkId || this.sdk.context.networkId,
+		// 	this.sdk.context.logError
+		// )
 		const contracts =
 			networkOverride && networkOverride?.networkId !== this.sdk.context.networkId
-				? getContractsByNetwork(networkOverride.networkId, networkOverride.provider)
+				? await getContractsByNetwork(networkOverride.networkId, networkOverride.provider)
 				: this.sdk.context.contracts
 
 		const { SystemStatus } = contracts

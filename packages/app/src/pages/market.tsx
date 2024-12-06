@@ -61,7 +61,7 @@ const Market: MarketComponent = () => {
 	const dispatch = useAppDispatch()
 	const { greaterThanWidth } = useWindowSize()
 	usePollMarketFuturesData()
-	const routerMarketAsset = (router.query.asset || 'sETH') as FuturesMarketAsset
+	const routerMarketAsset = router.query.asset || ... ...;
 	const setCurrentMarket = useAppSelector(selectMarketAsset)
 	const showOnboard = useAppSelector(selectShowSmartMarginOnboard)
 	const showCrossMarginOnboard = useAppSelector(selectShowCrossMarginOnboard)
@@ -99,8 +99,7 @@ const Market: MarketComponent = () => {
 	useEffect(() => {
 		if (
 			selectedMarketAsset !== routerMarketAsset &&
-			routerMarketAsset &&
-			MarketKeyByAsset[routerMarketAsset]
+			routerMarketAsset
 		) {
 			dispatch(setMarketAsset(routerMarketAsset))
 			dispatch(clearTradeInputs())

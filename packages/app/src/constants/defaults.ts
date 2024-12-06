@@ -6,7 +6,7 @@ import { Language } from 'translations/constants'
 export const DEFAULT_LANGUAGE: Language = Language.EN
 
 // network defaults
-export const DEFAULT_NETWORK_ID = 10
+export const DEFAULT_NETWORK_ID = 690
 
 export const DEFAULT_GAS_BUFFER = 5000
 export const DEFAULT_GAS_LIMIT = 500000
@@ -38,7 +38,7 @@ export const DEFAULT_DELAYED_CANCEL_BUFFER = 10
 export const CROSS_MARGIN_ENABLED = process.env.NODE_ENV !== 'production'
 export const ORDERS_WARNING_DISABLED = true
 
-export const DEFAULT_FUTURES_MARGIN_TYPE = FuturesMarginType.SMART_MARGIN
+// export const DEFAULT_FUTURES_MARGIN_TYPE = FuturesMarginType.SMART_MARGIN
 
 export const DEFAULT_LEVERAGE = '1'
 

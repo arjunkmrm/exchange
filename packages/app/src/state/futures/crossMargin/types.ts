@@ -120,7 +120,7 @@ export type CrossMarginState = {
 	closePositionOrderInputs: ClosePositionInputs<string>
 	previewDebounceCount: number
 	leverageSide: PositionSide
-	selectedMarketAsset: FuturesMarketAsset
+	selectedMarketAsset: string
 	leverageInput: string
 	tradeFee: string
 	perpsV3MarketProxyAddress: string | undefined

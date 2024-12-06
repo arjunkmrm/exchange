@@ -61,9 +61,9 @@ const HomePage: HomePageComponent = () => {
 			<HomeLayout>
 				<Container>
 					<Hero />
-					<Assets />
-					<ShortList />
-					<Earning />
+					{/* <Assets /> */}
+					{/* <ShortList /> */}
+					{/* <Earning /> */}
 					<Features />
 					<TradeNow />
 				</Container>

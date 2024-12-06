@@ -9,35 +9,34 @@ import sdk from 'state/sdk'
 import { setSigner } from 'state/wallet/actions'
 import { setNetwork } from 'state/wallet/reducer'
 
-import { generateExplorerFunctions, getBaseUrl } from './blockExplorer'
-import { chain } from './config'
+import { generateExplorerFunctions } from './blockExplorer';
+import { DEFAULT_NETWORK_ID } from 'constants/defaults'
 
-export let blockExplorer = generateExplorerFunctions(getBaseUrl(10))
+export let blockExplorer = generateExplorerFunctions(DEFAULT_NETWORK_ID);
 
 const useConnector = () => {
 	const dispatch = useAppDispatch()
-	const { chain: activeChain } = useNetwork()
+	const { chain: network } = useNetwork()
 	const { address, isConnected: isWalletConnected } = useAccount({
 		onDisconnect: () => dispatch(setSigner(null)),
 	})
 	const [providerReady, setProviderReady] = useState(false)
 
-	const network = useMemo(() => {
-		return SUPPORTED_NETWORKS.includes(activeChain?.id ?? chain.optimism.id)
-			? activeChain ?? chain.optimism
-			: chain.optimism
-	}, [activeChain])
+	// const network = useMemo(() => {
+	// 	return SUPPORTED_NETWORKS.includes(activeChain?.id ?? chain.optimism.id)
+	// 		? activeChain ?? chain.optimism
+	// 		: chain.optimism
+	// }, [activeChain])
 
 	const walletAddress = useMemo(() => address ?? null, [address])
 
-	const provider = useProvider({ chainId: network.id })
-	const l2Provider = useProvider({ chainId: chain.optimism.id })
+	const provider = useProvider({ chainId: network?.id })
 	const { data: signer } = useSigner()
 
 	const handleNetworkChange = useCallback(
 		(networkId: NetworkId) => {
 			dispatch(setNetwork(networkId))
-			blockExplorer = generateExplorerFunctions(getBaseUrl(networkId))
+			blockExplorer = generateExplorerFunctions(networkId);
 		},
 		[dispatch]
 	)
@@ -56,11 +55,10 @@ const useConnector = () => {
 	}, [signer, dispatch])
 
 	return {
-		activeChain,
+		activeChain: network,
 		isWalletConnected,
 		walletAddress,
 		provider,
-		l2Provider,
 		signer,
 		network,
 		providerReady,

@@ -36,24 +36,23 @@ export const ROUTES = {
 		Into: (currencyKey: string) => `/exchange/?quote=${currencyKey}`,
 	},
 	Markets: {
-		Home: (accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { accountType, asset: 'sETH' }),
-		MarketPair: (asset: FuturesMarketAsset | string, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType }),
-		Position: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
+		Home: () =>
+			formatUrl('/market', { asset: '' }),
+		MarketPair: (asset: FuturesMarketAsset | string) =>
+			formatUrl('/market', { asset }),
+		Position: (asset: FuturesMarketAsset) =>
 			formatUrl('/market', {
 				asset,
-				accountType,
 				tab: 'position',
 			}),
-		Orders: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'orders' }),
-		ConditionalOrders: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'conditional_orders' }),
-		Trades: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'trades' }),
-		Transfers: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'transfers' }),
+		Orders: (asset: FuturesMarketAsset) =>
+			formatUrl('/market', { asset, tab: 'orders' }),
+		ConditionalOrders: (asset: FuturesMarketAsset) =>
+			formatUrl('/market', { asset, tab: 'conditional_orders' }),
+		Trades: (asset: FuturesMarketAsset) =>
+			formatUrl('/market', { asset, tab: 'trades' }),
+		Transfers: (asset: FuturesMarketAsset) =>
+			formatUrl('/market', { asset, tab: 'transfers' }),
 	},
 	Stats: {
 		Home: '/stats',
@@ -88,7 +87,7 @@ export const setLastVisited = (
 	baseCurrencyPair: string,
 	accountType: AppFuturesMarginType
 ): void => {
-	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair, accountType))
+	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair))
 }
 
 export default ROUTES
