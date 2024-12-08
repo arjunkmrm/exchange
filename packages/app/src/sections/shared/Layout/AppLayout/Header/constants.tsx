@@ -42,7 +42,7 @@ export const HOMEPAGE_MENU_LINKS: MenuLinks = [
 	},
 	{
 		i18nLabel: 'homepage.nav.blog',
-		link: EXTERNAL_LINKS.Social.Mirror,
+		link: EXTERNAL_LINKS.Website.Blogs,
 	},
 ]
 
@@ -63,50 +63,40 @@ const DASHBOARD_LINKS = [
 		link: ROUTES.Dashboard.Stake,
 		i18nLabel: 'dashboard.tabs.staking',
 	},
-	{
-		link: ROUTES.Dashboard.Migrate,
-		i18nLabel: 'dashboard.tabs.migrate',
-	},
+	// {
+	// 	link: ROUTES.Dashboard.Migrate,
+	// 	i18nLabel: 'dashboard.tabs.migrate',
+	// },
 ]
 
 export const getMenuLinks = (isMobile: boolean): MenuLinks => [
-	{
-		i18nLabel: 'header.nav.dashboard',
-		link: ROUTES.Dashboard.Home,
-		links: isMobile ? DASHBOARD_LINKS : null,
-	},
+	// {
+	// 	i18nLabel: 'header.nav.dashboard',
+	// 	link: ROUTES.Dashboard.Home,
+	// 	links: isMobile ? DASHBOARD_LINKS : null,
+	// },
 	{
 		i18nLabel: 'header.nav.markets',
-		link: ROUTES.Markets.Home(FuturesMarginType.SMART_MARGIN),
+		link: ROUTES.Dashboard.Markets,
 	},
+    {
+		i18nLabel: 'header.nav.staking',
+		link: ROUTES.Staking.Home,
+        links: null,
+	},
+	// {
+	// 	i18nLabel: 'header.nav.quick-swap',
+	// 	link: ROUTES.Exchange.Home,
+	// },
 	{
-		i18nLabel: 'header.nav.exchange',
-		link: ROUTES.Exchange.Home,
+		i18nLabel: 'header.nav.wallet',
+		link: ROUTES.Wallet.Home,
+		links: null,
 	},
-	{
-		i18nLabel: 'header.nav.leaderboard',
-		link: ROUTES.Leaderboard.Home,
-		links: COMPETITION_ENABLED
-			? [
-					{
-						link: ROUTES.Leaderboard.Home,
-						i18nLabel: 'header.nav.leaderboard-alltime',
-					},
-					{
-						link: ROUTES.Leaderboard.Competition('1'),
-						i18nLabel: 'header.nav.competition-round-1',
-					},
-					{
-						link: ROUTES.Leaderboard.Competition('2'),
-						i18nLabel: 'header.nav.competition-round-2',
-					},
-			  ]
-			: null,
-	},
-	{
-		i18nLabel: 'header.nav.referrals',
-		link: ROUTES.Referrals.Home,
-	},
+	// {
+	// 	i18nLabel: 'header.nav.referrals',
+	// 	link: ROUTES.Referrals.Home,
+	// },
 ]
 
 export const DESKTOP_NAV_LINKS = getMenuLinks(false).filter((m) => !m.hidden)

@@ -71,20 +71,20 @@ const Leaderboard: FC<LeaderboardProps> = ({ compact, mobile }) => {
 
 	const urlPath = DOMPurify.sanitize(router.asPath)
 	const trader = DOMPurify.sanitize(router.query.trader as string)
-	const compRound =
-		router.query.competitionRound && typeof router.query.competitionRound === 'string'
-			? (DOMPurify.sanitize(router.query.competitionRound) as CompetitionRound)
-			: null
+	const compRound = null;
+		// router.query.competitionRound && typeof router.query.competitionRound === 'string'
+		// 	? (DOMPurify.sanitize(router.query.competitionRound) as CompetitionRound)
+		// 	: null
 
 	useEffect(() => {
-		if (urlPath.startsWith(ROUTES.Leaderboard.Home) && trader) {
+		if (urlPath.startsWith(ROUTES.Wallet.Home) && trader) {
 			dispatch(
 				setSelectedTrader({
 					trader,
 					traderEns: leaderboardData.all.find((a) => a.account === trader)?.traderEns,
 				})
 			)
-		} else if (urlPath.startsWith(ROUTES.Leaderboard.Home) && compRound) {
+		} else if (urlPath.startsWith(ROUTES.Wallet.Home) && compRound) {
 			setCompetitionRound(compRound)
 		} else {
 			setSearchInput('')
@@ -116,7 +116,7 @@ const Leaderboard: FC<LeaderboardProps> = ({ compact, mobile }) => {
 			dispatch(setLeaderboardSearchTerm(''))
 			setSearchAddress('')
 			dispatch(setSelectedTrader({ trader, traderEns }))
-			router.push(ROUTES.Leaderboard.Trader(trader))
+			// router.push(ROUTES.Leaderboard.Trader(trader))
 		},
 		[router, dispatch]
 	)
@@ -127,11 +127,11 @@ const Leaderboard: FC<LeaderboardProps> = ({ compact, mobile }) => {
 		setSearchAddress('')
 		dispatch(setSelectedTrader(undefined))
 
-		if (competitionRound) {
-			router.push(ROUTES.Leaderboard.Competition(competitionRound))
-		} else {
-			router.push(ROUTES.Leaderboard.Home)
-		}
+		// if (competitionRound) {
+		// 	router.push(ROUTES.Leaderboard.Competition(competitionRound))
+		// } else {
+			router.push(ROUTES.Wallet.Home)
+		// }
 	}, [competitionRound, router, dispatch])
 
 	const handleSelectTab = useCallback(

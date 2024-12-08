@@ -23,7 +23,7 @@ const HomeLayout: FC<HomeLayoutProps> = ({ children }) => (
 			<GlobalStyle />
 			<Header />
 			{children}
-			{/* <Footer /> */}
+			<Footer />
 		</ScreenContainer>
 	</ThemeProvider>
 )

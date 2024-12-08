@@ -25,9 +25,9 @@ const Hero = () => {
 				<ProductDescription>
 					<Trans i18nKey={'homepage.hero.copy'} components={[<Emphasis />]} />
 				</ProductDescription>
-				<SynthetixContainer>
+				{/* <SynthetixContainer>
 					<PoweredBySynthetix />
-				</SynthetixContainer>
+				</SynthetixContainer> */}
 				<CTAContainer>
 					<Link href={ROUTES.Markets.Home(DEFAULT_FUTURES_MARGIN_TYPE)}>
 						<RefButton variant="flat" textColor="yellow" size="large">

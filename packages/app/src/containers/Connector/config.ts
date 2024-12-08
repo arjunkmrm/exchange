@@ -30,16 +30,12 @@ import Frame from 'components/Rainbowkit/Frame'
 import Tally from 'components/Rainbowkit/Tally'
 import { BLAST_NETWORK_LOOKUP, STALL_TIMEOUT } from 'constants/network'
 
-export type BitlyChain = Chain & {
-    bitlyAddress: string;
-};
-
 const bscWithIcon: Chain = {
 	...bsc,
 	iconUrl: async () => BinanceIcon,
 }
 
-const redstoneWithIcon: BitlyChain = {
+const redstoneWithIcon: Chain = {
     ...mainnet,
     id: 690,
     name: 'Redstone Chain',
@@ -65,10 +61,9 @@ const redstoneWithIcon: BitlyChain = {
         }
     },
     iconUrl: async () => RedstoneIcon,
-    bitlyAddress: ''
 };
 
-const garnetWithIcon: BitlyChain = {
+const garnetWithIcon: Chain = {
     ...mainnet,
     id: 17069,
     name: 'Garnet Holesky',
@@ -94,7 +89,6 @@ const garnetWithIcon: BitlyChain = {
         }
     },
     iconUrl: async () => GarnetIcon,
-    bitlyAddress: '0x786F2461A238c29352a66f67243eE52EdF42bC14'
 };
 
 export type ChainsType = {

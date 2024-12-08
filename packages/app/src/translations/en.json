@@ -3,19 +3,19 @@
 		"en": "English"
 	},
 	"meta": {
-		"description": "Gain exposure to a variety of assets with up to 50x leverage and deep liquidity",
-		"ref-description": "Receive a 15% boost on trading rewards!",
+		"description": "Provide most secure and initial-liquidity free crypto exchange",
+		"ref-description": "Earn Trading Fees by Referral!",
 		"og": {
-			"title": "Kwenta",
-			"ref-title": "You are invited to Kwenta",
-			"site-name": "Kwenta"
+			"title": "Bitly",
+			"ref-title": "You are invited to Bitly",
+			"site-name": "bitly.exchange"
 		}
 	},
 	"header": {
 		"nav": {
-			"exchange": "exchange",
+			"quick-swap": "Quick Swap",
 			"dashboard": "dashboard",
-			"markets": "futures",
+			"markets": "markets",
 			"options": {
 				"title": "options",
 				"portfolio": "portfolio",
@@ -29,7 +29,8 @@
 			"leaderboard-alltime": "All Time",
 			"competition-round-1": "Round 1",
 			"competition-round-2": "Round 2",
-			"leaderboard": "leaderboard",
+            "staking": "Staking",
+			"wallet": "Wallet",
 			"earn": "earn",
 			"beta-badge": "Beta",
 			"reward-badge": "Rewards"
@@ -52,7 +53,7 @@
 		}
 	},
 	"homepage": {
-		"page-title": "Kwenta | Derivatives Trading with Deep Liquidity",
+		"page-title": "Bitly | Fully On-chain Orderbook Crypto Exchange",
 		"nav": {
 			"start-trade": "Start Trading",
 			"trade-now": "Trade now",
@@ -66,15 +67,15 @@
 			},
 			"socials": {
 				"title": "Socials",
-				"discord": "Discord",
+				"E-mail": "E-Mail",
 				"twitter": "Twitter"
 			},
-			"blog": "Blog",
+			"website": "Website",
 			"learn-more": "Learn more"
 		},
 		"hero": {
-			"title": "TRADE SYNTHETIC PERPETUALS",
-			"copy": "Gain exposure to a variety of assets with up to <0>50x leverage</0> and <0>deep liquidity</0>"
+			"title": "BITLY TOKEN EXCHANGE",
+			"copy": "Provide <0>initial liquidity</0> to developers and <0>friendly UX</0> to traders"
 		},
 		"assets": {
 			"title": "UNIQUE MARKETS",
@@ -96,20 +97,20 @@
 			}
 		},
 		"earning": {
-			"title": "Community Run",
-			"description": "GOVERNED BY THE <0>$KWENTA</0> TOKEN",
-			"copy": "Community members earn and vote with $KWENTA",
+			"title": "Token Driven",
+			"description": "EARN <0>$BTLY</0> TOKEN",
+			"copy": "Anyone who holds $BTLY can obtain the trading fees according to the shares held.",
 			"vote-and-govern": {
 				"title": "vote & govern",
-				"copy": "Token-managed governance empowers the community to steer Kwenta"
+				"copy": "Token-managed governance empowers the community to steer Bitly"
 			},
 			"stake-and-earn": {
 				"title": "stake & earn",
-				"copy": "$KWENTA stakers earn inflationary rewards"
+				"copy": "$BTLY stakers earn inflationary rewards"
 			},
 			"trade-and-earn": {
 				"title": "trade & earn",
-				"copy": "Trade on Kwenta to begin earning tokens"
+				"copy": "Trade on Bitly to begin earning tokens"
 			},
 			"how-to-earn": "How to earn",
 			"stake-kwenta": "Coming Soon",
@@ -121,40 +122,40 @@
 		"learn": {
 			"title": "Learn More",
 			"coming-soon": "Coming Soon",
-			"description": "Explore The Endless Possibilities Of Kwenta",
+			"description": "Explore The Endless Possibilities Of Bitly",
 			"how-to-stake": {
-				"title": "Learn how to start earning with Kwenta",
+				"title": "Learn how to start earning with Bitly",
 				"copy": "Earn $KWENTA with trading incentives and staking."
 			},
 			"how-governance": {
 				"title": "How Governance Works",
-				"copy": "Kwenta is governed, built, and maintained by its community. Learn more about how governance works, and how to get involved."
+				"copy": "Bitly is governed, built, and maintained by its community. Learn more about how governance works, and how to get involved."
 			},
 			"faq": "FAQ"
 		},
 		"tradenow": {
-			"title": "SYNTHETIC LEVERAGE",
+			"title": "BITLY EXCHANGE",
 			"description": "Take Back The Market, Trade Like A Whale",
-			"categories": "Commodities, Forex, Crypto and more."
+			"categories": "Autonomous world, meme, DeFi and more."
 		},
 		"features": {
 			"title": "ADVANTAGES",
 			"description": "Experience a true DEX",
-			"blazing-fast": {
-				"title": "Blazing Fast",
-				"copy": "Near-instant trade confirmations using Optimism's Layer 2 scalability"
+			"multi-chain": {
+				"title": "Multi Chain Support",
+				"copy": "Easily Trading on multiple mainstream blockchains"
 			},
-			"low-gas-fees": {
-				"title": "Low Gas Fees",
-				"copy": "Transaction costs on Optimism Layer 2 are one-tenth of Ethereum L1"
+			"low-trading-fees": {
+				"title": "Low Trading Fees",
+				"copy": "No Fees For Limit Orders & Low Fees For Market Orders"
 			},
 			"unique-assets": {
 				"title": "Unique Assets",
-				"copy": "Trade a variety of digital and traditional assets with low trading fees"
+				"copy": "Get ahead of others to hold the tokens of emerging projects"
 			},
-			"open-source": {
-				"title": "Open Source",
-				"copy": " Don't trust, verify"
+			"fully-onchain": {
+				"title": "Fully On-chain",
+				"copy": "Code is law. Keep bankrun away"
 			},
 			"mobile": {
 				"title": "Mobile",
@@ -165,8 +166,8 @@
 				"copy": "Deposit or withdraw assets freely"
 			},
 			"partners": {
-				"title": "Partners",
-				"copy": "Collaborating with industry leaders to deliver the best trading experience in DeFi."
+				"title": "Powered By",
+				"copy": ""
 			}
 		},
 		"l2": {
@@ -189,28 +190,25 @@
 				"title": "Start trading today",
 				"button": "View Exchange"
 			},
-			"copyright": "© 2023 kwenta, All Rights Reserved.",
-			"about-kwenta": {
-				"title": "About Kwenta",
+			"copyright": "© 2024 bitly, All Rights Reserved.",
+			"about-bitly": {
+				"title": "About Bitly",
+                "website": "Website",
 				"docs": "Docs",
 				"news": "News",
-				"faq": "FAQ",
-				"dao-roles": "DAO Roles"
+				"faq": "FAQ"
 			},
-			"use-kwenta": {
-				"title": "Use KWENTA",
-				"perps": "Perpetual Futures",
-				"spot": "Spot Trading",
-				"legacy": "Legacy Exchange",
-				"referrals": "Referral Program",
-				"perps-v1": "Legacy Perpetuals"
+			"use-bitly": {
+				"title": "Use BITLY",
+				"trade": "Fully-Onchain Trading",
+				"referrals": "Referral Program"
 			},
 			"community": {
 				"title": "Community",
 				"governance": "Governance",
 				"dev-dao": "Dev DAO",
 				"marketing-dao": "Marketing DAO",
-				"kips": "Kwenta State Log"
+				"kips": "Bitly State Log"
 			}
 		}
 	},
@@ -230,8 +228,8 @@
 		}
 	},
 	"exchange": {
-		"page-title": "Exchange | Kwenta",
-		"page-title-currency-pair": "{{baseCurrencyKey}}/{{quoteCurrencyKey}} - {{rate}} | Kwenta",
+		"page-title": "Exchange | Bitly",
+		"page-title-currency-pair": "{{baseCurrencyKey}}/{{quoteCurrencyKey}} - {{rate}} | Bitly",
 		"common": {
 			"from": "from",
 			"into": "into"
@@ -351,7 +349,7 @@
 		}
 	},
 	"dashboard": {
-		"page-title": "Dashboard | Kwenta",
+		"page-title": "Dashboard | Bitly",
 		"titles": {
 			"trading": "Trading",
 			"community": "Community",
@@ -428,7 +426,7 @@
 				"open-positions": "Open Positions"
 			},
 			"portfolio-chart": {
-				"welcome": "Welcome to Kwenta",
+				"welcome": "Welcome to Bitly",
 				"hero": "Gain exposure to a variety of assets with up to 50x leverage and deep liquidity",
 				"portfolio-value": "Portfolio Value",
 				"buying-power": "Total Buying Power",
@@ -436,8 +434,8 @@
 			}
 		},
 		"earn": {
-			"title": "Earn | Kwenta",
-			"heading": "Kwenta Liquidity Mining",
+			"title": "Earn | Bitly",
+			"heading": "Bitly Liquidity Mining",
 			"copy": "The program that rewards liquidity providers for the ETH/KWENTA pair through Arrakis Finance has ended.",
 			"unstake-token": {
 				"title": "Step 1. Unstake the pool tokens",
@@ -451,7 +449,7 @@
 		},
 		"rewards": {
 			"title": "Trading Rewards",
-			"copy": "Earn rewards by trading on Kwenta and get boosted rewards for staking.",
+			"copy": "Earn rewards by trading on Bitly and get boosted rewards for staking.",
 			"claimable": "Claimable",
 			"estimated": "Estimated",
 			"epoch": "Epoch",
@@ -463,12 +461,12 @@
 			"rewards": "Rewards",
 			"disclaimer": "Disclaimer: The estimated epoch reward values presented are not indicative of the the final rewards value. Please be aware that these estimations may fluctuate due to factors such as: future fees paid and the staking contributions of other participants leading up to the epoch-ending snapshot. For additional insights on rewards, <0>kindly refer to our blog.<0>",
 			"trading-rewards": {
-				"title": "Kwenta Trading Rewards",
+				"title": "Bitly Trading Rewards",
 				"copy": "Earn  $KWENTA rewards in proportion to total fees paid."
 			},
 			"op-rewards": {
-				"title": "Kwenta OP Rewards",
-				"copy": "Earn a share of $OP rewards issued by Kwenta."
+				"title": "Bitly OP Rewards",
+				"copy": "Earn a share of $OP rewards issued by Bitly."
 			},
 			"snx-rewards": {
 				"title": "SNX OP Rewards",
@@ -513,7 +511,7 @@
 				"cooldown": {
 					"title": "Cooldown",
 					"time-left": "Time Left",
-					"warning": "Staked Kwenta incurs a 14d cooldown"
+					"warning": "Staked Bitly incurs a 14d cooldown"
 				}
 			},
 			"tabs": {
@@ -583,7 +581,7 @@
 					"vest-modal": {
 						"title": "Early Vesting Fee",
 						"confirm-button": "Confirm",
-						"warning": "Vesting tokens will result in the loss of locked funds as they will be returned to the Kwenta treasury. ",
+						"warning": "Vesting tokens will result in the loss of locked funds as they will be returned to the Bitly treasury. ",
 						"more-info": "<0>More information here</0>.",
 						"confirm-text": "You will currently forfeit <0>{{totalFee}}</0> in KWENTA by vesting. Do you still wish to proceed?"
 					},
@@ -698,7 +696,7 @@
 				"to": "To",
 				"usd-value": "USD Value",
 				"no-trade-history": "You have no synth trading history",
-				"no-trade-history-link": "Visit the Kwenta exchange to swap synths"
+				"no-trade-history-link": "Visit the Bitly exchange to swap synths"
 			},
 			"positions-history-table": {
 				"no-result": "You have no futures positions history"
@@ -715,28 +713,28 @@
 		}
 	},
 	"dashboard-markets": {
-		"page-title": "Markets | Kwenta"
+		"page-title": "Markets | Bitly Token Exchange"
 	},
 	"dashboard-history": {
-		"page-title": "Trade History | Kwenta",
+		"page-title": "Trade History | Bitly",
 		"main-title": "Trade History",
-		"subtitle": "History of all past trades on Kwenta",
+		"subtitle": "History of all past trades on Bitly",
 		"export-btn": "Export"
 	},
 	"dashboard-stake": {
-		"page-title": "Staking | Kwenta"
+		"page-title": "Staking | Bitly"
 	},
 	"dashboard-stakev1": {
-		"page-title": "V1 Staking | Kwenta"
+		"page-title": "V1 Staking | Bitly"
 	},
 	"dashboard-rewards": {
-		"page-title": "Rewards | Kwenta"
+		"page-title": "Rewards | Bitly"
 	},
 	"dashboard-redeem": {
-		"page-title": "Redemption | Kwenta"
+		"page-title": "Redemption | Bitly"
 	},
 	"futures": {
-		"page-title": "Kwenta Futures",
+		"page-title": "Bitly Futures",
 		"cta-buttons": {
 			"copy": "Isolated margin is being replaced with smart margin, where you will have access to conditional orders and be eligible for trading rewards. ",
 			"learn-more": "Learn more",
@@ -771,8 +769,8 @@
 			"no-results": "No markets found"
 		},
 		"market": {
-			"page-title": "{{baseCurrencyKey}} Futures | Kwenta",
-			"page-title-rate": "{{marketName}} - {{rate}} Futures | Kwenta",
+			"page-title": "{{baseCurrencyKey}} Futures | Bitly",
+			"page-title-rate": "{{marketName}} - {{rate}} Futures | Bitly",
 			"sidebar-tab": {
 				"markets": "Markets",
 				"history": "History",
@@ -924,7 +922,7 @@
 						"bridge": {
 							"title": "Bridge & Swap",
 							"low-balance": "Your sUSD balance is low. You can bridge more assets from another network below.",
-							"no-balance": "To get started, you need sUSD to trade on Kwenta. You can bridge assets from another network into sUSD below."
+							"no-balance": "To get started, you need sUSD to trade on Bitly. You can bridge assets from another network into sUSD below."
 						},
 						"buttons": {
 							"deposit": "Deposit Margin",
@@ -1236,7 +1234,7 @@
 		}
 	},
 	"leaderboard": {
-		"page-title": "Leaderboard | Kwenta",
+		"page-title": "Wallet | Bitly Token Exchange",
 		"leaderboard": {
 			"table": {
 				"title": "{{ activeTab }} Traders",
@@ -1283,7 +1281,7 @@
 		}
 	},
 	"referrals": {
-		"page-title": "Referrals | Kwenta",
+		"page-title": "Referrals | Bitly",
 		"title": "Referral Program",
 		"copy": "Earn boosted rewards from trading, or become an affiliate to earn even more.",
 		"docs": "Docs →",
@@ -1354,10 +1352,10 @@
 				},
 				"referrer": {
 					"title": "Referrer",
-					"welcome-message": "You are invited to Kwenta",
+					"welcome-message": "You are invited to Bitly",
 					"badge-copy": "Receive a <0>{{boost}}</0> boost on trading rewards",
 					"boost-button": "Mint Boost",
-					"learn-more": "Learn more about the Kwenta",
+					"learn-more": "Learn more about the Bitly",
 					"referral-program": " <0>Referral program</0>",
 					"low-fees": {
 						"title": "Low fees",
@@ -1383,13 +1381,13 @@
 		}
 	},
 	"not-found": {
-		"page-title": "Not Found | Kwenta",
+		"page-title": "Not Found | Bitly",
 		"title": "404",
 		"subtitle": "Page not found."
 	},
 	"system-status": {
-		"page-title": "Maintenance | Kwenta",
-		"title": "Kwenta is currently down for maintenance",
+		"page-title": "Maintenance | Bitly",
+		"title": "Bitly is currently down for maintenance",
 		"subtitle": "We apologise for any inconvenience caused, it will be back shortly."
 	},
 	"modals": {

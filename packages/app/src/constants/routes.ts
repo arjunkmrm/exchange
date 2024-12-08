@@ -29,6 +29,9 @@ export const ROUTES = {
 		Redeem: normalizeRoute('/dashboard', 'redeem', 'tab'),
 		TradingRewards: formatUrl('/dashboard/staking', { tab: 'trading-rewards' }),
 	},
+    Staking: {
+        Home: '/dashboard/staking'
+    },
 	Exchange: {
 		Home: '/exchange',
 		MarketPair: (baseCurrencyKey: string, quoteCurrencyKey: string) =>
@@ -36,31 +39,32 @@ export const ROUTES = {
 		Into: (currencyKey: string) => `/exchange/?quote=${currencyKey}`,
 	},
 	Markets: {
-		Home: () =>
-			formatUrl('/market', { asset: '' }),
-		MarketPair: (asset: FuturesMarketAsset | string) =>
-			formatUrl('/market', { asset }),
-		Position: (asset: FuturesMarketAsset) =>
+		Home: (accountType: AppFuturesMarginType) =>
+			formatUrl('/market', { accountType, asset: 'sETH' }),
+		MarketPair: (asset: FuturesMarketAsset | string, accountType: AppFuturesMarginType) =>
+			formatUrl('/market', { asset, accountType }),
+		Position: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
 			formatUrl('/market', {
 				asset,
+				accountType,
 				tab: 'position',
 			}),
-		Orders: (asset: FuturesMarketAsset) =>
-			formatUrl('/market', { asset, tab: 'orders' }),
-		ConditionalOrders: (asset: FuturesMarketAsset) =>
-			formatUrl('/market', { asset, tab: 'conditional_orders' }),
-		Trades: (asset: FuturesMarketAsset) =>
-			formatUrl('/market', { asset, tab: 'trades' }),
-		Transfers: (asset: FuturesMarketAsset) =>
-			formatUrl('/market', { asset, tab: 'transfers' }),
+		Orders: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
+			formatUrl('/market', { asset, accountType, tab: 'orders' }),
+		ConditionalOrders: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
+			formatUrl('/market', { asset, accountType, tab: 'conditional_orders' }),
+		Trades: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
+			formatUrl('/market', { asset, accountType, tab: 'trades' }),
+		Transfers: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
+			formatUrl('/market', { asset, accountType, tab: 'transfers' }),
 	},
 	Stats: {
 		Home: '/stats',
 	},
-	Leaderboard: {
-		Home: '/leaderboard',
-		Trader: (trader: string) => `/leaderboard/?trader=${trader}`,
-		Competition: (round: string) => `/leaderboard/?competitionRound=${round}`,
+	Wallet: {
+		Home: '/wallet',
+		Trader: (trader: string) => `/wallet/?trader=${trader}`,
+		Competition: (round: string) => `/wallet/?competitionRound=${round}`,
 	},
 	Referrals: {
 		Home: '/referrals',
@@ -87,7 +91,7 @@ export const setLastVisited = (
 	baseCurrencyPair: string,
 	accountType: AppFuturesMarginType
 ): void => {
-	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair))
+	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair, accountType))
 }
 
 export default ROUTES

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import ArrowUpRightIcon from 'assets/svg/app/arrow-up-right-tg.svg'
 import CaretDownGrayIcon from 'assets/svg/app/caret-down-gray-slim.svg'
 import TwitterLogo from 'assets/svg/marketing/twitter-icon.svg'
-import DiscordLogo from 'assets/svg/social/discord.svg'
+import EMailLogo from 'assets/svg/social/email.svg'
 import { FlexDivRow, FlexDivRowCentered } from 'components/layout/flex'
 import { GridDivCenteredCol } from 'components/layout/grid'
 import { DesktopOnlyView, MobileOrTabletView } from 'components/Media'
@@ -32,26 +32,26 @@ const Header = memo(() => {
 				label: t('homepage.nav.markets'),
 				onClick: () => router.push(ROUTES.Dashboard.Markets),
 			},
-			{
-				id: 'stats',
-				label: t('homepage.nav.stats'),
-				onClick: () => router.push(ROUTES.Stats.Home),
-			},
-			{
-				id: 'governance',
-				label: t('homepage.nav.governance.title'),
-				icon: <CaretDownGrayIcon />,
-			},
+			// {
+			// 	id: 'stats',
+			// 	label: t('homepage.nav.stats'),
+			// 	onClick: () => router.push(ROUTES.Stats.Home),
+			// },
+			// {
+			// 	id: 'governance',
+			// 	label: t('homepage.nav.governance.title'),
+			// 	icon: <CaretDownGrayIcon />,
+			// },
 			{
 				id: 'socials',
 				label: t('homepage.nav.socials.title'),
 				icon: <CaretDownGrayIcon />,
 			},
 			{
-				id: 'blogs',
-				label: t('homepage.nav.blog'),
+				id: 'website',
+				label: t('homepage.nav.website'),
 				icon: <ArrowUpRightIcon />,
-				onClick: () => window.open(EXTERNAL_LINKS.Social.Mirror, '_blank'),
+				onClick: () => window.open(EXTERNAL_LINKS.Website.Home, '_blank'),
 			},
 			{
 				id: 'learn-more',
@@ -78,10 +78,10 @@ const Header = memo(() => {
 
 	const SOCIALS = [
 		{
-			id: 'discord',
-			label: t('homepage.nav.socials.discord'),
+			id: 'E-mail',
+			label: t('homepage.nav.socials.E-mail'),
 			onClick: () => window.open(EXTERNAL_LINKS.Social.Discord, '_blank'),
-			icon: <DiscordLogo />,
+			icon: <EMailLogo />,
 		},
 		{
 			id: 'twitter',
@@ -105,7 +105,7 @@ const Header = memo(() => {
 									{label}
 									{icon}
 								</FlexDivRowCentered>
-								<StyledMenu className="governance">
+								{/* <StyledMenu className="governance">
 									{GOVERNANCE.map(({ id, label, onClick }) => (
 										<StyledMenuItem key={id} onClick={onClick}>
 											{label}
@@ -119,7 +119,7 @@ const Header = memo(() => {
 											{label}
 										</StyledMenuItem>
 									))}
-								</StyledMenu>
+								</StyledMenu> */}
 							</StyledTextButton>
 						))}
 					</Links>

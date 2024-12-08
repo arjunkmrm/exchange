@@ -12,6 +12,7 @@ import {
 	getMulticallContractsByNetwork,
 } from './contracts'
 import { NetworkId } from './types/common'
+import { UnwrapPromise } from './common/type'
 
 export interface IContext {
 	provider: ethers.providers.Provider
@@ -28,8 +29,8 @@ const DEFAULT_CONTEXT: Partial<IContext> = {
 export default class Context implements IContext {
 	private context: IContext
 	public multicallProvider: EthCallProvider
-	public contracts: ContractsMap
-	public multicallContracts: MulticallContractsMap
+	public contracts: UnwrapPromise<ContractsMap> | undefined
+	public multicallContracts: UnwrapPromise<MulticallContractsMap> | undefined
 	public events = new EventEmitter().setMaxListeners(100)
 	public l1MainnetProvider: ethers.providers.Provider
 
@@ -42,13 +43,13 @@ export default class Context implements IContext {
 			this.setSigner(context.signer)
 		}
 
-		this.contracts = await getContractsByNetwork(context.networkId, context.provider)
-		this.multicallContracts = await getMulticallContractsByNetwork(context.networkId)
+		// this.contracts = await getContractsByNetwork(context.networkId, context.provider);
+		// this.multicallContracts = await getMulticallContractsByNetwork(context.networkId);
 		this.l1MainnetProvider = new ethers.providers.InfuraProvider()
 	}
 
 	get networkId() {
-		return this.context.networkId ?? 10
+		return this.context.networkId
 	}
 
 	get provider() {
@@ -76,12 +77,12 @@ export default class Context implements IContext {
 		const networkId = (await provider.getNetwork()).chainId as NetworkId
 		this.multicallProvider = new EthCallProvider(networkId, provider)
 
-		this.setNetworkId(networkId)
+		await this.setNetworkId(networkId);
 
 		return networkId
 	}
 
-	public setNetworkId(networkId: NetworkId) {
+	public async setNetworkId(networkId: NetworkId) {
 		this.context.networkId = networkId
 		this.contracts = await getContractsByNetwork(networkId, this.provider)
 		this.multicallContracts = await getMulticallContractsByNetwork(networkId)

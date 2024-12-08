@@ -1,25 +1,24 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="16" cy="16" r="16" fill="#000"/>
-<path d="M15.85 4L28 11.3767V18.7536L15.85 11.3767V4Z" fill="url(#favicon_paint0_linear)"/>
-<path d="M15.85 26.95L28 19.6478V12.3455L15.85 19.6478V26.95Z" fill="url(#favicon_paint1_linear)"/>
-<path d="M15.85 4L4 11.3767V18.7536L15.85 11.3767V4Z" fill="url(#favicon_paint2_linear)"/>
-<path d="M15.85 26.95L4 19.6478V12.3455L15.85 19.6478V26.95Z" fill="url(#favicon_paint3_linear)"/>
-<defs>
-<linearGradient id="favicon_paint0_linear" x1="38.3607" y1="11.3356" x2="8.39941" y2="11.3356" gradientUnits="userSpaceOnUse">
-<stop stop-color="#996939"/>
-<stop offset="1" stop-color="#D0A875"/>
-</linearGradient>
-<linearGradient id="favicon_paint1_linear" x1="21.925" y1="26.95" x2="24.8757" y2="-0.98517" gradientUnits="userSpaceOnUse">
-<stop stop-color="#272728"/>
-<stop offset="1" stop-color="#4B4B4B"/>
-</linearGradient>
-<linearGradient id="favicon_paint2_linear" x1="15.9232" y1="7.02448" x2="3.99645" y2="16.3688" gradientUnits="userSpaceOnUse">
-<stop stop-color="#996939"/>
-<stop offset="1" stop-color="#D0A875"/>
-</linearGradient>
-<linearGradient id="favicon_paint3_linear" x1="9.92499" y1="26.95" x2="9.92499" y2="12.3455" gradientUnits="userSpaceOnUse">
-<stop stop-color="#363636"/>
-<stop offset="1" stop-color="#333232"/>
-</linearGradient>
-</defs>
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="1024.000000pt" height="1024.000000pt" viewBox="0 0 1024.000000 1024.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path d="M5100 8386 c-3 -3 -59 -6 -125 -7 -676 -10 -1435 -309 -1980 -779
+-98 -85 -300 -289 -382 -385 -159 -188 -311 -426 -433 -677 -179 -370 -268
+-691 -315 -1143 -8 -70 -8 -494 -1 -545 3 -19 10 -82 16 -140 25 -218 97 -514
+179 -730 165 -436 400 -806 720 -1134 342 -349 706 -591 1156 -769 282 -111
+526 -169 900 -212 64 -7 505 -8 570 0 464 53 801 148 1170 332 640 318 1151
+832 1473 1478 180 362 277 707 327 1165 10 93 7 479 -5 595 -42 420 -145 776
+-332 1148 -245 490 -613 914 -1070 1230 -490 339 -1145 558 -1693 566 -60 1
+-124 4 -140 7 -17 3 -33 3 -35 0z m400 -1562 c14 -4 37 -18 53 -32 l27 -26 0
+-1157 0 -1158 69 -41 c87 -50 127 -84 147 -122 14 -27 14 -46 -7 -212 -12 -99
+-28 -196 -35 -214 -25 -62 -24 -62 -621 -62 -492 0 -541 2 -573 18 -19 9 -40
+28 -47 42 -15 33 -55 377 -48 411 4 15 27 46 52 69 45 42 185 115 242 126 l31
+7 0 813 0 813 -37 7 c-80 13 -196 46 -249 69 -78 34 -84 54 -84 255 0 205 5
+220 92 259 136 62 352 118 538 141 78 9 406 5 450 -6z"/>
+</g>
 </svg>

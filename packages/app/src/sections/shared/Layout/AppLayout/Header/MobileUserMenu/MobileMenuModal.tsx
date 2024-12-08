@@ -33,8 +33,7 @@ export const MobileMenuModal: FC<MobileMenuModalProps> = ({ onDismiss }) => {
 	const router = useRouter()
 	const dispatch = useAppDispatch()
 
-	const menuLinks =
-		window.location.pathname === ROUTES.Home.Root ? HOMEPAGE_MENU_LINKS : MOBILE_NAV_LINKS
+	const menuLinks = MOBILE_NAV_LINKS
 
 	const currentTheme = useAppSelector(selectCurrentTheme)
 

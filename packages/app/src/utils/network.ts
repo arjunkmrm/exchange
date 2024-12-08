@@ -1,12 +1,13 @@
 import { NetworkId } from '@kwenta/sdk/types'
 import { ethers, providers } from 'ethers'
 
-import { SUPPORTED_NETWORKS, BLAST_NETWORK_LOOKUP } from 'constants/network'
+import { BLAST_NETWORK_LOOKUP } from 'constants/network'
+import { chains } from 'containers/Connector/config'
 
 export const staticMainnetProvider = new ethers.providers.InfuraProvider()
 
 export function isSupportedNetworkId(id: NetworkId): boolean {
-	return SUPPORTED_NETWORKS.includes(id)
+	return chains.filter(chain=>chain.id==id).length > 0;
 }
 
 const loadInfuraProvider = (networkId: NetworkId) => {

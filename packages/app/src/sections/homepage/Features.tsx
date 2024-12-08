@@ -23,42 +23,47 @@ import media from 'styles/media'
 
 const FEATURES = [
 	{
-		key: 'blazing-fast',
-		title: 'homepage.features.blazing-fast.title',
-		copy: 'homepage.features.blazing-fast.copy',
+		key: 'multi-chain',
+		title: 'homepage.features.multi-chain.title',
+		copy: 'homepage.features.multi-chain.copy',
 		image: <BlazingFastIcon />,
+        comingSoon: false,
 	},
 	{
-		key: 'low-gas-fees',
-		title: 'homepage.features.low-gas-fees.title',
-		copy: 'homepage.features.low-gas-fees.copy',
+		key: 'low-trading-fees',
+		title: 'homepage.features.low-trading-fees.title',
+		copy: 'homepage.features.low-trading-fees.copy',
 		image: <LowGasFeeIcon />,
+        comingSoon: false,
 	},
 	{
 		key: 'unique-assets',
 		title: 'homepage.features.unique-assets.title',
 		copy: 'homepage.features.unique-assets.copy',
 		image: <UniqueAssetsIcon />,
+        comingSoon: false,
 	},
 	{
-		key: 'open-source',
-		title: 'homepage.features.open-source.title',
-		copy: 'homepage.features.open-source.copy',
-		image: <Image src={OpenSourceIcon} height={64} width={64} alt="Open Source" />,
+		key: 'fully-onchain',
+		title: 'homepage.features.fully-onchain.title',
+		copy: 'homepage.features.fully-onchain.copy',
+		image: <Image src={OpenSourceIcon} height={64} width={64} alt="Fully on-chain" />,
+        comingSoon: false,
 	},
 	{
 		key: 'mobile',
 		title: 'homepage.features.mobile.title',
 		copy: 'homepage.features.mobile.copy',
 		image: <MobileIcon />,
+        comingSoon: false,
 	},
-	{
-		key: 'easy-ramping',
-		title: 'homepage.features.easy-ramping.title',
-		copy: 'homepage.features.easy-ramping.copy',
-		image: <EasyRampingIcon />,
-		comingSoon: true,
-	},
+	// {
+	// 	key: 'easy-ramping',
+	// 	title: 'homepage.features.easy-ramping.title',
+	// 	copy: 'homepage.features.easy-ramping.copy',
+	// 	image: <EasyRampingIcon />,
+	// 	comingSoon: true,
+	// },
 ]
 
 const PARTNERS = [
@@ -122,14 +127,14 @@ const Features = () => {
 					</FeatureCard>
 				))}
 			</StyledFlexDivRow>
-			<FlexDivColCentered>{sectionTitle}</FlexDivColCentered>
+			{/* <FlexDivColCentered>{sectionTitle}</FlexDivColCentered>
 			<IconGridContainer>
 				{PARTNERS.map(({ key, image }) => (
 					<PartnerIconContainer key={key} className={key}>
 						{image}
 					</PartnerIconContainer>
 				))}
-			</IconGridContainer>
+			</IconGridContainer> */}
 		</Container>
 	)
 }

@@ -29,8 +29,6 @@ import {
 import { selectStartMigration } from 'state/stakingMigration/selectors'
 import media from 'styles/media'
 
-import MigratePage from './migrate'
-
 type StakingComponent = FC & { getLayout: (page: ReactNode) => JSX.Element }
 
 const StakingPage: StakingComponent = () => {
@@ -45,7 +43,7 @@ const StakingPage: StakingComponent = () => {
 	const kwentaRewards = useAppSelector(selectKwentaRewards)
 	const stakedResetTime = useAppSelector(selectStakedResetTime)
 	const stakingV1 = useAppSelector(selectStakingV1)
-	const startMigration = useAppSelector(selectStartMigration)
+	const startMigration = false;
 
 	useFetchStakeMigrateData()
 
@@ -201,7 +199,7 @@ const StakingPage: StakingComponent = () => {
 	}, [currentTab, handleChangeTab, stakingInfo, stakingV1, t])
 
 	return startMigration ? (
-		<MigratePage />
+		<></>
 	) : (
 		<>
 			<Head>

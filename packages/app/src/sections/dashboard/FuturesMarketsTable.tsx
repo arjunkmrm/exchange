@@ -87,269 +87,155 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
 	}, [search, futuresMarkets, t, futuresVolumes, pricesInfo, pastRates, markPrices])
 
 	return (
-		<>
-			<DesktopOnlyView>
-				<TableContainer>
-					<StyledTable
-						data={data}
-						onTableRowClick={(row) => {
-							router.push(ROUTES.Markets.MarketPair(row.original.asset, accountType))
-						}}
-						highlightRowsOnHover
-						sortBy={sortBy}
-						columns={[
-							{
-								header: () => (
-									<TableHeader>{t('dashboard.overview.futures-markets-table.market')}</TableHeader>
-								),
-								accessorKey: 'market',
-								cell: (cellProps) => {
-									return (
-										<MarketContainer>
-											<IconContainer>
-												<StyledCurrencyIcon
-													currencyKey={MarketKeyByAsset[cellProps.row.original.asset]}
-												/>
-											</IconContainer>
-											<StyledText>
-												{cellProps.row.original.market}
-												<Spacer width={8} />
-												<MarketBadge
-													currencyKey={cellProps.row.original.asset}
-													isFuturesMarketClosed={cellProps.row.original.isSuspended}
-													futuresClosureReason={cellProps.row.original.marketClosureReason}
-												/>
-											</StyledText>
-											<StyledValue>{cellProps.row.original.description}</StyledValue>
-										</MarketContainer>
-									)
-								},
-								size: 190,
-								enableSorting: true,
-							},
-							{
-								header: () => (
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.mark-price')}
-									</TableHeader>
-								),
-								accessorKey: 'price',
-								cell: (cellProps) => {
-									return (
-										<ColoredPrice priceChange={cellProps.row.original.priceInfo?.change}>
-											{formatDollars(cellProps.row.original.price, {
-												suggestDecimalsForAsset: cellProps.row.original.asset,
-											})}
-										</ColoredPrice>
-									)
-								},
-								size: 130,
-								enableSorting: true,
-								sortingFn: weiSortingFn('price'),
-							},
-							{
-								header: () => (
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.daily-change')}
-									</TableHeader>
-								),
-								accessorKey: 'priceChange',
-								cell: (cellProps) => {
-									return (
-										<ChangePercent
-											value={cellProps.row.original.priceChange}
-											decimals={2}
-											className="change-pct"
-										/>
-									)
-								},
-								size: 105,
-								enableSorting: true,
-								sortingFn: weiSortingFn('priceChange'),
-							},
-							{
-								header: () => (
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.funding-rate')}
-									</TableHeader>
-								),
-								accessorKey: 'fundingRate',
-								cell: (cellProps) => {
-									return (
-										<ChangePercent
-											value={cellProps.row.original.fundingRate}
-											decimals={6}
-											showArrow={false}
-											className="change-pct"
-										/>
-									)
-								},
-								enableSorting: true,
-								size: 125,
-								sortingFn: weiSortingFn('fundingRate'),
-							},
-							{
-								header: () => (
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.open-interest')}
-									</TableHeader>
-								),
-								accessorKey: 'openInterest',
-								cell: (cellProps) => {
-									return (
-										<OpenInterestContainer>
-											<Currency.Price
-												price={cellProps.row.original.longInterest}
-												colorType="positive"
-												formatOptions={{ truncateOver: 1e3 }}
-											/>
-											<Currency.Price
-												price={cellProps.row.original.shortInterest}
-												colorType="negative"
-												formatOptions={{ truncateOver: 1e3 }}
-											/>
-										</OpenInterestContainer>
-									)
-								},
-								size: 125,
-								enableSorting: true,
-								sortingFn: weiSortingFn('openInterest'),
-							},
-							{
-								id: 'dailyVolume',
-								header: () => (
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.daily-volume')}
-									</TableHeader>
-								),
-								accessorKey: 'dailyVolume',
-								cell: (cellProps) => {
-									return (
-										<Currency.Price
-											price={cellProps.row.original.volume}
-											formatOptions={{ truncateOver: 1e3 }}
-										/>
-									)
-								},
-								size: 125,
-								enableSorting: true,
-								sortingFn: weiSortingFn('volume'),
-							},
-						]}
-					/>
-				</TableContainer>
-			</DesktopOnlyView>
-			<MobileOrTabletView>
-				<StyledMobileTable
-					data={data}
-					showPagination
-					onTableRowClick={(row) => {
-						router.push(ROUTES.Markets.MarketPair(row.original.asset, accountType))
-					}}
-					sortBy={[{ id: 'dailyVolume', desc: true }]}
-					columns={[
-						{
-							header: () => (
-								<div>
-									<TableHeader>{t('dashboard.overview.futures-markets-table.market')}</TableHeader>
-									<TableHeader>{t('dashboard.overview.futures-markets-table.oracle')}</TableHeader>
-								</div>
-							),
-							accessorKey: 'market',
-							cell: (cellProps) => {
-								return (
-									<div>
-										<MarketContainer>
-											<IconContainer>
-												<StyledCurrencyIcon
-													currencyKey={
-														MarketKeyByAsset[cellProps.row.original.asset as FuturesMarketAsset]
-													}
-												/>
-											</IconContainer>
-											<StyledText>{cellProps.row.original.market}</StyledText>
-											<Currency.Price
-												price={cellProps.row.original.price}
-												formatOptions={{ suggestDecimals: true }}
-											/>
-										</MarketContainer>
-									</div>
-								)
-							},
-							size: 145,
-							enableSorting: true,
-						},
-						{
-							header: () => (
-								<div>
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.open-interest')}
-									</TableHeader>
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.funding-rate')}
-									</TableHeader>
-								</div>
-							),
-							accessorKey: 'openInterest',
-							cell: (cellProps) => {
-								return (
-									<div>
-										<Currency.Price
-											price={cellProps.row.original.openInterest}
-											formatOptions={{ truncateOver: 1e3 }}
-										/>
-										<div>
-											<ChangePercent
-												showArrow={false}
-												value={cellProps.row.original.fundingRate}
-												decimals={6}
-												className="change-pct"
-											/>
-										</div>
-									</div>
-								)
-							},
-							size: 130,
-						},
-						{
-							header: () => (
-								<div>
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.daily-change')}
-									</TableHeader>
-									<TableHeader>
-										{t('dashboard.overview.futures-markets-table.daily-volume')}
-									</TableHeader>
-								</div>
-							),
-							accessorKey: 'dailyVolume',
-							cell: (cellProps) => {
-								return (
-									<div>
-										<div>
-											<ChangePercent
-												value={cellProps.row.original.priceChange ?? 0}
-												decimals={2}
-												className="change-pct"
-											/>
-										</div>
-										<div>
-											<Currency.Price
-												price={cellProps.row.original.volume ?? 0}
-												formatOptions={{ truncateOver: 1e3 }}
-											/>
-										</div>
-									</div>
-								)
-							},
-							size: 120,
-							enableSorting: true,
-							sortingFn: weiSortingFn('volume'),
-						},
-					]}
-				/>
-			</MobileOrTabletView>
-		</>
+        <TableContainer>
+            <StyledTable
+                data={data}
+                onTableRowClick={(row) => {
+                    router.push(ROUTES.Markets.MarketPair(row.original.asset, accountType))
+                }}
+                highlightRowsOnHover
+                sortBy={sortBy}
+                columns={[
+                    {
+                        header: () => (
+                            <TableHeader>{t('dashboard.overview.futures-markets-table.market')}</TableHeader>
+                        ),
+                        accessorKey: 'market',
+                        cell: (cellProps) => {
+                            return (
+                                <MarketContainer>
+                                    <IconContainer>
+                                        <StyledCurrencyIcon
+                                            currencyKey={MarketKeyByAsset[cellProps.row.original.asset]}
+                                        />
+                                    </IconContainer>
+                                    <StyledText>
+                                        {cellProps.row.original.market}
+                                        <Spacer width={8} />
+                                        <MarketBadge
+                                            currencyKey={cellProps.row.original.asset}
+                                            isFuturesMarketClosed={cellProps.row.original.isSuspended}
+                                            futuresClosureReason={cellProps.row.original.marketClosureReason}
+                                        />
+                                    </StyledText>
+                                    <StyledValue>{cellProps.row.original.description}</StyledValue>
+                                </MarketContainer>
+                            )
+                        },
+                        size: 190,
+                        enableSorting: true,
+                    },
+                    {
+                        id: 'dailyVolume',
+                        header: () => (
+                            <TableHeader>
+                                {t('dashboard.overview.futures-markets-table.daily-volume')}
+                            </TableHeader>
+                        ),
+                        accessorKey: 'dailyVolume',
+                        cell: (cellProps) => {
+                            return (
+                                <Currency.Price
+                                    price={cellProps.row.original.volume}
+                                    formatOptions={{ truncateOver: 1e3 }}
+                                />
+                            )
+                        },
+                        size: 125,
+                        enableSorting: true,
+                        sortingFn: weiSortingFn('volume'),
+                    },
+                    {
+                        header: () => (
+                            <TableHeader>
+                                {t('dashboard.overview.futures-markets-table.mark-price')}
+                            </TableHeader>
+                        ),
+                        accessorKey: 'price',
+                        cell: (cellProps) => {
+                            return (
+                                <ColoredPrice priceChange={cellProps.row.original.priceInfo?.change}>
+                                    {formatDollars(cellProps.row.original.price, {
+                                        suggestDecimalsForAsset: cellProps.row.original.asset,
+                                    })}
+                                </ColoredPrice>
+                            )
+                        },
+                        size: 130,
+                        enableSorting: true,
+                        sortingFn: weiSortingFn('price'),
+                    },
+                    {
+                        header: () => (
+                            <TableHeader>
+                                {t('dashboard.overview.futures-markets-table.daily-change')}
+                            </TableHeader>
+                        ),
+                        accessorKey: 'priceChange',
+                        cell: (cellProps) => {
+                            return (
+                                <ChangePercent
+                                    value={cellProps.row.original.priceChange}
+                                    decimals={2}
+                                    className="change-pct"
+                                />
+                            )
+                        },
+                        size: 105,
+                        enableSorting: true,
+                        sortingFn: weiSortingFn('priceChange'),
+                    },
+                    // {
+                    // 	header: () => (
+                    // 		<TableHeader>
+                    // 			{t('dashboard.overview.futures-markets-table.funding-rate')}
+                    // 		</TableHeader>
+                    // 	),
+                    // 	accessorKey: 'fundingRate',
+                    // 	cell: (cellProps) => {
+                    // 		return (
+                    // 			<ChangePercent
+                    // 				value={cellProps.row.original.fundingRate}
+                    // 				decimals={6}
+                    // 				showArrow={false}
+                    // 				className="change-pct"
+                    // 			/>
+                    // 		)
+                    // 	},
+                    // 	enableSorting: true,
+                    // 	size: 125,
+                    // 	sortingFn: weiSortingFn('fundingRate'),
+                    // },
+                    // {
+                    // 	header: () => (
+                    // 		<TableHeader>
+                    // 			{t('dashboard.overview.futures-markets-table.open-interest')}
+                    // 		</TableHeader>
+                    // 	),
+                    // 	accessorKey: 'openInterest',
+                    // 	cell: (cellProps) => {
+                    // 		return (
+                    // 			<OpenInterestContainer>
+                    // 				<Currency.Price
+                    // 					price={cellProps.row.original.longInterest}
+                    // 					colorType="positive"
+                    // 					formatOptions={{ truncateOver: 1e3 }}
+                    // 				/>
+                    // 				<Currency.Price
+                    // 					price={cellProps.row.original.shortInterest}
+                    // 					colorType="negative"
+                    // 					formatOptions={{ truncateOver: 1e3 }}
+                    // 				/>
+                    // 			</OpenInterestContainer>
+                    // 		)
+                    // 	},
+                    // 	size: 125,
+                    // 	enableSorting: true,
+                    // 	sortingFn: weiSortingFn('openInterest'),
+                    // },
+                ]}
+            />
+        </TableContainer>
 	)
 }
 

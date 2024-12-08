@@ -7,6 +7,7 @@ import { MobileHiddenView, MobileOnlyView } from 'components/Media'
 import Leaderboard from 'sections/leaderboard/Leaderboard'
 import AppLayout from 'sections/shared/Layout/AppLayout'
 import { PageContent, MainContent, FullHeightContainer } from 'styles/common'
+import PortfolioChart from 'sections/dashboard/PortfolioChart'
 
 type LeaderComponent = FC & { getLayout: (page: ReactNode) => JSX.Element }
 
@@ -22,12 +23,14 @@ const Leader: LeaderComponent = () => {
 				<MobileHiddenView>
 					<FullHeightContainer>
 						<MainContent>
+                            <PortfolioChart />
 							<Leaderboard />
 						</MainContent>
 					</FullHeightContainer>
 				</MobileHiddenView>
 				<MobileOnlyView>
 					<MobileMainContent>
+                        <PortfolioChart />
 						<Leaderboard mobile />
 					</MobileMainContent>
 				</MobileOnlyView>

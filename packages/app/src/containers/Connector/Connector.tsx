@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { useAccount, useNetwork, useSigner, useProvider } from 'wagmi'
 
-import { SUPPORTED_NETWORKS } from 'constants/network'
+// import { SUPPORTED_NETWORKS } from 'constants/network'
 import { useAppDispatch } from 'state/hooks'
 import sdk from 'state/sdk'
 import { setSigner } from 'state/wallet/actions'

@@ -22,8 +22,8 @@ type SystemStatusProps = {
 
 const SOCIAL_LINKS = [
 	{
-		id: 'discord',
-		href: EXTERNAL_LINKS.Social.Discord,
+		id: 'e-mail',
+		href: EXTERNAL_LINKS.Social.Email,
 		icon: <DiscordIcon />,
 	},
 	{

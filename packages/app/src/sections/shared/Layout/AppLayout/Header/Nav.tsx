@@ -90,7 +90,7 @@ const Nav: FC = memo(() => {
 						return (
 							<Link key={url} href={url}>
 								<MenuInside isActive={isActive}>
-									{i18nLabel === 'header.nav.markets' ? (
+									{/* {i18nLabel === 'header.nav.markets' ? (
 										<CustomStyledTooltip
 											preset="bottom"
 											width="260px"
@@ -111,7 +111,8 @@ const Nav: FC = memo(() => {
 										</FlexDivRow>
 									) : (
 										t(i18nLabel)
-									)}
+									)} */}
+                                    {t(i18nLabel)}
 								</MenuInside>
 							</Link>
 						)

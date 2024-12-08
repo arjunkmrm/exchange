@@ -39,7 +39,7 @@ export function useAppData(ready: boolean) {
 
 	useEffect(() => {
 		if (ready) {
-			sdk.prices.startPriceUpdates(15000)
+			sdk.prices.startPriceUpdates(1500000)
 		}
 	}, [ready])
 

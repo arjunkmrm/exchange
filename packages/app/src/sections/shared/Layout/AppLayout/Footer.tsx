@@ -19,15 +19,15 @@ const Footer = () => {
 			<OperationStatus />
 			<GitHashID />
 			<RightContainer>
-				<FooterLinkInternal onClick={() => router.push(ROUTES.Stats.Home)}>
+				{/* <FooterLinkInternal onClick={() => router.push(ROUTES.Stats.Home)}>
 					<StatsIcon />
 					<Body color="secondary">Stats</Body>
-				</FooterLinkInternal>
+				</FooterLinkInternal> */}
 				<FooterLink href={EXTERNAL_LINKS.Docs.DocsRoot}>
 					<DocsIcon />
 					<Body color="secondary">Docs</Body>
 				</FooterLink>
-				<FooterLink href={EXTERNAL_LINKS.Social.Discord}>
+				<FooterLink href={EXTERNAL_LINKS.Social.Email}>
 					<SupportIcon />
 					<Body color="secondary">Support</Body>
 				</FooterLink>

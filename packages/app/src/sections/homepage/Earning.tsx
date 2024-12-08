@@ -15,12 +15,12 @@ import { SmallGoldenHeader, WhiteHeader } from 'styles/common'
 import media from 'styles/media'
 
 const EARNINGS = [
-	{
-		id: 'vote-and-govern',
-		title: 'homepage.earning.vote-and-govern.title',
-		copy: 'homepage.earning.vote-and-govern.copy',
-		image: <VoteNGovernIcon />,
-	},
+	// {
+	// 	id: 'vote-and-govern',
+	// 	title: 'homepage.earning.vote-and-govern.title',
+	// 	copy: 'homepage.earning.vote-and-govern.copy',
+	// 	image: <VoteNGovernIcon />,
+	// },
 	{
 		id: 'stake-to-earn',
 		title: 'homepage.earning.stake-and-earn.title',

@@ -133,7 +133,7 @@ const Assets = () => {
 	const pastRates = useAppSelector(selectPreviousDayPrices)
 	const futuresVolumes = useAppSelector(selectMarketVolumes)
 	usePollAction('fetchOptimismMarkets', () => fetchOptimismMarkets(l2Provider), {
-		intervalTime: hoursToMilliseconds(10),
+		intervalTime: hoursToMilliseconds(1),
 	})
 
 	const perps = useMemo(() => {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import styled, { ThemeProvider } from 'styled-components'
 
 import TwitterLogo from 'assets/svg/marketing/twitter-icon.svg'
-import DiscordLogo from 'assets/svg/social/discord.svg'
+import EmailLogo from 'assets/svg/social/email.svg'
 import MirrorLogo from 'assets/svg/social/mirror.svg'
 import { FlexDivCentered } from 'components/layout/flex'
 import PoweredBySynthetix from 'components/PoweredBySynthetix'
@@ -21,83 +21,73 @@ const Footer = memo(() => {
 	const { t } = useTranslation()
 	const DOC_LINKS = [
 		{
-			key: 'about-kwenta',
-			title: t('homepage.footer.about-kwenta.title'),
+			key: 'about-bitly',
+			title: t('homepage.footer.about-bitly.title'),
 			links: [
+                {
+					key: 'website',
+					title: t('homepage.footer.about-bitly.website'),
+					link: EXTERNAL_LINKS.Website.Home,
+				},
 				{
 					key: 'docs',
-					title: t('homepage.footer.about-kwenta.docs'),
+					title: t('homepage.footer.about-bitly.docs'),
 					link: EXTERNAL_LINKS.Docs.DocsRoot,
 				},
 				{
 					key: 'news',
-					title: t('homepage.footer.about-kwenta.news'),
-					link: EXTERNAL_LINKS.Social.Mirror,
+					title: t('homepage.footer.about-bitly.news'),
+					link: EXTERNAL_LINKS.Website.Blogs,
 				},
 				{
 					key: 'faq',
-					title: t('homepage.footer.about-kwenta.faq'),
+					title: t('homepage.footer.about-bitly.faq'),
 					link: EXTERNAL_LINKS.Docs.Faq,
-				},
-				{
-					key: 'dao-roles',
-					title: t('homepage.footer.about-kwenta.dao-roles'),
-					link: EXTERNAL_LINKS.Docs.DaoRoles,
 				},
 			],
 		},
 		{
-			key: 'use-kwenta',
-			title: t('homepage.footer.use-kwenta.title'),
+			key: 'use-bitly',
+			title: t('homepage.footer.use-bitly.title'),
 			links: [
 				{
-					key: 'perps',
-					title: t('homepage.footer.use-kwenta.perps'),
-					link: EXTERNAL_LINKS.Trade.PerpsV2,
-				},
-				{
-					key: 'spot',
-					title: t('homepage.footer.use-kwenta.spot'),
-					link: EXTERNAL_LINKS.Trade.Spot,
+					key: 'trade',
+					title: t('homepage.footer.use-bitly.trade'),
+					link: EXTERNAL_LINKS.Trade.Markets,
 				},
 				{
 					key: 'referrals',
-					title: t('homepage.footer.use-kwenta.referrals'),
+					title: t('homepage.footer.use-bitly.referrals'),
 					link: ROUTES.Referrals.Home,
 				},
-				{
-					key: 'perps-v1',
-					title: t('homepage.footer.use-kwenta.perps-v1'),
-					link: EXTERNAL_LINKS.Trading.PerpsV1,
-				},
 			],
 		},
-		{
-			key: 'community',
-			title: t('homepage.footer.community.title'),
-			links: [
-				{
-					key: 'governance',
-					title: t('homepage.footer.community.governance'),
-					link: EXTERNAL_LINKS.Docs.Governance,
-				},
-				{
-					key: 'dev-dao',
-					title: t('homepage.footer.community.dev-dao'),
-					link: EXTERNAL_LINKS.Docs.DevDao,
-				},
-				{
-					key: 'marketing-dao',
-					title: t('homepage.footer.community.marketing-dao'),
-					link: EXTERNAL_LINKS.Docs.MarketingDao,
-				},
-				{
-					key: 'kips',
-					title: t('homepage.footer.community.kips'),
-					link: EXTERNAL_LINKS.Governance.Kips,
-				},
-			],
-		},
+		// {
+		// 	key: 'more',
+		// 	title: t('homepage.footer.community.title'),
+		// 	links: [
+		// 		{
+		// 			key: 'governance',
+		// 			title: t('homepage.footer.community.governance'),
+		// 			link: EXTERNAL_LINKS.Docs.Governance,
+		// 		},
+		// 		{
+		// 			key: 'dev-dao',
+		// 			title: t('homepage.footer.community.dev-dao'),
+		// 			link: EXTERNAL_LINKS.Docs.DevDao,
+		// 		},
+		// 		{
+		// 			key: 'marketing-dao',
+		// 			title: t('homepage.footer.community.marketing-dao'),
+		// 			link: EXTERNAL_LINKS.Docs.MarketingDao,
+		// 		},
+		// 		{
+		// 			key: 'kips',
+		// 			title: t('homepage.footer.community.kips'),
+		// 			link: EXTERNAL_LINKS.Governance.Kips,
+		// 		},
+		// 	],
+		// },
 	]
 	return (
 		<ThemeProvider theme={themes.dark}>
@@ -108,10 +98,7 @@ const Footer = memo(() => {
 						<ExternalLink href={EXTERNAL_LINKS.Social.Twitter}>
 							<TwitterLogo />
 						</ExternalLink>
-						<ExternalLink href={EXTERNAL_LINKS.Social.Discord}>
-							<DiscordLogo />
-						</ExternalLink>
-						<ExternalLink href={EXTERNAL_LINKS.Social.Mirror}>
+						<ExternalLink href={EXTERNAL_LINKS.Website.Home}>
 							<MirrorLogo />
 						</ExternalLink>
 					</SocialIcons>
@@ -129,7 +116,7 @@ const Footer = memo(() => {
 					))}
 				</MultiListContainer>
 				<PowerContainer>
-					<PoweredBySynthetix />
+					{/* <PoweredBySynthetix /> */}
 					<CopyRight>{t('homepage.footer.copyright')}</CopyRight>
 				</PowerContainer>
 			</StyledGridContainer>
@@ -150,12 +137,10 @@ const StyledLink = styled.a`
 
 const CopyRight = styled.div`
 	font-size: 12px;
-	text-align: right;
-	letter-spacing: 0.04em;
+	text-align: center;
 	text-transform: uppercase;
 	color: ${(props) => props.theme.colors.common.primaryWhite};
 	opacity: 0.5;
-	margin-right: 20px;
 	padding-top: 10px;
 	${media.lessThan('sm')`
 		margin-right: 0px;

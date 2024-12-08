@@ -16,13 +16,13 @@ const Links: FC<LinksProps> = ({ isMobile }) => (
 		<a href={EXTERNAL_LINKS.Social.Twitter} target="_blank" rel="noreferrer">
 			<TwitterIcon />
 		</a>
-		<a href={EXTERNAL_LINKS.Social.Discord} target="_blank" rel="noreferrer">
+		<a href={EXTERNAL_LINKS.Social.Email} target="_blank" rel="noreferrer">
 			<DiscordIcon />
 		</a>
 		<a href={EXTERNAL_LINKS.Docs.DocsRoot} target="_blank" rel="noreferrer">
 			<GitbookIcon />
 		</a>
-		<a href={EXTERNAL_LINKS.Social.Mirror} target="_blank" rel="noreferrer">
+		<a href={EXTERNAL_LINKS.Website.Home} target="_blank" rel="noreferrer">
 			<MirrorIcon />
 		</a>
 	</LinkContainer>

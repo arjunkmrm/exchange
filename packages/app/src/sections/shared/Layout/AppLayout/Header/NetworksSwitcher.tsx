@@ -1,5 +1,5 @@
 import { useChainModal } from '@rainbow-me/rainbowkit'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
@@ -18,8 +18,8 @@ import { IndicatorSeparator, DropdownIndicator } from 'components/Select'
 import { EXTERNAL_LINKS } from 'constants/links'
 import Connector from 'containers/Connector'
 import { blockExplorer } from 'containers/Connector/Connector'
-import useIsL2 from 'hooks/useIsL2'
 import { ExternalLink } from 'styles/common'
+import { chains } from 'containers/Connector/config'
 
 type ReactSelectOptionProps = {
 	label: string
@@ -37,34 +37,11 @@ const NetworksSwitcher: FC<NetworksSwitcherProps> = ({ mobile }) => {
 	const { activeChain } = Connector.useContainer()
 	const { t } = useTranslation()
 	const { openChainModal } = useChainModal()
-	const isL2 = useIsL2()
-
-	const OPTIMISM_OPTIONS = [
-		{
-			label: 'header.networks-switcher.chains',
-			postfixIcon: 'Switch',
-			onClick: openChainModal,
-		},
-		{
-			label: 'header.networks-switcher.optimistic-gateway',
-			postfixIcon: 'Link',
-			link: 'https://gateway.optimism.io/',
-		},
-		{
-			label: 'header.networks-switcher.optimistic-etherscan',
-			postfixIcon: 'Link',
-			link: blockExplorer.baseLink,
-		},
-		{
-			label: 'header.networks-switcher.learn-more',
-			postfixIcon: 'Link',
-			link: EXTERNAL_LINKS.Docs.DocsRoot,
-		},
-	]
+    const [ icon, setIcon ] = useState(<img src={EthereumIcon}></img>);
 
 	const networkIcon = (prefixIcon: string) => {
 		switch (prefixIcon) {
-			case 'Polygon':
+			case 'Garnet':
 				return <PolygonIcon width={24} height={16} />
 			case 'Arbitrum One':
 				return <ArbitrumIcon width={24} height={16} />
@@ -79,44 +56,24 @@ const NetworksSwitcher: FC<NetworksSwitcherProps> = ({ mobile }) => {
 		}
 	}
 
-	const formatOptionLabel = ({
-		label,
-		prefixIcon,
-		postfixIcon,
-		link,
-		onClick,
-	}: ReactSelectOptionProps) => (
-		<ExternalLink href={link} onClick={onClick}>
-			<LabelContainer noPadding={!!prefixIcon}>
-				{!!prefixIcon && activeChain && <PrefixIcon>{networkIcon(activeChain.name)}</PrefixIcon>}
-				{t(label)}
-				{postfixIcon &&
-					(postfixIcon === 'Link' ? <LinkIcon width={14} height={14} /> : <SwitchIcon />)}
-			</LabelContainer>
-		</ExternalLink>
-	)
+    useEffect(()=>{
+        const currentChain = chains.filter(chain=>chain.id==activeChain?.id)?.[0];
+        if (currentChain) {
+            const iconFunc = currentChain.iconUrl as ()=>Promise<string>;
+            iconFunc().then(icon=>{
+                setIcon(<img width={20} height={20} src={icon as string}></img>);
+            });
+        }
+    }, [activeChain]);
 
-	return !isL2 || mobile ? (
+	return (
 		<Container onClick={openChainModal} $mobile={mobile}>
 			<StyledButton noOutline size="small" mono>
-				{activeChain && networkIcon(activeChain.name)}
+				{/* {activeChain && networkIcon(activeChain.name)} */}
+                {activeChain && icon}
 			</StyledButton>
 		</Container>
-	) : (
-		<div>
-			<L2Select
-				formatOptionLabel={formatOptionLabel}
-				controlHeight={41}
-				options={OPTIMISM_OPTIONS}
-				value={{ label: '', prefixIcon: 'Optimism' }}
-				menuWidth={240}
-				optionPadding="0px"
-				components={{ IndicatorSeparator, DropdownIndicator }}
-				isSearchable={false}
-				variant="flat"
-			/>
-		</div>
-	)
+	);
 }
 
 export default NetworksSwitcher

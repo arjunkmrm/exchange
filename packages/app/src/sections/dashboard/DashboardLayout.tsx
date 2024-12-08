@@ -107,7 +107,7 @@ const DashboardLayout: FC<{ children?: ReactNode }> = ({ children }) => {
 				<PageContent>
 					<StyledFullHeightContainer>
 						<StyledLeftSideContent>
-							<StyledTabList>
+							{/* <StyledTabList>
 								<TabGroupTitle>{t('dashboard.titles.trading')}</TabGroupTitle>
 								{visibleTabs.slice(0, 3).map(({ name, label, active, ...rest }) => (
 									<NavLink key={name} title={label} isActive={active} {...rest} />
@@ -118,7 +118,7 @@ const DashboardLayout: FC<{ children?: ReactNode }> = ({ children }) => {
 									<NavLink key={name} title={label} isActive={active} {...rest} />
 								))}
 							</StyledTabList>
-							<Links />
+							<Links /> */}
 						</StyledLeftSideContent>
 						<MainContent>
 							<TabPanel name={activeTab} activeTab={activeTab}>

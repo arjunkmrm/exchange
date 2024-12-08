@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { FlexDivColCentered } from 'components/layout/flex'
 import * as Text from 'components/Text'
+import { DEFAULT_FUTURES_MARGIN_TYPE } from 'constants/defaults'
 import ROUTES from 'constants/routes'
 import RefButton from 'sections/shared/components/RefButton'
 import { SmallGoldenHeader, WhiteHeader } from 'styles/common'
@@ -21,7 +22,7 @@ const TradeNow = () => {
 					<BigWhiteHeader>{t('homepage.tradenow.description')}</BigWhiteHeader>
 					<GrayDescription>{t('homepage.tradenow.categories')}</GrayDescription>
 					<CTAContainer>
-						<Link href={ROUTES.Markets.Home()}>
+						<Link href={ROUTES.Markets.Home(DEFAULT_FUTURES_MARGIN_TYPE)}>
 							<RefButton variant="flat" textColor="yellow" size="medium">
 								{t('homepage.nav.trade-now')}
 							</RefButton>

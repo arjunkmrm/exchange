@@ -6,13 +6,7 @@ import { chain } from 'containers/Connector/config'
 
 const useIsL2 = () => {
 	const { activeChain } = Connector.useContainer()
-	const isL2 = useMemo(
-		() =>
-			notNill(activeChain)
-				? [chain.optimism.id, chain.optimismGoerli.id].includes(activeChain.id as 10 | 420)
-				: false,
-		[activeChain]
-	)
+	const isL2 = false;
 	return isL2
 }
 
