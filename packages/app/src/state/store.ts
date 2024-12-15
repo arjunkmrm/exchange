@@ -1,4 +1,4 @@
-import KwentaSDK from '@kwenta/sdk'
+import BitlySDK from '@kwenta/sdk'
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit'
 import type { AnyAction, ThunkAction } from '@reduxjs/toolkit'
 import logger from 'redux-logger'
@@ -86,12 +86,12 @@ export type AppStore = typeof store
 export type ThunkConfig = {
 	dispatch: AppDispatch
 	state: RootState
-	extra: { sdk: KwentaSDK }
+	extra: { sdk: BitlySDK }
 }
 export type AppThunk<ReturnType = void> = ThunkAction<
 	ReturnType,
 	RootState,
-	{ sdk: KwentaSDK },
+	{ sdk: BitlySDK },
 	AnyAction
 >
 

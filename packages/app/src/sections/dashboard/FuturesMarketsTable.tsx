@@ -21,11 +21,12 @@ import Spacer from 'components/Spacer'
 import Table, { TableHeader } from 'components/Table'
 import ROUTES from 'constants/routes'
 import { selectFuturesType } from 'state/futures/common/selectors'
-import { selectMarkets, selectMarketVolumes, selectMarkPrices } from 'state/futures/selectors'
+import { selectMarketVolumes, selectMarkPrices } from 'state/futures/selectors'
 import { useAppSelector } from 'state/hooks'
-import { selectPreviousDayPrices, selectOffchainPricesInfo } from 'state/prices/selectors'
+import { selectPreviousDayPrices, selectOnChainPricesInfo } from 'state/prices/selectors'
 import { getSynthDescription } from 'utils/futures'
 import { weiSortingFn } from 'utils/table'
+import { selectMarkPricesV2, selectV2Markets } from 'state/futures/smartMargin/selectors'
 
 type FuturesMarketsTableProps = {
 	search?: string
@@ -37,12 +38,11 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
 	const { t } = useTranslation()
 	const router = useRouter()
 
-	const futuresMarkets = useAppSelector(selectMarkets)
+	const futuresMarkets = useAppSelector(selectV2Markets)
 	const pastRates = useAppSelector(selectPreviousDayPrices)
 	const futuresVolumes = useAppSelector(selectMarketVolumes)
-	const accountType = useAppSelector(selectFuturesType)
-	const pricesInfo = useAppSelector(selectOffchainPricesInfo)
-	const markPrices = useAppSelector(selectMarkPrices)
+	const pricesInfo = useAppSelector(selectOnChainPricesInfo)
+	const markPrices = useAppSelector(selectMarkPricesV2)
 
 	let data = useMemo(() => {
 		const lowerSearch = search?.toLowerCase()
@@ -74,14 +74,6 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
 					pastPrice?.rate && marketPrice.gt(0)
 						? marketPrice.sub(pastPrice?.rate).div(marketPrice)
 						: wei(0),
-				fundingRate: market.currentFundingRate ?? null,
-				openInterest: market.marketSize.mul(marketPrice),
-				openInterestNative: market.marketSize,
-				longInterest: market.openInterest.longUSD,
-				shortInterest: market.openInterest.shortUSD,
-				marketSkew: market.marketSkew,
-				isSuspended: market.isSuspended,
-				marketClosureReason: market.marketClosureReason,
 			}
 		})
 	}, [search, futuresMarkets, t, futuresVolumes, pricesInfo, pastRates, markPrices])
@@ -91,7 +83,7 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
             <StyledTable
                 data={data}
                 onTableRowClick={(row) => {
-                    router.push(ROUTES.Markets.MarketPair(row.original.asset, accountType))
+                    router.push(ROUTES.Markets.MarketPair(row.original.asset))
                 }}
                 highlightRowsOnHover
                 sortBy={sortBy}
@@ -110,12 +102,12 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
                                         />
                                     </IconContainer>
                                     <StyledText>
-                                        {cellProps.row.original.market}
+                                        {"www"}
                                         <Spacer width={8} />
                                         <MarketBadge
                                             currencyKey={cellProps.row.original.asset}
-                                            isFuturesMarketClosed={cellProps.row.original.isSuspended}
-                                            futuresClosureReason={cellProps.row.original.marketClosureReason}
+                                            isFuturesMarketClosed={false}
+                                            futuresClosureReason={undefined}
                                         />
                                     </StyledText>
                                     <StyledValue>{cellProps.row.original.description}</StyledValue>
@@ -185,54 +177,6 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
                         enableSorting: true,
                         sortingFn: weiSortingFn('priceChange'),
                     },
-                    // {
-                    // 	header: () => (
-                    // 		<TableHeader>
-                    // 			{t('dashboard.overview.futures-markets-table.funding-rate')}
-                    // 		</TableHeader>
-                    // 	),
-                    // 	accessorKey: 'fundingRate',
-                    // 	cell: (cellProps) => {
-                    // 		return (
-                    // 			<ChangePercent
-                    // 				value={cellProps.row.original.fundingRate}
-                    // 				decimals={6}
-                    // 				showArrow={false}
-                    // 				className="change-pct"
-                    // 			/>
-                    // 		)
-                    // 	},
-                    // 	enableSorting: true,
-                    // 	size: 125,
-                    // 	sortingFn: weiSortingFn('fundingRate'),
-                    // },
-                    // {
-                    // 	header: () => (
-                    // 		<TableHeader>
-                    // 			{t('dashboard.overview.futures-markets-table.open-interest')}
-                    // 		</TableHeader>
-                    // 	),
-                    // 	accessorKey: 'openInterest',
-                    // 	cell: (cellProps) => {
-                    // 		return (
-                    // 			<OpenInterestContainer>
-                    // 				<Currency.Price
-                    // 					price={cellProps.row.original.longInterest}
-                    // 					colorType="positive"
-                    // 					formatOptions={{ truncateOver: 1e3 }}
-                    // 				/>
-                    // 				<Currency.Price
-                    // 					price={cellProps.row.original.shortInterest}
-                    // 					colorType="negative"
-                    // 					formatOptions={{ truncateOver: 1e3 }}
-                    // 				/>
-                    // 			</OpenInterestContainer>
-                    // 		)
-                    // 	},
-                    // 	size: 125,
-                    // 	enableSorting: true,
-                    // 	sortingFn: weiSortingFn('openInterest'),
-                    // },
                 ]}
             />
         </TableContainer>

@@ -1,27 +1,18 @@
 {
-	"name": "kwenta",
-	"version": "7.9.9",
-	"description": "Kwenta",
+	"name": "bitly",
+	"version": "0.0.0",
+	"description": "Bitly",
 	"main": "index.js",
 	"scripts": {
-		"check-types": "pnpm run --filter \"@kwenta/*\" check-types",
+		"check-types": "pnpm run --filter \"@bitly/*\" check-types",
 		"prepare": "husky install",
 		"format": "prettier --write \"**/*.{ts,tsx}\"",
 		"lint": "eslint . --ext ts,.tsx && pnpm check-types",
 		"lint:fix": "eslint packages --ext ts,.tsx --fix",
-		"dev": "pnpm run --filter \"@kwenta/*\" --stream --parallel dev"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Kwenta/kwenta.git"
+		"dev": "pnpm run --filter \"@bitly/*\" --stream --parallel dev"
 	},
 	"keywords": [],
 	"author": "",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/Kwenta/kwenta/issues"
-	},
-	"homepage": "https://github.com/Kwenta/kwenta#readme",
 	"husky": {
 		"hooks": {
 			"pre-commit": "pnpm lint"

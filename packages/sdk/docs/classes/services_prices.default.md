@@ -119,7 +119,7 @@ Get offchain price for a given market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK();
+const sdk = new BitlySDK();
 const price = sdk.prices.getOffchainPrice(FuturesMarketKey.sBTCPERP);
 console.log(price);
 ```
@@ -302,7 +302,7 @@ Start polling pyth price updates
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK();
+const sdk = new BitlySDK();
 await sdk.prices.startPriceUpdates(10000);
 ```
 

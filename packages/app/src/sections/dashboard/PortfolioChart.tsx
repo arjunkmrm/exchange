@@ -36,10 +36,10 @@ const ChartCTA = () => {
 	const { t } = useTranslation()
 	return (
 		<CTAContainer>
-			<Logo />
+			<Logo height={32} width={32} />
 			<Heading variant="h3">{t('dashboard.overview.portfolio-chart.welcome')}</Heading>
 			<Body color={'secondary'}>{t('dashboard.overview.portfolio-chart.hero')}</Body>
-			<Link href={ROUTES.Markets.Home(DEFAULT_FUTURES_MARGIN_TYPE)}>
+			<Link href={ROUTES.Dashboard.Markets}>
 				<Button variant="flat" size="medium">
 					{t('homepage.nav.trade-now')}
 				</Button>
@@ -51,12 +51,11 @@ const ChartCTA = () => {
 const PriceChart: FC<PriceChartProps> = ({ setHoverValue, setHoverTitle }) => {
 	const theme = useTheme()
 	const portfolioTimeframe = useAppSelector(selectSelectedPortfolioTimeframe)
-	const accountType = useAppSelector(selectFuturesType)
 	const portfolioChartData = useAppSelector(selectPortfolioChartData)
 
 	const portfolioData = useMemo(
-		() => portfolioChartData[accountType],
-		[portfolioChartData, accountType]
+		() => portfolioChartData['smart_margin'],
+		[portfolioChartData]
 	)
 
 	const lineColor = useMemo(() => {
@@ -110,9 +109,7 @@ const PriceChart: FC<PriceChartProps> = ({ setHoverValue, setHoverTitle }) => {
 					align="left"
 					formatter={(value) =>
 						value === 'total'
-							? accountType === 'cross_margin'
-								? 'Cross Margin'
-								: 'Smart Margin'
+							? 'Smart Margin'
 							: value
 					}
 				/>
@@ -130,25 +127,15 @@ const PriceChart: FC<PriceChartProps> = ({ setHoverValue, setHoverTitle }) => {
 
 const PortfolioChart: FC = () => {
 	const { t } = useTranslation()
-	const { crossMargin: crossTotal, smartMargin: smartTotal } =
+	const { total } =
 		useAppSelector(selectFuturesPortfolio)
-	const accountType = useAppSelector(selectFuturesType)
-	const { cross_margin: crossPortfolioData, smart_margin: smartPortfolioData } =
+	const { smart_margin: portfolioData } =
 		useAppSelector(selectPortfolioChartData)
 
 	const upnl = useAppSelector(selectTotalUnrealizedPnl)
 
 	const [hoverValue, setHoverValue] = useState<number | null>(null)
 	const [hoverTitle, setHoverTitle] = useState<string | null>(null)
-
-	const total = useMemo(
-		() => (accountType === 'cross_margin' ? crossTotal : smartTotal),
-		[accountType, crossTotal, smartTotal]
-	)
-
-	const portfolioData = useMemo(() => {
-		return accountType === 'cross_margin' ? crossPortfolioData : smartPortfolioData
-	}, [accountType, crossPortfolioData, smartPortfolioData])
 
 	const changeValue = useMemo(() => {
 		if (portfolioData.length < 2) {

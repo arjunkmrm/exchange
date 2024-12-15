@@ -1,4 +1,3 @@
-import { NetworkId } from '@kwenta/sdk/types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { useAccount, useNetwork, useSigner, useProvider } from 'wagmi'
@@ -9,10 +8,10 @@ import sdk from 'state/sdk'
 import { setSigner } from 'state/wallet/actions'
 import { setNetwork } from 'state/wallet/reducer'
 
-import { generateExplorerFunctions } from './blockExplorer';
+import { generateExplorerFunctions } from './blockExplorer'
 import { DEFAULT_NETWORK_ID } from 'constants/defaults'
 
-export let blockExplorer = generateExplorerFunctions(DEFAULT_NETWORK_ID);
+export let blockExplorer = generateExplorerFunctions(DEFAULT_NETWORK_ID)
 
 const useConnector = () => {
 	const dispatch = useAppDispatch()
@@ -34,9 +33,9 @@ const useConnector = () => {
 	const { data: signer } = useSigner()
 
 	const handleNetworkChange = useCallback(
-		(networkId: NetworkId) => {
+		(networkId: number) => {
 			dispatch(setNetwork(networkId))
-			blockExplorer = generateExplorerFunctions(networkId);
+			blockExplorer = generateExplorerFunctions(networkId)
 		},
 		[dispatch]
 	)

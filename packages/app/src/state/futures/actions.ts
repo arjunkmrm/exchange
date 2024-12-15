@@ -48,11 +48,11 @@ import {
 export const fetchMarkets = createAsyncThunk<void, void, ThunkConfig>(
 	'futures/fetchMarkets',
 	async (_, { dispatch, getState }) => {
-		if (getState().futures.selectedType === FuturesMarginType.SMART_MARGIN) {
+		// if (getState().futures.selectedType === FuturesMarginType.SMART_MARGIN) {
 			dispatch(fetchMarketsV2())
-		} else {
-			dispatch(fetchV3Markets())
-		}
+		// } else {
+		// 	dispatch(fetchV3Markets())
+		// }
 	}
 )
 

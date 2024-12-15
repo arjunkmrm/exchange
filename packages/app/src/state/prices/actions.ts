@@ -31,7 +31,7 @@ export const fetchPreviousDayPrices = createAsyncThunk<
 
 		const laggedPrices = await sdk.prices.getPreviousDayPrices(
 			marketAssets,
-			mainnet ? 10 : undefined
+			undefined
 		)
 
 		return laggedPrices

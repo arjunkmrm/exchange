@@ -1,0 +1,358 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "tinyAmountThresh",
+        "type": "uint128"
+      },
+      {
+        "internalType": "address",
+        "name": "bank",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "pairContract",
+        "type": "address"
+      }
+    ],
+    "name": "PairListed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "TokenListed",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "marketName",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "pair",
+        "type": "address"
+      }
+    ],
+    "name": "addPairToMarket",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "createMarket",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "marketName",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "deletePairFromMarket",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenX",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "tokenY",
+        "type": "address"
+      },
+      {
+        "internalType": "int24",
+        "name": "pointMargin",
+        "type": "int24"
+      }
+    ],
+    "name": "listPair",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "pairContract",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "url",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "logo",
+        "type": "string"
+      }
+    ],
+    "name": "listToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "url",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "logo",
+        "type": "string"
+      }
+    ],
+    "name": "modifyTokenInfo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "marketName",
+        "type": "string"
+      }
+    ],
+    "name": "pairs",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "pair",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenX",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenY",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct BitlyExchange.PairInfo[]",
+        "name": "pairs",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "takeTokenOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "tokenInfo",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "url",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "logo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "decimals",
+        "type": "uint8"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "pair",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenX",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenY",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct BitlyExchange.PairInfo[]",
+        "name": "pairs",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokens",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "listedTokens",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

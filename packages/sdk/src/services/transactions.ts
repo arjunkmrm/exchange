@@ -1,22 +1,21 @@
-import { getContractFactory, predeploys } from '@eth-optimism/contracts'
-import { BigNumber } from '@ethersproject/bignumber'
-import { wei } from '@synthetixio/wei'
-import { TypedDataDomain, TypedDataField, ethers } from 'ethers'
-import { omit, clone } from 'lodash'
-
-import KwentaSDK from '..'
-import * as sdkErrors from '../common/errors'
-import { getEthGasPrice } from '../common/gas'
-import { TRANSACTION_EVENTS_MAP } from '../constants/transactions'
-import { ContractName } from '../contracts'
-import { NetworkIdByName } from '../types/common'
-import { Emitter } from '../types/transactions'
-import { createEmitter, getRevertReason } from '../utils/transactions'
-import { TransactionRequest } from '@ethersproject/providers'
+import { getContractFactory, predeploys } from '@eth-optimism/contracts';
+import { BigNumber } from '@ethersproject/bignumber';
+import { wei } from '@synthetixio/wei';
+import { TypedDataDomain, TypedDataField, ethers } from 'ethers';
+import { omit, clone } from 'lodash';
+;
+import BitlySDK from '..';
+import * as sdkErrors from '../common/errors';
+import { getEthGasPrice } from '../common/gas';
+import { TRANSACTION_EVENTS_MAP } from '../constants/transactions';
+import { ContractName } from '../contracts';
+import { Emitter } from '../types/transactions';
+import { createEmitter, getRevertReason } from '../utils/transactions';
+import { TransactionRequest } from '@ethersproject/providers';
 
 const OVMGasPriceOracle = getContractFactory('OVM_GasPriceOracle').attach(
 	predeploys.OVM_GasPriceOracle
-)
+);
 
 const contractAbi = JSON.parse(
 	OVMGasPriceOracle.interface.format(ethers.utils.FormatTypes.json) as string
@@ -25,13 +24,12 @@ const contractAbi = JSON.parse(
 const DEFAULT_GAS_BUFFER = 0.2
 
 export default class TransactionsService {
-	private sdk: KwentaSDK
+	private sdk: BitlySDK
 
-	constructor(sdk: KwentaSDK) {
+	constructor(sdk: BitlySDK) {
 		this.sdk = sdk
 	}
 
-	// Copied over from: https://github.com/Synthetixio/js-monorepo
 	hash(transactionHash: string): Emitter {
 		const emitter = createEmitter()
 		setTimeout(() => this.watchTransaction(transactionHash, emitter), 5)
@@ -125,22 +123,6 @@ export default class TransactionsService {
 		return txnData
 	}
 
-	public createSynthetixTxn(
-		contractName: ContractName,
-		method: string,
-		args: any[],
-		txnOptions: Partial<ethers.providers.TransactionRequest> = {},
-		options?: any
-	) {
-		const contract = this.sdk.context.contracts[contractName]
-
-		if (!contract) {
-			throw new Error(sdkErrors.UNSUPPORTED_NETWORK)
-		}
-
-		return this.createContractTxn(contract, method, args, txnOptions, options)
-	}
-
 	public async estimateGas(txn: ethers.providers.TransactionRequest) {
 		return this.sdk.context.signer.estimateGas(
 			omit(txn, ['gasPrice', 'maxPriorityFeePerGas', 'maxFeePerGas'])
@@ -149,15 +131,6 @@ export default class TransactionsService {
 
 	public async getOptimismLayerOneFees(txn?: ethers.providers.TransactionRequest) {
 		if (!txn || !this.sdk.context.signer) return null
-
-		const isNotOvm =
-			this.sdk.context.networkId !== NetworkIdByName['mainnet-ovm'] &&
-			this.sdk.context.networkId !== NetworkIdByName['kovan-ovm'] &&
-			this.sdk.context.networkId !== NetworkIdByName['goerli-ovm']
-
-		if (isNotOvm) {
-			return null
-		}
 
 		const OptimismGasPriceOracleContract = new ethers.Contract(
 			OVMGasPriceOracle.address,

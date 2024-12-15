@@ -1,4 +1,4 @@
-import KwentaSDK from '@kwenta/sdk'
+import BitlySDK from '@kwenta/sdk'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { notifyError } from 'components/ErrorNotifier'
@@ -8,7 +8,7 @@ import logError from 'utils/logError'
 import { selectLeaderboardSearchTerm } from './selectors'
 
 export const fetchLeaderboard = createAsyncThunk<
-	Awaited<ReturnType<KwentaSDK['stats']['getLeaderboard']>>,
+	Awaited<ReturnType<BitlySDK['stats']['getLeaderboard']>>,
 	void,
 	ThunkConfig
 >('stats/fetchLeaderboard', async (_, { getState, extra: { sdk } }) => {

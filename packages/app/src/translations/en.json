@@ -427,7 +427,7 @@
 			},
 			"portfolio-chart": {
 				"welcome": "Welcome to Bitly",
-				"hero": "Gain exposure to a variety of assets with up to 50x leverage and deep liquidity",
+				"hero": "",
 				"portfolio-value": "Portfolio Value",
 				"buying-power": "Total Buying Power",
 				"upnl": "Unrealized PnL"
@@ -1233,9 +1233,9 @@
 			}
 		}
 	},
-	"leaderboard": {
+	"wallet": {
 		"page-title": "Wallet | Bitly Token Exchange",
-		"leaderboard": {
+		"wallet": {
 			"table": {
 				"title": "{{ activeTab }} Traders",
 				"rank": "Rank",

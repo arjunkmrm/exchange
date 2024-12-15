@@ -6,7 +6,7 @@ import { Language } from 'translations/constants'
 export const DEFAULT_LANGUAGE: Language = Language.EN
 
 // network defaults
-export const DEFAULT_NETWORK_ID = 10
+export const DEFAULT_NETWORK_ID = 1
 
 export const DEFAULT_GAS_BUFFER = 5000
 export const DEFAULT_GAS_LIMIT = 500000

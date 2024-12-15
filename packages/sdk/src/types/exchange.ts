@@ -1,28 +1,45 @@
-import Wei from '@synthetixio/wei'
-import { SynthSymbol } from '../data'
+import { BigNumber } from 'ethers';
+import { UnwrapPromise } from '../common/type';
+import {BitlyExchange, ERC20, TokenExchange} from '../contracts/typechain-types';
 
-export type PriceResponse = Record<string, { usd: number; usd_24h_change: number }>
+export type TokenInfoType = UnwrapPromise<ReturnType<BitlyExchange['tokenInfo']>>;
+export type TokenInfoTypeWithAddress = UnwrapPromise<ReturnType<BitlyExchange['tokenInfo']>> & {address: string};
 
-export type Rates = Record<string, Wei>
+export type PairTotalVolumeType = UnwrapPromise<ReturnType<TokenExchange['totalVolume']>>;
 
-export type SynthExchange = {
-	id: string
-	fromAmount: string
-	fromAmountInUSD: string
-	fromSynth: {
-		name: string
-		symbol: SynthSymbol
-		id: string
-	}
-	toSynth: {
-		name: string
-		symbol: SynthSymbol
-		id: string
-	}
-	toAmount: string
-	toAmountInUSD: string
-	feesInUSD: string
-	toAddress: string
-	timestamp: string
-	gasPrice: string
-}
+export type MarketsVolumes = {
+    [market: string]: BigNumber;
+};
+
+export type ExchangePairsType = UnwrapPromise<ReturnType<BitlyExchange['pairs']>>;
+
+export type ExchangeMarketType = {
+    marketAddress: string;
+    displayName: string;
+    tokenX: TokenInfoTypeWithAddress;
+    tokenY: TokenInfoTypeWithAddress;
+};
+
+export type PairLimitOrdersType = UnwrapPromise<ReturnType<TokenExchange['limitOrders']>>;
+
+export type PairEarningsType = UnwrapPromise<ReturnType<TokenExchange['queryEarning']>>;
+
+export type PairEarningsTypeWithOrderInfo = PairLimitOrdersType & {
+    sold: number,
+    earned: number,
+    selling: number
+    direction: OrderDirection
+};
+
+export type ExchangeOrderDetails = {
+    [market: string]: PairEarningsTypeWithOrderInfo[];
+};
+
+export type BalanceType = UnwrapPromise<ReturnType<ERC20['balanceOf']>>;
+
+export enum OrderDirection {
+    buy = 'BUY',
+    sell = 'SELL'
+};
+
+export type MarketEventSignature = keyof TokenExchange['filters'];

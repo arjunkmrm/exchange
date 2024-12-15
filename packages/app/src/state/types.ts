@@ -1,4 +1,4 @@
-import type KwentaSDK from '@kwenta/sdk'
+import type BitlySDK from '@kwenta/sdk'
 
 import type { AppDispatch, RootState } from './store'
 
@@ -17,5 +17,5 @@ export type QueryStatus = {
 export type ThunkConfig = {
 	dispatch: AppDispatch
 	state: RootState
-	extra: { sdk: KwentaSDK }
+	extra: { sdk: BitlySDK }
 }

@@ -26,10 +26,10 @@ export const EXTERNAL_LINKS = {
 		Email: 'mailto:bitly.dex@gmail.com',
 		GitHub: 'https://github.com/BitlyExchange',
 	},
-    Website: {
-        Home: 'https://bitly.exchange',
-        Blogs: 'https://bitly.exchange/blog'
-    },
+	Website: {
+		Home: 'https://bitly.exchange',
+		Blogs: 'https://bitly.exchange/blog',
+	},
 	TokenLists: {
 		Zapper: 'https://zapper.fi/api/token-list',
 	},

@@ -22,7 +22,7 @@ const TradeNow = () => {
 					<BigWhiteHeader>{t('homepage.tradenow.description')}</BigWhiteHeader>
 					<GrayDescription>{t('homepage.tradenow.categories')}</GrayDescription>
 					<CTAContainer>
-						<Link href={ROUTES.Markets.Home(DEFAULT_FUTURES_MARGIN_TYPE)}>
+						<Link href={ROUTES.Dashboard.Markets}>
 							<RefButton variant="flat" textColor="yellow" size="medium">
 								{t('homepage.nav.trade-now')}
 							</RefButton>

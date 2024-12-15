@@ -1,0 +1,128 @@
+import { CallOverrides } from "ethcall/lib/call";
+import BitlySDK from "..";
+import { UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT } from "../common/errors";
+import { 
+    BankFuncNames, 
+    BTLYFuncNames, 
+    ERC20FuncNames, 
+    ExchangeFuncNames, 
+    getPairContract, 
+    getPairContractMulticall, 
+    getTokenContract, 
+    getTokenContractMulticall, 
+    PairFuncNames 
+} from "../contracts";
+import { MultiCallArgs, SingleCallArgs } from "../types/common";
+
+export async function ERC20ReadContracts(
+    sdk: BitlySDK, addresses: string[], funcNames: ERC20FuncNames[], args: MultiCallArgs = [[]], 
+    override?: CallOverrides | undefined
+): Promise<any[]> {
+    const calls = [];
+    for (const address of addresses) {
+        for (const funcName of funcNames) {
+            for (const arg of args) {
+                const func = getTokenContractMulticall(address)[funcName];
+                calls.push(func(...arg));
+            }
+        }
+    }
+
+    return await sdk.context.multicallProvider.all(calls, override);
+}
+
+export async function ERC20WriteContract(sdk: BitlySDK, token: string, funcName: ERC20FuncNames, 
+    arg: SingleCallArgs = []
+) {
+    const func = getTokenContract(token, sdk.context.provider)[funcName] as any;
+    return await func(...arg);
+}
+
+export async function ExchangeReadContracts(sdk: BitlySDK, funcNames: ExchangeFuncNames[], args: MultiCallArgs = [[]], 
+    override?: CallOverrides | undefined
+): Promise<any[]> {
+    const calls = [];
+    for (const funcName of funcNames) {
+        for (const arg of args) {
+            const func = sdk.context.multicallContracts?.Exchange?.[funcName];
+            calls.push(func(...arg));
+        }
+    }
+
+    return await sdk.context.multicallProvider.all(calls, override);
+}
+
+export async function ExchangeWriteContract(sdk: BitlySDK, funcName: ExchangeFuncNames, arg: SingleCallArgs = []) {
+    const func = sdk.context.contracts?.Exchange?.[funcName] as any;
+    if (!func) {
+        throw new Error(UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT);
+    }
+    return await func(...arg);
+}
+
+export async function PairReadContracts(sdk: BitlySDK, addresses: string[], funcNames: PairFuncNames[], 
+    args: MultiCallArgs = [[]], override?: CallOverrides | undefined
+): Promise<any[]> {
+    const calls = [];
+    for (const address of addresses) {
+        for (const funcName of funcNames) {
+            for (const arg of args) {
+                const func = getPairContractMulticall(address)[funcName];
+                calls.push(func(...arg));
+            }
+        }
+    }
+
+    return await sdk.context.multicallProvider.all(calls, override);
+}
+
+export async function PairWriteContract(sdk: BitlySDK, market: string, funcName: PairFuncNames, 
+    arg: SingleCallArgs = []
+) {
+    const func = getPairContract(market, sdk.context.provider)[funcName] as any;
+    return await func(...arg);
+}
+
+export async function BankReadContracts(sdk: BitlySDK, funcNames: BankFuncNames[], args: MultiCallArgs = [[]], 
+    override?: CallOverrides | undefined
+): Promise<any[]> {
+    const calls = [];
+    for (const funcName of funcNames) {
+        for (const arg of args) {
+            const func = sdk.context.multicallContracts?.BitlyBank?.[funcName];
+            calls.push(func(...arg));
+        }
+    }
+
+    return await sdk.context.multicallProvider.all(calls, override);
+}
+
+export async function BankWriteContract(sdk: BitlySDK, funcName: BankFuncNames, arg: SingleCallArgs = []) {
+    const func = sdk.context.contracts?.BitlyBank?.[funcName] as any;
+    if (!func) {
+        throw new Error(UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT);
+    }
+    return await func(...arg);
+}
+
+export async function BTLYReadContracts(sdk: BitlySDK, funcNames: BTLYFuncNames[], args: MultiCallArgs = [[]], 
+    override?: CallOverrides | undefined
+): Promise<any[]> {
+    const calls = [];
+    for (const funcName of funcNames) {
+        for (const arg of args) {
+            const func = sdk.context.multicallContracts?.BTLYToken?.[funcName];
+            calls.push(func(...arg));
+        }
+    }
+
+    return await sdk.context.multicallProvider.all(calls, override);
+}
+
+export async function BTLYWriteContract(sdk: BitlySDK, funcName: BTLYFuncNames, arg: SingleCallArgs = []) {
+    const func = sdk.context.contracts?.BTLYToken?.[funcName] as any;
+    if (!func) {
+        throw new Error(UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT);
+    }
+    return await func(...arg);
+}

@@ -82,9 +82,6 @@ export const selectSmartMarginMarginDelta = createSelector(
 
 export const selectMarginDeltaInputValue = (state: RootState) => state.smartMargin.marginDelta
 
-export const selectSmartMarginSupportedNetwork = (state: RootState) =>
-	state.wallet.networkId === 10 || state.wallet.networkId === 420
-
 export const selectShowSmartMarginOnboard = (state: RootState) =>
 	state.app.showModal === 'futures_smart_margin_onboard'
 
@@ -94,10 +91,9 @@ export const selectEditPositionModalMarket = (state: RootState) =>
 export const selectSmartMarginAccountData = createSelector(
 	selectWallet,
 	selectNetwork,
-	selectSmartMarginSupportedNetwork,
 	(state: RootState) => state.smartMargin,
-	(wallet, network, supportedNetwork, smartMargin) => {
-		return wallet && supportedNetwork ? smartMargin.accounts[network][wallet] : null
+	(wallet, network, smartMargin) => {
+		return wallet ? smartMargin.accounts[network][wallet] : null
 	}
 )
 
@@ -182,11 +178,11 @@ export const selectV2SkewAdjustedPriceInfo = createSelector(
 		if (!marketInfo?.marketSkew || !marketInfo?.settings.skewScale) return priceInfo
 		return priceInfo
 			? {
-					price: wei(priceInfo.price).mul(
-						wei(marketInfo.marketSkew).div(marketInfo.settings.skewScale).add(1)
-					),
-					change: priceInfo?.change,
-			  }
+				price: wei(priceInfo.price).mul(
+					wei(marketInfo.marketSkew).div(marketInfo.settings.skewScale).add(1)
+				),
+				change: priceInfo?.change,
+			}
 			: undefined
 	}
 )
@@ -205,7 +201,7 @@ export const selectMarkPricesV2 = createSelector(
 	(markets, prices) => {
 		const markPrices: MarkPrices = {}
 		return markets.reduce((acc, market) => {
-			const price = prices[market.asset]?.offChain ?? wei(0)
+			const price = prices[market.asset]?.onChain ?? wei(0)
 			return {
 				...acc,
 				[market.marketKey]: wei(price).mul(
@@ -329,9 +325,9 @@ export const selectAllSmartMarginPositions = createSelector(
 					const position: FuturesPositionTablePosition = {
 						activePosition: pos.position
 							? {
-									...pos.position,
-									details: history,
-							  }
+								...pos.position,
+								details: history,
+							}
 							: null,
 						remainingMargin: pos.remainingMargin,
 						stopLoss: stopLoss,
@@ -498,12 +494,12 @@ export const selectSmartMarginBalanceInfo = createSelector(
 		return account
 			? unserializeCmBalanceInfo(account.balanceInfo)
 			: {
-					freeMargin: wei(0),
-					keeperEthBal: wei(0),
-					allowance: wei(0),
-					balances: { SUSD: wei(0), USDC: wei(0), DAI: wei(0) },
-					allowances: { SUSD: wei(0), USDC: wei(0), DAI: wei(0) },
-			  }
+				freeMargin: wei(0),
+				keeperEthBal: wei(0),
+				allowance: wei(0),
+				balances: { SUSD: wei(0), USDC: wei(0), DAI: wei(0) },
+				allowances: { SUSD: wei(0), USDC: wei(0), DAI: wei(0) },
+			}
 	}
 )
 
@@ -1157,8 +1153,8 @@ export const selectPreviewMarginChange = createSelector(
 		const maxPositionSize =
 			!!tradePreview && !!marketInfo
 				? tradePreview.margin
-						.mul(marketInfo.appMaxLeverage)
-						.mul(tradePreview.side === PositionSide.LONG ? 1 : -1)
+					.mul(marketInfo.appMaxLeverage)
+					.mul(tradePreview.side === PositionSide.LONG ? 1 : -1)
 				: null
 
 		const potentialBuyingPower = !!maxPositionSize

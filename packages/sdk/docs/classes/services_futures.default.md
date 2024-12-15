@@ -128,7 +128,7 @@ Cancels a conditional order
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.cancelConditionalOrder('0x...', 1)
 console.log(txn)
 ```
@@ -163,7 +163,7 @@ Cancels a pending/expired delayed order, for the given market and account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.cancelDelayedOrder('0x...', '0x...', true)
 console.log(txn)
 ```
@@ -199,7 +199,7 @@ Close an open position in an isolated margin market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.closeIsolatedPosition('0x...', wei(1))
 console.log(txn)
 ```
@@ -234,7 +234,7 @@ Closes a smart margin position
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.closeSmartMarginPosition(
  { address: '0x...', key: FuturesMarketKey.sBTCPERP },
  '0x...',
@@ -276,7 +276,7 @@ Creates a smart margin account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.createSmartMarginAccount()
 console.log(txn)
 ```
@@ -304,7 +304,7 @@ Deposit margin for use in an isolated margin market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.depositIsolatedMargin('0x...', wei(1))
 console.log(txn)
 ```
@@ -366,7 +366,7 @@ Executes a pending delayed order, for the given market and account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.executeDelayedOffchainOrder(FuturesMarketKey.sETHPERP, '0x...', '0x...')
 console.log(txn)
 ```
@@ -402,7 +402,7 @@ Executes a pending delayed order, for the given market and account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.executeDelayedOrder('0x...', '0x...')
 console.log(txn)
 ```
@@ -437,7 +437,7 @@ Get the trade history for a given account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const trades = await sdk.futures.getAllTrades('0x...', FuturesMarginType.SMART_MARGIN)
 console.log(trades)
 ```
@@ -473,7 +473,7 @@ Get the average funding rates for the given markets
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const markets = await sdk.futures.getMarkets()
 const prices =
 const fundingRates = await sdk.synths.getAverageFundingRates(markets, prices, Period.ONE_DAY)
@@ -509,7 +509,7 @@ Get the conditional orders created by a given smart margin account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const orders = await sdk.futures.getConditionalOrders('0x...')
 console.log(orders)
 ```
@@ -543,7 +543,7 @@ Get the daily volumes for all markets
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const dailyVolumes = await sdk.futures.getDailyVolumes()
 console.log(dailyVolumes)
 ```
@@ -571,7 +571,7 @@ Get delayed orders associated with a given wallet address, for a specific market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const order = await sdk.futures.getDelayedOrder('0x...', '0x...')
 console.log(order)
 ```
@@ -629,7 +629,7 @@ ___
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const markets = await sdk.futures.getMarkets()
 const marketDetails = markets.map((m) => ({ address: m.market, marketKey: m.marketKey, asset: m.asset }))
 const positions = await sdk.futures.getFuturesPositions('0x...', marketDetails)
@@ -666,7 +666,7 @@ Get futures trades for a given market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const trades = await sdk.futures.getFuturesTrades(FuturesMarketKey.sBTCPERP, 0, 0)
 console.log(trades)
 ```
@@ -702,7 +702,7 @@ Get idle margin for given wallet address or smart margin account address
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const idleMargin = await sdk.futures.getIdleMargin('0x...')
 console.log(idleMargin)
 ```
@@ -737,7 +737,7 @@ Get the idle margin in futures markets
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const idleMargin = await sdk.futures.getIdleMargin('0x...')
 console.log(idleMargin)
 ```
@@ -771,7 +771,7 @@ Generate a trade preview for a potential trade with an isolated margin account.
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const preview = await sdk.futures.getIsolatedMarginTradePreview(
   '0x...',
   '0x...',
@@ -817,7 +817,7 @@ Get isolated margin transfer history for a given wallet address
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const transfers = await sdk.futures.getIsolatedMarginTransfers()
 console.log(transfers)
 ```
@@ -851,7 +851,7 @@ Get the funding rate history for a given market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const fundingRateHistory = await sdk.futures.getMarketFundingRatesHistory('ETH')
 console.log(fundingRateHistory)
 ```
@@ -886,9 +886,9 @@ Fetches futures markets
 **`Example`**
 
 ```ts
-import { KwentaSDK } from '@kwenta/sdk'
+import { BitlySDK } from '@kwenta/sdk'
 
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const markets = await sdk.futures.getMarkets()
 console.log(markets)
 ```
@@ -922,7 +922,7 @@ Get order fee, based on the specified market and given order size
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const fee = await sdk.futures.getOrderFee('0x...', wei(1))
 console.log(fee)
 ```
@@ -957,7 +957,7 @@ Get futures positions history for a given wallet address or smart margin account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const positionHistory = await sdk.futures.getPositionHistory('0x...')
 console.log(positionHistory)
 ```
@@ -992,7 +992,7 @@ Adjusts the given price, based on the current market skew.
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const adjustedPrice = await sdk.futures.getSkewAdjustedPrice(wei(10000), '0x...', FuturesMarketKey.sBTCPERP)
 console.log(adjustedPrice)
 ```
@@ -1028,7 +1028,7 @@ Get the balance of a smart margin account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const balance = await sdk.futures.getSmartMarginAccountBalance('0x...')
 console.log(balance)
 ```
@@ -1062,7 +1062,7 @@ Get the smart margin accounts associated with a given wallet address
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const accounts = await sdk.futures.getSmartMarginAccounts()
 console.log(accounts)
 ```
@@ -1096,7 +1096,7 @@ Get important balances for a given smart margin account and wallet address.
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const balanceInfo = await sdk.futures.getSmartMarginBalanceInfo('0x...', '0x...')
 console.log(balanceInfo)
 ```
@@ -1131,7 +1131,7 @@ Generate a trade preview for a potential trade with a smart margin account.
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const preview = await sdk.futures.getSmartMarginTradePreview(
  '0x...',
  FuturesMarketKey.sBTCPERP,
@@ -1182,7 +1182,7 @@ Get smart margin transfer history for a given wallet address
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const transfers = await sdk.futures.getSmartMarginTransfers()
 console.log(transfers)
 ```
@@ -1216,7 +1216,7 @@ Get the trade history for a given account on a specific market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const trades = await sdk.futures.getTradesForMarket(
  FuturesMarketAsset.sBTC,
  '0x...',
@@ -1285,7 +1285,7 @@ Modify the position size for a specific market in a smart margin account
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.modifySmartMarginPositionSize(
   '0x...',
   { key: FuturesMarketKey.sBTCPERP, address: '0x...' },
@@ -1331,7 +1331,7 @@ Get idle margin for given wallet address or smart margin account address
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const idleMargin = await sdk.futures.getIdleMargin('0x...')
 console.log(idleMargin)
 ```
@@ -1367,7 +1367,7 @@ Get idle margin for given wallet address or smart margin account address
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const idleMargin = await sdk.futures.getIdleMargin('0x...')
 console.log(idleMargin)
 ```
@@ -1409,7 +1409,7 @@ Updates the stop loss and take profit values for a given smart margin account, b
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.updateStopLossAndTakeProfit(
   FuturesMarketKey.sBTCPERP,
   '0x...',
@@ -1463,7 +1463,7 @@ Withdraws given smarkt margin account's keeper balance
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.withdrawAccountKeeperBalance('0x...', wei(1))
 console.log(txn)
 ```
@@ -1498,7 +1498,7 @@ Withdraw margin from an isolated margin market
 **`Example`**
 
 ```ts
-const sdk = new KwentaSDK()
+const sdk = new BitlySDK()
 const txn = await sdk.futures.withdrawIsolatedMargin('0x...', wei(1))
 console.log(txn)
 ```

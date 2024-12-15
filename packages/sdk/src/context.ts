@@ -11,41 +11,38 @@ import {
 	getContractsByNetwork,
 	getMulticallContractsByNetwork,
 } from './contracts'
-import { NetworkId } from './types/common'
 import { UnwrapPromise } from './common/type'
+import { DEFAULT_NETWORK_ID } from './constants'
 
 export interface IContext {
 	provider: ethers.providers.Provider
-	networkId: NetworkId
+	networkId: number
 	signer?: ethers.Signer & TypedDataSigner
 	walletAddress?: string
 	logError?: (err: Error, skipReport?: boolean) => void
 }
 
 const DEFAULT_CONTEXT: Partial<IContext> = {
-	networkId: 690,
+	networkId: DEFAULT_NETWORK_ID,
 }
 
 export default class Context implements IContext {
 	private context: IContext
 	public multicallProvider: EthCallProvider
-	public contracts: UnwrapPromise<ContractsMap> | undefined
-	public multicallContracts: UnwrapPromise<MulticallContractsMap> | undefined
+	public contracts: UnwrapPromise<ContractsMap>
+	public multicallContracts: UnwrapPromise<MulticallContractsMap>
 	public events = new EventEmitter().setMaxListeners(100)
-	public l1MainnetProvider: ethers.providers.Provider
 
 	constructor(context: IContext) {
 		this.context = { ...DEFAULT_CONTEXT, ...context }
 
-		this.multicallProvider = new EthCallProvider(context.networkId, context.provider)
+		this.multicallProvider = new EthCallProvider(context.networkId, context.provider);
+        this.contracts = getContractsByNetwork(context.networkId, context.provider);
+        this.multicallContracts = getMulticallContractsByNetwork(context.networkId);
 
 		if (context.signer) {
 			this.setSigner(context.signer)
 		}
-
-		// this.contracts = await getContractsByNetwork(context.networkId, context.provider);
-		// this.multicallContracts = await getMulticallContractsByNetwork(context.networkId);
-		this.l1MainnetProvider = new ethers.providers.InfuraProvider()
 	}
 
 	get networkId() {
@@ -74,18 +71,18 @@ export default class Context implements IContext {
 
 	public async setProvider(provider: ethers.providers.Provider) {
 		this.context.provider = provider
-		const networkId = (await provider.getNetwork()).chainId as NetworkId
+		const networkId = (await provider.getNetwork()).chainId;
 		this.multicallProvider = new EthCallProvider(networkId, provider)
 
-		await this.setNetworkId(networkId);
+		this.setNetworkId(networkId);
 
 		return networkId
 	}
 
-	public async setNetworkId(networkId: NetworkId) {
+	public setNetworkId(networkId: number) {
 		this.context.networkId = networkId
-		this.contracts = await getContractsByNetwork(networkId, this.provider)
-		this.multicallContracts = await getMulticallContractsByNetwork(networkId)
+		this.contracts = getContractsByNetwork(networkId, this.provider)
+		this.multicallContracts = getMulticallContractsByNetwork(networkId)
 		this.events.emit('network_changed', { networkId: networkId })
 	}
 

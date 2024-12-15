@@ -29,7 +29,7 @@ const Hero = () => {
 					<PoweredBySynthetix />
 				</SynthetixContainer> */}
 				<CTAContainer>
-					<Link href={ROUTES.Markets.Home(DEFAULT_FUTURES_MARGIN_TYPE)}>
+					<Link href={ROUTES.Dashboard.Markets}>
 						<RefButton variant="flat" textColor="yellow" size="large">
 							{t('homepage.nav.trade-now')}
 						</RefButton>

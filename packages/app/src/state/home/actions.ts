@@ -1,4 +1,4 @@
-import KwentaSDK from '@kwenta/sdk'
+import BitlySDK from '@kwenta/sdk'
 import { PerpsMarketV2 } from '@kwenta/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { providers } from 'ethers'
@@ -20,7 +20,7 @@ export const fetchOptimismMarkets = createAsyncThunk<
 })
 
 export const fetchFuturesStats = createAsyncThunk<
-	Awaited<ReturnType<KwentaSDK['stats']['getFuturesStats']>>,
+	Awaited<ReturnType<BitlySDK['stats']['getFuturesStats']>>,
 	void,
 	ThunkConfig
 >('home/fetchFuturesStats', async (_, { extra: { sdk } }) => {

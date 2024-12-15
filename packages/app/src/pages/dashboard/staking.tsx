@@ -1,4 +1,4 @@
-import { formatNumber, formatTruncatedDuration } from '@kwenta/sdk/utils'
+import { formatNumber, formatTruncatedDuration } from '@bitly/sdk/utils'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react'
@@ -182,20 +182,20 @@ const StakingPage: StakingComponent = () => {
 	const { title, cardsInfo, stakingComponent } = useMemo(() => {
 		return stakingV1
 			? {
-					title: t('dashboard.stake.portfolio.title-v1'),
-					cardsInfo: stakingInfo.filter((info) => !info.hidden),
-					stakingComponent: (
-						<StakingV1Container>
-							<StakingTab />
-							<EscrowTable />
-						</StakingV1Container>
-					),
-			  }
+				title: t('dashboard.stake.portfolio.title-v1'),
+				cardsInfo: stakingInfo.filter((info) => !info.hidden),
+				stakingComponent: (
+					<StakingV1Container>
+						<StakingTab />
+						<EscrowTable />
+					</StakingV1Container>
+				),
+			}
 			: {
-					title: t('dashboard.stake.portfolio.title'),
-					cardsInfo: stakingInfo.filter((info) => !info.hidden),
-					stakingComponent: <StakingTabs currentTab={currentTab} onChangeTab={handleChangeTab} />,
-			  }
+				title: t('dashboard.stake.portfolio.title'),
+				cardsInfo: stakingInfo.filter((info) => !info.hidden),
+				stakingComponent: <StakingTabs currentTab={currentTab} onChangeTab={handleChangeTab} />,
+			}
 	}, [currentTab, handleChangeTab, stakingInfo, stakingV1, t])
 
 	return startMigration ? (

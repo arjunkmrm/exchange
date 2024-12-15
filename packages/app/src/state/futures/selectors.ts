@@ -396,22 +396,14 @@ export const selectNextPriceDisclaimer = createSelector(
 
 export const selectFuturesPortfolio = createSelector(
 	selectSmartMarginActivePositions,
-	selectCrossMarginPositions,
-	selectIdleAccountMargin,
-	(smartPositions, crossPositions, idleMargin) => {
-		// TODO: Update this for cross margin
-		const crossValue =
-			crossPositions.reduce((sum, { remainingMargin }) => sum.add(remainingMargin ?? 0), wei(0)) ??
-			wei(0)
+	(smartPositions) => {
 		const smartValue =
 			smartPositions.reduce((sum, { remainingMargin }) => sum.add(remainingMargin), wei(0)) ??
-			wei(0)
-		const totalValue = smartValue.add(crossValue).add(idleMargin)
+			wei(0);
+		const totalValue = smartValue;
 
 		return {
 			total: totalValue,
-			smartMargin: smartValue.add(idleMargin),
-			crossMargin: crossValue,
 		}
 	}
 )

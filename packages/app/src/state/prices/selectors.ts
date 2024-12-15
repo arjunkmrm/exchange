@@ -15,15 +15,15 @@ export const selectPrices = createSelector(
 				onChain: wei(price),
 			}
 		})
-		Object.entries(offChainPrices).forEach(([key, { price }]) => {
-			if (merged[key]) {
-				merged[key].offChain = wei(price)
-			} else {
-				merged[key] = {
-					offChain: wei(price),
-				}
-			}
-		})
+		// Object.entries(offChainPrices).forEach(([key, { price }]) => {
+		// 	if (merged[key]) {
+		// 		merged[key].offChain = wei(price)
+		// 	} else {
+		// 		merged[key] = {
+		// 			offChain: wei(price),
+		// 		}
+		// 	}
+		// })
 		return merged
 	}
 )

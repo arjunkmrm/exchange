@@ -1,4 +1,4 @@
-import KwentaSDK from '@kwenta/sdk'
+import BitlySDK from '@kwenta/sdk'
 import {
 	DEFAULT_PRICE_IMPACT_DELTA_PERCENT,
 	MIN_ACCOUNT_KEEPER_BAL,
@@ -137,10 +137,10 @@ export const fetchMarketsV2 = createAsyncThunk<
 	void,
 	ThunkConfig
 >('futures/fetchMarkets', async (_, { getState, extra: { sdk } }) => {
-	const supportedNetwork = selectSmartMarginSupportedNetwork(getState())
+	// const supportedNetwork = selectSmartMarginSupportedNetwork(getState())
 	const networkId = selectNetwork(getState())
 
-	if (!supportedNetwork) return
+	// if (!supportedNetwork) return
 	try {
 		const markets = await sdk.futures.getMarkets()
 		// apply overrides
@@ -1368,7 +1368,7 @@ export const executeDelayedOrder = createAsyncThunk<void, ExecuteDelayedOrderInp
 
 const submitSMTransferTransaction = async (
 	dispatch: AppDispatch,
-	sdk: KwentaSDK,
+	sdk: BitlySDK,
 	type: 'withdraw_smart_margin' | 'deposit_smart_margin',
 	account: string,
 	amount: Wei,

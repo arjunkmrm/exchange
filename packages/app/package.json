@@ -1,6 +1,6 @@
 {
-	"name": "@kwenta/app",
-	"version": "7.9.9",
+	"name": "@bitly/app",
+	"version": "0.0.0",
 	"scripts": {
 		"dev": "next",
 		"build": "next build",
@@ -13,13 +13,13 @@
 		"postpublish": "pinst --enable",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"preinstall": "pnpm --filter \"@kwenta/sdk\" build"
+		"preinstall": "pnpm --filter \"@bitly/sdk\" build"
 	},
 	"dependencies": {
 		"@eth-optimism/contracts": "0.5.37",
 		"@ethersproject/bignumber": "^5.7.0",
 		"@ethersproject/providers": "^5.7.2",
-		"@kwenta/sdk": "workspace:*",
+		"@bitly/sdk": "workspace:*",
 		"@material-ui/core": "^4.12.4",
 		"@pythnetwork/pyth-evm-js": "1.17.0",
 		"@rainbow-me/rainbowkit": "0.12.16",

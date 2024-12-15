@@ -1,14 +1,14 @@
 export const ADDRESSES: Record<string, Record<number, string>> = {
-	Bitly: {
-		17069: '0x786F2461A238c29352a66f67243eE52EdF42bC14',
-	},
-	USDC: {
-	},
-	USDT: {
+    EXCHANGE: {
+        17069: '0x16F42671F1FECba0E5CD920E25D1F9e6B18F68d8',
+    },
+    USDT: {
         17069: '0x199E550f7218042c7FF5368878ead820DF78b14C',
-	},
-	BTLYToken: {
+    },
+    BANK: {
+        17069: '0xfee13484D07a8ed8C16aEA0Bacd1161719B6eF8F'
+    },
+    BTLY: {
         17069: '0x5adA211dBFA9E543B137a7a1Ced12FCCdFFEB032',
-        137: '0xeE6B44B6d2F5181A4774b5B8F0F88D54Ff1A5637',
-	}
+    }
 }

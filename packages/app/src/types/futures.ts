@@ -3,7 +3,6 @@ import {
 	FuturesFilledPosition,
 	FuturesPositionHistory,
 	PerpsMarketV2,
-	PerpsMarketV3,
 } from '@kwenta/sdk/types'
 import Wei from '@synthetixio/wei'
 
@@ -12,7 +11,7 @@ export type FuturesPositionWithDetails = FuturesFilledPosition & {
 }
 
 export type FuturesPositionTablePositionCommon = {
-	market: PerpsMarketV2 | PerpsMarketV3
+	market: PerpsMarketV2
 	remainingMargin?: Wei
 	stopLoss?: ConditionalOrder
 	takeProfit?: ConditionalOrder

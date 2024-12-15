@@ -1,4 +1,4 @@
-import KwentaSDK from '@kwenta/sdk'
+import BitlySDK from '@kwenta/sdk'
 import { PerpsMarketV2 } from '@kwenta/sdk/types'
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -10,7 +10,7 @@ type HomeState = {
 	optimismMarkets: PerpsMarketV2<string>[]
 	marketsQueryStatus: FetchStatus
 	futuresStatsQueryStatus: FetchStatus
-	futuresStats: Awaited<ReturnType<KwentaSDK['stats']['getFuturesStats']>>
+	futuresStats: Awaited<ReturnType<BitlySDK['stats']['getFuturesStats']>>
 }
 
 export const HOME_INITIAL_STATE: HomeState = {

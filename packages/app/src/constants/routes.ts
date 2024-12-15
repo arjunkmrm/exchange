@@ -29,9 +29,9 @@ export const ROUTES = {
 		Redeem: normalizeRoute('/dashboard', 'redeem', 'tab'),
 		TradingRewards: formatUrl('/dashboard/staking', { tab: 'trading-rewards' }),
 	},
-    Staking: {
-        Home: '/dashboard/staking'
-    },
+	Staking: {
+		Home: '/dashboard/staking',
+	},
 	Exchange: {
 		Home: '/exchange',
 		MarketPair: (baseCurrencyKey: string, quoteCurrencyKey: string) =>
@@ -41,8 +41,8 @@ export const ROUTES = {
 	Markets: {
 		Home: (accountType: AppFuturesMarginType) =>
 			formatUrl('/market', { accountType, asset: 'sETH' }),
-		MarketPair: (asset: FuturesMarketAsset | string, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType }),
+		MarketPair: (asset: FuturesMarketAsset | string) =>
+			formatUrl('/market', { asset }),
 		Position: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
 			formatUrl('/market', {
 				asset,
