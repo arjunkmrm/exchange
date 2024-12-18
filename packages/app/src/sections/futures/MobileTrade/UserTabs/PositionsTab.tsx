@@ -5,7 +5,7 @@ import Router from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { FuturesPositionTablePositionActive } from 'types/futures'
+import { FuturesPositionTablePositionActive } from 'types/common'
 
 import ColoredPrice from 'components/ColoredPrice'
 import Currency from 'components/Currency'

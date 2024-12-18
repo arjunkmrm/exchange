@@ -1,4 +1,4 @@
-import BitlySDK from '@kwenta/sdk'
+import BitlySDK from '@bitly/sdk'
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit'
 import type { AnyAction, ThunkAction } from '@reduxjs/toolkit'
 import logger from 'redux-logger'
@@ -18,12 +18,10 @@ import storage from 'redux-persist/lib/storage'
 import appReducer from './app/reducer'
 import balancesReducer from './balances/reducer'
 import earnReducer from './earn/reducer'
-import exchangeReducer from './exchange/reducer'
 import crossMarginReducer from './futures/crossMargin/reducer'
 import futuresReducer from './futures/reducer'
 import smartMarginReducer from './futures/smartMargin/reducer'
 import homeReducer from './home/reducer'
-import migrations from './migrations'
 import preferencesReducer from './preferences/reducer'
 import pricesReducer from './prices/reducer'
 import referralsReducer from './referrals/reducer'
@@ -47,7 +45,6 @@ const combinedReducers = combineReducers({
 	app: appReducer,
 	wallet: walletReducer,
 	balances: balancesReducer,
-	exchange: exchangeReducer,
 	futures: futuresReducer,
 	crossMargin: crossMarginReducer,
 	smartMargin: smartMarginReducer,

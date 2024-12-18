@@ -1,4 +1,3 @@
-import { truncateAddress } from '@kwenta/sdk/utils'
 import { useAccountModal } from '@rainbow-me/rainbowkit'
 import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -9,6 +8,7 @@ import Connector from 'containers/Connector'
 
 import ConnectionDot from '../ConnectionDot'
 import NetworksSwitcher from '../NetworksSwitcher'
+import { truncateAddress } from 'utils/string'
 
 export const MobileWalletActions: FC = () => {
 	const { walletAddress } = Connector.useContainer()

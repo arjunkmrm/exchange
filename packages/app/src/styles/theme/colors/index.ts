@@ -25,6 +25,7 @@ const colors = {
 	gold: `linear-gradient(180deg, ${goldColors.color1} 0%, ${goldColors.color2} 100%)`,
 	// network colors
 	mainnet: '#29B6AF',
+	redstone: '#FF1111',
 	ropsten: '#FF4A8D',
 	kovan: '#7057FF',
 	rinkeby: '#F6C343',

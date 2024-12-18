@@ -26,7 +26,7 @@ import {
 } from '@kwenta/sdk/utils'
 import Wei, { wei } from '@synthetixio/wei'
 import { TFunction } from 'i18next'
-import { FuturesPositionTablePosition } from 'types/futures'
+import { FuturesPositionTablePosition } from 'types/common'
 
 import { DelayedOrderWithDetails, TradeSizeInputs } from 'state/futures/common/types'
 import { SmartMarginBalanceInfo } from 'state/futures/smartMargin/types'

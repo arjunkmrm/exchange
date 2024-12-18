@@ -1,6 +1,7 @@
 import { BigNumber } from 'ethers';
 import { UnwrapPromise } from '../common/type';
 import {BitlyExchange, ERC20, TokenExchange} from '../contracts/typechain-types';
+import { EarningClaimedEventObject } from '../contracts/typechain-types/contracts/TokenExchange';
 
 export type TokenInfoType = UnwrapPromise<ReturnType<BitlyExchange['tokenInfo']>>;
 export type TokenInfoTypeWithAddress = UnwrapPromise<ReturnType<BitlyExchange['tokenInfo']>> & {address: string};
@@ -43,3 +44,13 @@ export enum OrderDirection {
 };
 
 export type MarketEventSignature = keyof TokenExchange['filters'];
+
+export type ExchangeEarningType = {
+	price: number;
+	direction: OrderDirection;
+	volume: number;
+};
+
+export type ExchangeOrdersType = {
+	[market: string]: ExchangeEarningType[]
+};

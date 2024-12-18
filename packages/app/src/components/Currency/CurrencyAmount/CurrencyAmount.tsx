@@ -1,21 +1,15 @@
-import { formatCurrency, FormatCurrencyOptions } from '@kwenta/sdk/utils'
-import Wei, { wei } from '@synthetixio/wei'
-import { ethers } from 'ethers'
 import { FC, memo } from 'react'
 import styled from 'styled-components'
 
 import { ContainerRowMixin } from 'components/layout/grid'
-
-type WeiSource = Wei | number | string | ethers.BigNumber
+import { formatCurrency } from 'utils/prices'
 
 type CurrencyAmountProps = {
 	currencyKey: string
-	amount: WeiSource
-	totalValue: WeiSource
+	amount: number
+	totalValue: number
 	sign?: string
-	conversionRate?: WeiSource | null
-	formatAmountOptions?: FormatCurrencyOptions
-	formatTotalValueOptions?: FormatCurrencyOptions
+	conversionRate?: number | null
 	showTotalValue?: boolean
 	showValue?: boolean
 }
@@ -27,8 +21,6 @@ export const CurrencyAmount: FC<CurrencyAmountProps> = memo(
 		totalValue,
 		sign,
 		conversionRate,
-		formatAmountOptions = {},
-		formatTotalValueOptions = {},
 		showTotalValue = true,
 		showValue = true,
 		...rest
@@ -36,16 +28,12 @@ export const CurrencyAmount: FC<CurrencyAmountProps> = memo(
 		<Container {...rest}>
 			{!showValue ? null : (
 				<Amount className="amount">
-					{formatCurrency(currencyKey, amount, formatAmountOptions)}
+					{formatCurrency(currencyKey, amount)}
 				</Amount>
 			)}
 			{!showTotalValue ? null : (
 				<TotalValue className="total-value">
-					{formatCurrency(
-						currencyKey,
-						conversionRate != null ? wei(totalValue).div(conversionRate) : totalValue,
-						{ sign, ...formatTotalValueOptions }
-					)}
+					{formatCurrency(currencyKey, amount)}
 				</TotalValue>
 			)}
 		</Container>

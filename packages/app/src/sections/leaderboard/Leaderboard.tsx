@@ -28,7 +28,6 @@ import media from 'styles/media'
 import TraderHistory from '../futures/TraderHistory'
 
 import AllTime from './AllTime'
-import Competition from './Competition'
 
 type LeaderboardProps = {
 	compact?: boolean
@@ -155,7 +154,7 @@ const Leaderboard: FC<LeaderboardProps> = ({ compact, mobile }) => {
 	}, [searchTerm, searchEns, dispatch, trader])
 
 	useEffect(() => {
-		dispatch(fetchPositionHistoryForTrader(trader))
+		dispatch(fetchPositionHistoryForTrader())
 	}, [dispatch, trader])
 
 	return (
@@ -195,14 +194,6 @@ const Leaderboard: FC<LeaderboardProps> = ({ compact, mobile }) => {
 							resetSelection={resetSelection}
 							compact={compact}
 							searchTerm={searchInput}
-						/>
-					) : competitionRound ? (
-						<Competition
-							round={competitionRound}
-							activeTier={activeTier}
-							compact={compact}
-							onClickTrader={onClickTrader}
-							searchTerm={searchTerm || searchInput}
 						/>
 					) : searchAddress ? (
 						<AllTime

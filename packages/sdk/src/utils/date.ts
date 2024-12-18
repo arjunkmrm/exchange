@@ -25,13 +25,6 @@ export const formatShortDateWithTime = (date: Date | number) =>
 	formatDate(date, 'MMM d, yyyy h:mm a')
 export const formatDateWithTime = (date: Date | number) => formatDate(date, 'd MMM yyyy H:mm')
 
-export const secondsToTime = (seconds: number) => {
-	const minutes = Math.floor(seconds / 60)
-	const secondsLeft = seconds - minutes * 60
-
-	return `${strPadLeft(minutes, '0', 2)}:${strPadLeft(secondsLeft, '0', 2)}`
-}
-
 export const WEEKS_IN_YEAR = getISOWeeksInYear(new Date())
 
 export const calculateTimestampForPeriod = (periodInHours: number) =>

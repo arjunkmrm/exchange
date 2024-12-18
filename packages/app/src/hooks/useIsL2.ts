@@ -2,7 +2,7 @@ import Connector from 'containers/Connector'
 
 const useIsL2 = () => {
 	const { activeChain } = Connector.useContainer()
-	const isL2 = false
+	const isL2 = true
 	return isL2
 }
 

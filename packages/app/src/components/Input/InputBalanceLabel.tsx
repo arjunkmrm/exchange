@@ -1,13 +1,12 @@
-import { formatCurrency } from '@kwenta/sdk/utils'
-import Wei from '@synthetixio/wei'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { FlexDivRowCentered } from 'components/layout/flex'
 import { Body } from 'components/Text'
+import { formatCurrency } from 'utils/prices'
 
 type Props = {
-	balance: Wei
+	balance: number
 	currencyKey: string
 	onSetAmount: (amount: string) => void
 }
@@ -22,10 +21,7 @@ export default function InputBalanceLabel({ balance, currencyKey, onSetAmount }:
 			<BalanceText>{t('futures.market.trade.margin.modal.balance')}:</BalanceText>
 			<BalanceButton as="button" onClick={() => onSetAmount(balance.toString())}>
 				<span>
-					{formatCurrency(currencyKey, balance, {
-						sign: isUsd ? '$' : '',
-						maxDecimals: isUsd ? 2 : undefined,
-					})}
+					{formatCurrency(currencyKey, balance)}
 				</span>{' '}
 				{currencyKey}
 			</BalanceButton>

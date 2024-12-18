@@ -1,17 +1,16 @@
-import { Period } from '@kwenta/sdk/constants'
-import { NetworkId, FuturesMarketAsset } from '@kwenta/sdk/types'
+import { Period } from '@bitly/sdk/constants'
 
 import { CurrencyKey } from './currency'
 
 export const QUERY_KEYS = {
 	Rates: {
-		HistoricalVolume: (period: Period, networkId: NetworkId) => [
+		HistoricalVolume: (period: Period, networkId: number) => [
 			'rates',
 			'historicalVolume',
 			period,
 			networkId,
 		],
-		HistoricalRates: (currencyKey: string, period: Period, networkId: NetworkId) => [
+		HistoricalRates: (currencyKey: string, period: Period, networkId: number) => [
 			'rates',
 			'historicalRates',
 			currencyKey,
@@ -20,7 +19,7 @@ export const QUERY_KEYS = {
 		],
 		MarketCap: (currencyKey: string) => ['marketCap', currencyKey],
 		ExchangeRates: ['rates', 'exchangeRates'],
-		PastRates: (networkId: NetworkId, assets: (FuturesMarketAsset | CurrencyKey)[]) => [
+		PastRates: (networkId: number, assets: (CurrencyKey)[]) => [
 			'rates',
 			'pastRates',
 			networkId,
@@ -46,19 +45,19 @@ export const QUERY_KEYS = {
 		ENSAvatar: (ensName?: string | null) => ['network', 'ensNames', ensName],
 	},
 	WalletBalances: {
-		Synths: (walletAddress: string, networkId: NetworkId) => [
+		Synths: (walletAddress: string, networkId: number) => [
 			'walletBalances',
 			'synths',
 			walletAddress,
 			networkId,
 		],
-		ETH: (walletAddress: string, networkId: NetworkId) => [
+		ETH: (walletAddress: string, networkId: number) => [
 			'walletBalances',
 			'ETH',
 			walletAddress,
 			networkId,
 		],
-		Tokens: (walletAddress: string | null, networkId: NetworkId, tokenAddresses: string) => [
+		Tokens: (walletAddress: string | null, networkId: number, tokenAddresses: string) => [
 			'walletBalances',
 			'tokens',
 			walletAddress,
@@ -67,7 +66,7 @@ export const QUERY_KEYS = {
 		],
 	},
 	Synths: {
-		Balances: (networkId: NetworkId, walletAddress: string | null) => [
+		Balances: (networkId: number, walletAddress: string | null) => [
 			'synths',
 			'balances',
 			networkId,
@@ -93,10 +92,10 @@ export const QUERY_KEYS = {
 			walletAddress,
 			currencyKey,
 		],
-		TradingVolumeForAllSynths: (networkId: NetworkId) => ['synths', 'tradingVolume', networkId],
+		TradingVolumeForAllSynths: (networkId: number) => ['synths', 'tradingVolume', networkId],
 	},
 	Collateral: {
-		ShortHistory: (walletAddress: string, networkId: NetworkId) => [
+		ShortHistory: (walletAddress: string, networkId: number) => [
 			'collateral',
 			'short',
 			'history',
@@ -112,7 +111,7 @@ export const QUERY_KEYS = {
 	},
 	Trades: {
 		AllTrades: ['trades', 'allTrades'],
-		WalletTrades: (walletAddress: string, networkId: NetworkId) => [
+		WalletTrades: (walletAddress: string, networkId: number) => [
 			'trades',
 			'walletTrades',
 			walletAddress,
@@ -128,20 +127,20 @@ export const QUERY_KEYS = {
 			baseCurrencyKey: string | undefined,
 			amount: string,
 			synthUsdRate: number,
-			networkId: NetworkId
+			networkId: number
 		) => ['convert', '1inch', quoteCurrencyKey, baseCurrencyKey, amount, networkId, synthUsdRate],
 		quoteSynthSwap: (
 			quoteCurrencyKey: string | undefined,
 			baseCurrencyKey: string | undefined,
 			amount: string,
-			networkId: NetworkId
+			networkId: number
 		) => ['convert', 'synthSwap', quoteCurrencyKey, baseCurrencyKey, amount, networkId],
 		approveAddress1Inch: ['convert', '1inch', 'approve', 'address'],
 	},
 	TokenLists: {
 		Synthetix: ['tokenLists', 'synthetix'],
 		Zapper: ['tokenLists', 'zapper'],
-		OneInch: (networkId: NetworkId) => ['tokenLists', 'oneInch', networkId],
+		OneInch: (networkId: number) => ['tokenLists', 'oneInch', networkId],
 	},
 	CMC: {
 		Quotes: (currencyKeys: string[]) => ['cmc', 'quotes', currencyKeys.join('|')],
@@ -158,68 +157,68 @@ export const QUERY_KEYS = {
 		],
 	},
 	Futures: {
-		DayTradeStats: (networkId: NetworkId, currencyKey: FuturesMarketAsset | null) => [
+		DayTradeStats: (networkId: number, currencyKey: string | null) => [
 			'futures',
 			'dayTradeStats',
 			networkId,
 			currencyKey,
 		],
-		Market: (networkId: NetworkId, currencyKey: string | null) => [
+		Market: (networkId: number, currencyKey: string | null) => [
 			'futures',
 			currencyKey,
 			networkId,
 		],
-		Trades: (networkId: NetworkId, currencyKey: string | null) => [
+		Trades: (networkId: number, currencyKey: string) => [
 			'futures',
 			'trades',
 			networkId,
 			currencyKey,
 		],
 		TradesAccount: (
-			networkId: NetworkId,
+			networkId: number,
 			currencyKey: string | null,
 			account: string | null,
 			selectedAccountType: string
 		) => ['futures', 'trades', networkId, currencyKey, account, selectedAccountType],
-		AllTradesAccount: (networkId: NetworkId, account: string | null) => [
+		AllTradesAccount: (networkId: number, account: string | null) => [
 			'futures',
 			'trades',
 			networkId,
 			account,
 		],
-		MarketClosure: (networkId: NetworkId, currencyKey: string | null) => [
+		MarketClosure: (networkId: number, currencyKey: string | null) => [
 			'futures',
 			'closures',
 			networkId,
 			currencyKey,
 		],
 		OpenInterest: (currencyKeys: string[]) => ['futures', 'openInterest', currencyKeys],
-		TradingVolume: (networkId: NetworkId, currencyKey: string | null) => [
+		TradingVolume: (networkId: number, currencyKey: string | null) => [
 			'futures',
 			'tradingVolume',
 			networkId,
 			currencyKey,
 		],
 		MarginTransfers: (
-			networkId: NetworkId,
+			networkId: number,
 			walletAddress: string | null,
 			marketAddress: string | null
 		) => ['futures', 'futuresMarginTransfers', networkId, walletAddress, marketAddress],
-		FundingRate: (networkId: NetworkId, currencyKey: string | null) => [
+		FundingRate: (networkId: number, currencyKey: string | null) => [
 			'futures',
 			'fundingRates',
 			networkId,
 			currencyKey,
 		],
-		TradingVolumeForAll: (networkId: NetworkId) => ['futures', 'tradingVolumeForAll', networkId],
-		Position: (networkId: NetworkId, market: string | null, walletAddress: string) => [
+		TradingVolumeForAll: (networkId: number) => ['futures', 'tradingVolumeForAll', networkId],
+		Position: (networkId: number, market: string | null, walletAddress: string) => [
 			'futures',
 			'position',
 			networkId,
 			market,
 			walletAddress,
 		],
-		PositionHistory: (walletAddress: string | null, networkId: NetworkId) => [
+		PositionHistory: (walletAddress: string | null, networkId: number) => [
 			'futures',
 			'accountPositions',
 			walletAddress,
@@ -227,8 +226,8 @@ export const QUERY_KEYS = {
 		],
 		Participants: () => ['futures', 'participants'],
 		Participant: (walletAddress: string) => ['futures', 'participant', walletAddress],
-		Stats: (networkId: NetworkId) => ['futures', 'stats', networkId],
-		Leaderboard: (networkId: NetworkId, searchTerm: string) => [
+		Stats: (networkId: number) => ['futures', 'stats', networkId],
+		Leaderboard: (networkId: number, searchTerm: string) => [
 			'futures',
 			'leaderboard',
 			networkId,
@@ -237,27 +236,27 @@ export const QUERY_KEYS = {
 		AverageLeverage: ['futures', 'averageLeverage'],
 		CumulativeVolume: ['futures', 'cumulativeVolume'],
 		TotalLiquidations: ['futures', 'totalLiquidations'],
-		TotalTrades: (networkId: NetworkId) => ['futures', 'totalTrades', networkId],
+		TotalTrades: (networkId: number) => ['futures', 'totalTrades', networkId],
 		TotalVolume: ['futures', 'totalVolume'],
-		MarketLimit: (networkId: NetworkId, market: string | null) => [
+		MarketLimit: (networkId: number, market: string | null) => [
 			'futures',
 			'marketLimit',
 			networkId,
 			market,
 		],
-		OpenOrders: (networkId: NetworkId, walletAddress: string | null) => [
+		OpenOrders: (networkId: number, walletAddress: string | null) => [
 			'futures',
 			'openOrders',
 			networkId,
 			walletAddress,
 		],
-		LatestUpdate: (networkId: NetworkId, market: string | null) => [
+		LatestUpdate: (networkId: number, market: string | null) => [
 			'futures',
 			'latestUpdate',
 			networkId,
 			market,
 		],
-		OverviewStats: (networkId: NetworkId) => ['futures', 'overview-stats', networkId],
+		OverviewStats: (networkId: number) => ['futures', 'overview-stats', networkId],
 	},
 	Files: {
 		Get: (fileName: string) => ['files', 'get', fileName],

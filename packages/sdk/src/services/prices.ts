@@ -1,23 +1,53 @@
-import { BlockTag } from '@ethersproject/providers';
-import { ethers } from 'ethers';
 import BitlySDK from '..';
 import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
-import { getPairContract, getPairContractInterface } from '../contracts';
 import { getOffChainKline } from '../queries/exchange';
 import { KLINE_SOLUTION } from '../types/common';
-import { ExchangeMarketType, MarketEventSignature } from '../types/exchange';
-import { PairPointType, PairStartOffType } from '../types/prices';
-import { calcRealTime, PairReadContracts, toRealAmount } from '../utils';
+import { ExchangeMarketType } from '../types/exchange';
+import { CandleResult, PairPointType, PairStartOffType, PricesListener, PricesMap } from '../types/prices';
+import { calcRealTime, getMarketLog, PairReadContracts, startInterval, toRealAmount } from '../utils';
 import { calcBlockHeight, point2Price } from '../utils';
 
 export default class PricesService {
-	private sdk: BitlySDK
+	private sdk: BitlySDK;
+	private ratesInterval?: ReturnType<typeof setInterval>;
+	private onChainPrices: PricesMap = {}
 
 	constructor(sdk: BitlySDK) {
-		this.sdk = sdk
+		this.sdk = sdk;
 	}
 
-	public async getPrices(markets: string[], relativeTimeInSec: number): Promise<Record<string, number>> {
+	public async startPriceUpdates(intervalTime: number) {
+		// Poll the onchain prices
+		if (!this.ratesInterval) {
+			this.ratesInterval = startInterval(async () => {
+				try {
+					if (!this.sdk.exchange.markets) {
+						return;
+					}
+					this.onChainPrices = await this.getPrices(this.sdk.exchange.markets.map(e=>e.marketAddress), 0);
+					this.sdk.context.events.emit('prices_updated', {
+						prices: this.onChainPrices,
+					});
+				} catch (err) {
+					this.sdk.context.logError(err);
+				}
+			}, intervalTime);
+		}
+	}
+
+	public onPricesUpdated(listener: PricesListener) {
+		return this.sdk.context.events.on('prices_updated', listener);
+	}
+
+	public removePricesListener(listener: PricesListener) {
+		return this.sdk.context.events.off('prices_updated', listener);
+	}
+
+	public removePricesListeners() {
+		this.sdk.context.events.removeAllListeners('prices_updated');
+	}
+
+	public async getPrices(markets: string[], relativeTimeInSec: number): Promise<PricesMap> {
 		const allMarkets = await this.sdk.exchange.markets;
         markets = markets.filter(market=>allMarkets?.map(e=>e.marketAddress).includes(market));
 
@@ -43,7 +73,7 @@ export default class PricesService {
     public async getKlines(markets: string[], resolution: KLINE_SOLUTION, relativeFromInSec: number,
         relativeToInSec: number
     ) {
-        let klines: any[] = [];
+        let klines = [];
 
         const allMarkets = await this.sdk.exchange.markets;
         const targetMarkets = allMarkets?.filter(market=>markets.includes(market.marketAddress));
@@ -66,6 +96,7 @@ export default class PricesService {
                 ));
             }
         }
+		return klines;
     }
 
     // Private functions
@@ -76,7 +107,7 @@ export default class PricesService {
         step: number,
         relativeFromInSec: number,
         relativeToInSec: number,
-    ) {
+    ): Promise<CandleResult[]> {
         const decimal = market.tokenX.decimals;
         const data = [];
 
@@ -96,7 +127,7 @@ export default class PricesService {
         if (endPrice == 0) {
             return [];
         }
-        const logs = await this.getMarketLog(market.marketAddress, fromBlock, toBlock, 'Swapped(address,int24,uint128)');
+        const logs = await getMarketLog(this.sdk, market.marketAddress, fromBlock, toBlock, 'Swapped(address,int24,uint128)');
 
         const increase = (curTime: Date) => {
             switch (resolution) {
@@ -114,13 +145,13 @@ export default class PricesService {
             }
         };
 
-        let bar = {
+        let bar: CandleResult = {
             open: beginPrice,
             close: beginPrice,
             high: beginPrice,
             low: beginPrice,
             volume: 0,
-            symbol: market,
+            symbol: market.marketAddress,
             time: lastTime.toISOString()
         };
 
@@ -154,32 +185,10 @@ export default class PricesService {
                 high: beginPrice,
                 low: beginPrice,
                 volume: 0,
-                symbol: market,
+                symbol: market.marketAddress,
                 time: lastTime.toISOString()
             };
         }
         return data;
     }
-
-    async getMarketLog(market: string, fromBlock: BlockTag, toBlock: BlockTag, event: MarketEventSignature, 
-        args: any[] = []
-    ) {
-        const filters = getPairContract(market, this.sdk.context.provider).filters[event](...args);
-        const logs = await this.sdk.context.provider.getLogs({
-            ...filters,
-            fromBlock,
-            toBlock
-        });
-
-        const iface = getPairContractInterface();
-        const parsedLogs = logs.map(log=>{
-            return {
-                ... iface.parseLog(log),
-                ...log,
-            }
-        });
-
-        return parsedLogs;
-    }
-
 }

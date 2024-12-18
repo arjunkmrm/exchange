@@ -1,3 +1,4 @@
+import { BlockTag } from "ethcall";
 import { CallOverrides } from "ethcall/lib/call";
 import BitlySDK from "..";
 import { UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT } from "../common/errors";
@@ -7,11 +8,13 @@ import {
     ERC20FuncNames, 
     ExchangeFuncNames, 
     getPairContract, 
+	getPairContractInterface, 
     getPairContractMulticall, 
     getTokenContract, 
     getTokenContractMulticall, 
     PairFuncNames 
 } from "../contracts";
+import { MarketEventSignature } from "../types";
 import { MultiCallArgs, SingleCallArgs } from "../types/common";
 
 export async function ERC20ReadContracts(
@@ -125,4 +128,25 @@ export async function BTLYWriteContract(sdk: BitlySDK, funcName: BTLYFuncNames, 
         throw new Error(UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT);
     }
     return await func(...arg);
+}
+
+export async function getMarketLog(sdk: BitlySDK, market: string, fromBlock: BlockTag, toBlock: BlockTag, event: MarketEventSignature, 
+	args: any[] = []
+) {
+	const filters = getPairContract(market, sdk.context.provider).filters[event](...args);
+	const logs = await sdk.context.provider.getLogs({
+		...filters,
+		fromBlock,
+		toBlock
+	});
+
+	const iface = getPairContractInterface();
+	const parsedLogs = logs.map(log=>{
+		return {
+			... iface.parseLog(log),
+			...log,
+		}
+	});
+
+	return parsedLogs;
 }

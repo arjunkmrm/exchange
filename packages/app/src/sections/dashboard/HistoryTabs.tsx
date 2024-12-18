@@ -28,7 +28,7 @@ const HistoryTabs: React.FC<HistoryTabsProp> = ({ currentTab, onChangeTab }) => 
 	const positionHistory = useAppSelector(selectPositionsHistoryTableData)
 
 	useEffect(() => {
-		dispatch(fetchPositionHistoryForTrader(walletAddress ?? ''))
+		dispatch(fetchPositionHistoryForTrader())
 	}, [dispatch, walletAddress])
 
 	return (

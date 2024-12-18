@@ -16,7 +16,6 @@ import styled from 'styled-components'
 
 import Currency from 'components/Currency'
 import { DesktopOnlyView, MobileOrTabletView } from 'components/Media'
-import FuturesIcon from 'components/Nav/FuturesIcon'
 import Table, { TableNoResults } from 'components/Table'
 import { Body } from 'components/Text'
 import { ETH_UNIT } from 'constants/network'
@@ -131,7 +130,6 @@ const FuturesHistoryTable: FC = () => {
 														}
 													/>
 													<StyledText>{cellProps.getValue()}</StyledText>
-													<FuturesIcon type={cellProps.row.original.accountType} />
 												</SynthContainer>
 											)}
 										</>
@@ -260,7 +258,6 @@ const FuturesHistoryTable: FC = () => {
 													/>
 													<MobileMarketContainer>
 														<StyledText>{cellProps.getValue()}</StyledText>
-														<FuturesIcon type={cellProps.row.original.accountType} />
 													</MobileMarketContainer>
 													<StyledText>{cellProps.row.original.date}</StyledText>
 												</MobileSynthContainer>

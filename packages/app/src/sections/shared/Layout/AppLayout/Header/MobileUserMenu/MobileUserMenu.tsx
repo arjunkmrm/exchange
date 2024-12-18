@@ -1,4 +1,4 @@
-import { PositionSide } from '@kwenta/sdk/types'
+import { OrderDirection } from '@bitly/sdk/types'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FC, useCallback, useReducer } from 'react'
@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import CloseIcon from 'assets/svg/app/close.svg'
 import MenuIcon from 'assets/svg/app/menu.svg'
 import Button from 'components/Button'
-import { DEFAULT_FUTURES_MARGIN_TYPE } from 'constants/defaults'
 import ROUTES from 'constants/routes'
 import { zIndex } from 'constants/ui'
 import { MOBILE_FOOTER_HEIGHT } from 'constants/ui'
@@ -28,7 +27,7 @@ const MobileUserMenu: FC = () => {
 	const dispatch = useAppDispatch()
 
 	const handleSideSelect = useCallback(
-		(side: PositionSide) => () => {
+		(side: OrderDirection) => () => {
 			dispatch(setLeverageSide(side))
 			dispatch(setTradePanelDrawerOpen(true))
 		},
@@ -44,7 +43,7 @@ const MobileUserMenu: FC = () => {
 				<MobileFooterSeparator />
 				<MobileFooterRight>
 					{window.location.pathname === ROUTES.Home.Root ? (
-						<Link href={ROUTES.Markets.Home(DEFAULT_FUTURES_MARGIN_TYPE)}>
+						<Link href={ROUTES.Markets.Home()}>
 							<Button size="small">{t('homepage.nav.start-trade')}</Button>
 						</Link>
 					) : asPath.split('/').includes('market') && !isOpen ? (
@@ -54,7 +53,7 @@ const MobileUserMenu: FC = () => {
 								variant="long"
 								fontSize={13}
 								fullWidth
-								onClick={handleSideSelect(PositionSide.LONG)}
+								onClick={handleSideSelect(OrderDirection.buy)}
 							>
 								Long
 							</Button>
@@ -63,7 +62,7 @@ const MobileUserMenu: FC = () => {
 								variant="short"
 								fontSize={13}
 								fullWidth
-								onClick={handleSideSelect(PositionSide.SHORT)}
+								onClick={handleSideSelect(OrderDirection.sell)}
 							>
 								Short
 							</Button>

@@ -1,6 +1,3 @@
-import { FuturesMarketAsset, SynthSuspensionReason } from '@kwenta/sdk/types'
-import { MarketKeyByAsset, formatDollars, formatPercent } from '@kwenta/sdk/utils'
-import Wei from '@synthetixio/wei'
 import { FC } from 'react'
 import styled, { css } from 'styled-components'
 
@@ -17,16 +14,17 @@ import {
 	TRADE_PANEL_WIDTH_LG,
 	TRADE_PANEL_WIDTH_MD,
 } from '../styles'
+import { formatPercent, formatDollars } from 'utils/prices'
 
 type Props = {
-	asset: FuturesMarketAsset
+	asset: string
 	label: string
 	description: string
 	isMarketClosed?: boolean
-	closureReason?: SynthSuspensionReason
+	closureReason: undefined
 	mobile?: boolean
 	priceDetails: {
-		oneDayChange: Wei
+		oneDayChange: number
 		priceInfo?: PricesInfo
 	}
 	onClick: () => void
@@ -37,7 +35,7 @@ const MarketsDropdownSelector: FC<Props> = (props) => (
 	<Container {...props}>
 		<ContentContainer mobile={props.mobile}>
 			<LeftContainer $mobile={props.mobile}>
-				<CurrencyIcon currencyKey={MarketKeyByAsset[props.asset]} width={31} height={31} />
+				<CurrencyIcon currencyKey={props.asset} width={31} height={31} />
 				<div className="currency-meta">
 					<CurrencyLabel weight="bold">
 						{props.label}
@@ -54,7 +52,7 @@ const MarketsDropdownSelector: FC<Props> = (props) => (
 				<MobileRightContainer>
 					<div>
 						<NumericValue value={props.priceDetails.priceInfo}>
-							{formatDollars(props.priceDetails.priceInfo?.price ?? '0', {
+							{formatDollars(props.priceDetails.priceInfo?.price ?? 0, {
 								suggestDecimalsForAsset: props.asset,
 							})}
 						</NumericValue>

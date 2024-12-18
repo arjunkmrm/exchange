@@ -3,10 +3,7 @@ import { FC, useMemo, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { NO_VALUE } from 'constants/placeholder'
-import useIsL1 from 'hooks/useIsL1'
-import useIsL2 from 'hooks/useIsL2'
 import { SummaryItem, SummaryItemValue, SummaryItemLabel } from 'sections/exchange/summary'
-import { selectGasPrice } from 'state/app/selectors'
 import { selectTransactionFeeWei } from 'state/exchange/selectors'
 import { useAppSelector } from 'state/hooks'
 
@@ -15,8 +12,6 @@ type GasPriceSelectProps = {
 }
 
 const GasPriceItem: FC = memo(() => {
-	const customGasPrice = useAppSelector(selectGasPrice)
-	const isL2 = useIsL2()
 	const transactionFee = useAppSelector(selectTransactionFeeWei)
 
 	const formattedTransactionFee = useMemo(() => {
@@ -25,19 +20,18 @@ const GasPriceItem: FC = memo(() => {
 
 	return (
 		<span data-testid="gas-price">
-			{isL2 ? formattedTransactionFee : `${formatNumber(+customGasPrice, { minDecimals: 2 })} Gwei`}
+			{formattedTransactionFee }
 		</span>
 	)
 })
 
 const GasPriceSelect: FC<GasPriceSelectProps> = memo(({ ...rest }) => {
 	const { t } = useTranslation()
-	const isMainnet = useIsL1()
 
 	return (
 		<SummaryItem {...rest}>
 			<SummaryItemLabel>
-				{t(`common.summary.gas-prices.${isMainnet ? 'max-fee' : 'gas-price'}`)}
+				{t(`common.summary.gas-prices.gas-price`)}
 			</SummaryItemLabel>
 			<SummaryItemValue>
 				<GasPriceItem />

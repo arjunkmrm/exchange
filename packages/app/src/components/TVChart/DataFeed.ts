@@ -1,5 +1,3 @@
-import { NetworkId, FuturesMarketAsset, PricesListener } from '@kwenta/sdk/types'
-import { getDisplayAsset } from '@kwenta/sdk/utils'
 import {
 	HistoryCallback,
 	IBasicDataFeed,
@@ -10,27 +8,15 @@ import {
 	SearchSymbolsCallback,
 	SubscribeBarsCallback,
 } from 'charting_library/charting_library'
-
-import { requestCandlesticks } from 'queries/rates/useCandlesticksQuery'
 import sdk from 'state/sdk'
-
 import { ChartBar } from './types'
 import { resolutionToSeconds } from './utils'
+import { ExchangeMarketType, KLINE_SOLUTION, PricesListener } from '@bitly/sdk/types'
 
 const supportedResolutions = [
-	'1',
-	'5',
-	'15',
-	'30',
 	'60',
-	'120',
 	'240',
-	'480',
-	'720',
 	'1D',
-	'3D',
-	'7D',
-	'30D',
 ] as ResolutionString[]
 
 const _pricesListener: { current: PricesListener | undefined } = {
@@ -47,31 +33,6 @@ const config = {
 	supported_resolutions: supportedResolutions,
 }
 
-// symbolName name split from BASE:QUOTE
-const splitBaseQuote = (symbolName: string) => {
-	var split_data = symbolName.split(/[:/]/)
-	const base = split_data[0]
-	const quote = split_data[1]
-	return { base, quote }
-}
-
-const fetchCombinedCandles = async (
-	base: string,
-	from: number,
-	to: number,
-	resolution: ResolutionString,
-	networkId: NetworkId
-) => {
-	const candleData = await requestCandlesticks(
-		getDisplayAsset(base)?.toUpperCase() ?? '',
-		from,
-		to,
-		resolutionToSeconds(resolution),
-		networkId
-	)
-	return candleData
-}
-
 const updateBar = (bar: ChartBar, price: number) => {
 	const high = Math.max(bar.high, price)
 	const low = Math.min(bar.low, price)
@@ -83,45 +44,43 @@ const updateBar = (bar: ChartBar, price: number) => {
 	}
 }
 
-const subscribeOffChainPrices = (
-	asset: FuturesMarketAsset,
+const subscribeOnChainPrices = (
+	asset: string,
 	resolution: ResolutionString,
 	onTick: SubscribeBarsCallback
 ) => {
 	if (_pricesListener.current) {
 		sdk.prices.removePricesListener(_pricesListener.current)
 	}
-	const listener: PricesListener = ({ type, prices }) => {
-		if (type === 'off_chain') {
-			const price = prices[asset]
-			if (price) {
-				if (_latestChartBar.current?.asset !== asset) return
-				const priceNum = price.toNumber()
-				if (_latestChartBar.current && priceNum !== _latestChartBar.current.bar.close) {
-					const updatedBar = updateBar(_latestChartBar.current.bar, priceNum)
-					const resolutionMs = resolutionToSeconds(resolution) * 1000
-					const timeSinceUpdate = Date.now() - updatedBar.time
+	const listener: PricesListener = ({ prices }) => {
+		const price = prices[asset]
+		if (price) {
+			if (_latestChartBar.current?.asset !== asset) return
+			const priceNum = price
+			if (_latestChartBar.current && priceNum !== _latestChartBar.current.bar.close) {
+				const updatedBar = updateBar(_latestChartBar.current.bar, priceNum)
+				const resolutionMs = resolutionToSeconds(resolution) * 1000
+				const timeSinceUpdate = Date.now() - updatedBar.time
 
-					if (timeSinceUpdate > resolutionMs) {
-						const lastClose = _latestChartBar.current.bar.close
-						const latestBar = {
-							high: lastClose,
-							low: lastClose,
-							open: lastClose,
-							close: lastClose,
-							time: Date.now(),
-						}
-						onTick(latestBar)
-						_latestChartBar.current = {
-							bar: latestBar,
-							asset: asset,
-						}
-					} else {
-						onTick(updatedBar)
-						_latestChartBar.current = {
-							bar: updatedBar,
-							asset: asset,
-						}
+				if (timeSinceUpdate > resolutionMs) {
+					const lastClose = _latestChartBar.current.bar.close
+					const latestBar = {
+						high: lastClose,
+						low: lastClose,
+						open: lastClose,
+						close: lastClose,
+						time: Date.now(),
+					}
+					onTick(latestBar)
+					_latestChartBar.current = {
+						bar: latestBar,
+						asset: asset,
+					}
+				} else {
+					onTick(updatedBar)
+					_latestChartBar.current = {
+						bar: updatedBar,
+						asset: asset,
 					}
 				}
 			}
@@ -133,7 +92,7 @@ const subscribeOffChainPrices = (
 }
 
 const DataFeedFactory = (
-	networkId: NetworkId,
+	markets: ExchangeMarketType[],
 	chartScale: number,
 	onSubscribe: (priceListener: PricesListener) => void
 ): IBasicDataFeed => {
@@ -143,17 +102,20 @@ const DataFeedFactory = (
 			setTimeout(() => cb(config), 500)
 		},
 		resolveSymbol: (symbolName: string, onSymbolResolvedCallback: (val: any) => any) => {
-			const { base, quote } = splitBaseQuote(symbolName)
-
-			const asset = getDisplayAsset(base)
+			// const { base, quote } = splitBaseQuote(symbolName)
+			const market = symbolName
+			const marketInfo = markets.filter(e=>e.marketAddress==market)[0]
+			if (!marketInfo) {
+				return
+			}
 
 			var symbol_stub = {
-				name: symbolName,
-				description: `${asset} / ${getDisplayAsset(quote)} (Oracle)`,
+				name: market,
+				description: marketInfo.displayName,
 				type: 'crypto',
 				session: '24x7',
-				timezone: 'Etc/UTC',
-				ticker: symbolName,
+				timezone: 'UTC',
+				ticker: marketInfo.displayName,
 				exchange: '',
 				minmov: 1,
 				pricescale: chartScale,
@@ -175,24 +137,25 @@ const DataFeedFactory = (
 			onHistoryCallback: HistoryCallback,
 			onErrorCallback: (error: any) => any
 		) {
-			const { base } = splitBaseQuote(symbolInfo.name)
+			const market = symbolInfo.name
 
 			try {
-				fetchCombinedCandles(base, from, to, _resolution, networkId).then((bars) => {
-					const chartBars = bars.map((b) => {
+				const nowSec = Number(((new Date()).getTime() / 1000).toFixed())
+				sdk.prices.getKlines([market], _resolution as KLINE_SOLUTION, from - nowSec, to - nowSec).then((bars) => {
+					const chartBars = bars.map((b: any) => {
 						return {
 							high: b.high,
 							low: b.low,
 							open: b.open,
 							close: b.close,
-							time: b.timestamp * 1000,
+							time: (new Date(b.time as string)).getTime(),
 						}
 					})
 					const latestBar = chartBars[chartBars.length - 1]
 					if (latestBar && latestBar.time > (_latestChartBar.current?.bar.time ?? 0)) {
 						_latestChartBar.current = {
 							bar: chartBars[chartBars.length - 1],
-							asset: base,
+							asset: market,
 						}
 					}
 
@@ -207,10 +170,10 @@ const DataFeedFactory = (
 			_resolution: ResolutionString,
 			onTick: SubscribeBarsCallback
 		) => {
-			const { base } = splitBaseQuote(symbolInfo.name)
+			const market = symbolInfo.name;
 
-			// subscribe to off chain prices
-			const listener = subscribeOffChainPrices(base as FuturesMarketAsset, _resolution, onTick)
+			// subscribe to on-chain prices
+			const listener = subscribeOnChainPrices(market as string, _resolution, onTick)
 			onSubscribe(listener)
 		},
 		unsubscribeBars: () => {},

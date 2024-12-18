@@ -1,5 +1,5 @@
-import { SECONDS_PER_DAY } from '@kwenta/sdk/constants'
-import { getDisplayAsset, hoursToMilliseconds, MarketKeyByAsset } from '@kwenta/sdk/utils'
+import { SECONDS_PER_DAY } from '@bitly/sdk/constants'
+import { getDisplayAsset, hoursToMilliseconds, MarketKeyByAsset } from '@btily/sdk/utils'
 import { wei } from '@synthetixio/wei'
 import { ColorType, createChart, UTCTimestamp } from 'lightweight-charts'
 import router from 'next/router'
@@ -18,7 +18,6 @@ import { NotMobileView } from 'components/Media'
 import { TabPanel } from 'components/Tab'
 import { DEFAULT_FUTURES_MARGIN_TYPE } from 'constants/defaults'
 import Connector from 'containers/Connector'
-import { requestCandlesticks } from 'queries/rates/useCandlesticksQuery'
 import { selectMarketVolumes } from 'state/futures/selectors'
 import { fetchOptimismMarkets } from 'state/home/actions'
 import { selectOptimismMarkets } from 'state/home/selectors'
@@ -27,6 +26,7 @@ import { selectPreviousDayPrices, selectPrices } from 'state/prices/selectors'
 import { SmallGoldenHeader, WhiteHeader } from 'styles/common'
 import media from 'styles/media'
 import { getSynthDescription } from 'utils/futures'
+import sdk from 'state/sdk'
 
 enum MarketsTab {
 	FUTURES = 'futures',
@@ -85,11 +85,11 @@ export const PriceChart = ({ asset }: PriceChartProps) => {
 			},
 		})
 
-		requestCandlesticks(
-			getDisplayAsset(asset),
-			Math.floor(Date.now() / 1000) - SECONDS_PER_DAY,
-			undefined,
-			3600
+		sdk.prices.getKlines(
+			[asset],
+			'1D',
+			-SECONDS_PER_DAY,
+			0,
 		)
 			.then((bars) => {
 				let positive = false
@@ -100,7 +100,7 @@ export const PriceChart = ({ asset }: PriceChartProps) => {
 				}
 				const results = bars.map((b) => ({
 					value: b.close,
-					time: b.timestamp as UTCTimestamp,
+					time: Math.floor((new Date(b.timestamp)).getTime() / 1000) as UTCTimestamp,
 				}))
 				return { results, positive }
 			})

@@ -1,4 +1,3 @@
-import { SynthSuspensionReason } from '@kwenta/sdk/types'
 import React, { FC, memo, ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -11,7 +10,7 @@ import Badge from './Badge'
 type MarketBadgeProps = {
 	currencyKey: string
 	isFuturesMarketClosed?: boolean
-	futuresClosureReason?: SynthSuspensionReason
+	futuresClosureReason?: string
 	fallbackComponent?: ReactElement
 }
 

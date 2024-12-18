@@ -8,9 +8,7 @@ import styled from 'styled-components'
 import Earning from 'sections/homepage/Earning'
 import Features from 'sections/homepage/Features'
 import Hero from 'sections/homepage/Hero'
-import ShortList from 'sections/homepage/ShortList'
 import TradeNow from 'sections/homepage/TradeNow'
-import BaseReferralModal from 'sections/referrals/ReferralModal/BaseReferralModal'
 import HomeLayout from 'sections/shared/Layout/HomeLayout'
 import { setOpenModal } from 'state/app/reducer'
 import { selectShowModal } from 'state/app/selectors'
@@ -68,9 +66,6 @@ const HomePage: HomePageComponent = () => {
 					<TradeNow />
 				</Container>
 			</HomeLayout>
-			{openModal === 'referrals_mint_boost_nft' && routerReferralCode && isReferralCodeValid && (
-				<BaseReferralModal onDismiss={onDismiss} referralCode={routerReferralCode} />
-			)}
 		</>
 	)
 }

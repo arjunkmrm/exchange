@@ -1,5 +1,5 @@
 {
-	"name": "@kwenta/sdk/types",
+	"name": "@bitly/sdk/types",
 	"type": "module",
 	"main": "../dist/types/index.js",
 	"types": "../dist/types/index.d.ts",

@@ -1,5 +1,3 @@
-import { FuturesMarketAsset } from '@kwenta/sdk/types'
-
 import { AppFuturesMarginType } from 'state/futures/common/types'
 
 import { EXTERNAL_LINKS } from './links'
@@ -29,37 +27,24 @@ export const ROUTES = {
 		Redeem: normalizeRoute('/dashboard', 'redeem', 'tab'),
 		TradingRewards: formatUrl('/dashboard/staking', { tab: 'trading-rewards' }),
 	},
-	Staking: {
-		Home: '/dashboard/staking',
-	},
-	Exchange: {
-		Home: '/exchange',
-		MarketPair: (baseCurrencyKey: string, quoteCurrencyKey: string) =>
-			`/exchange/?quote=${quoteCurrencyKey}&base=${baseCurrencyKey}`,
-		Into: (currencyKey: string) => `/exchange/?quote=${currencyKey}`,
-	},
 	Markets: {
-		Home: (accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { accountType, asset: 'sETH' }),
-		MarketPair: (asset: FuturesMarketAsset | string) =>
+		Home: () =>
+			formatUrl('/market', { asset: 'sETH' }),
+		MarketPair: (asset: string) =>
 			formatUrl('/market', { asset }),
-		Position: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
+		Position: (asset: string) =>
 			formatUrl('/market', {
 				asset,
-				accountType,
 				tab: 'position',
 			}),
-		Orders: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'orders' }),
-		ConditionalOrders: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'conditional_orders' }),
-		Trades: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'trades' }),
-		Transfers: (asset: FuturesMarketAsset, accountType: AppFuturesMarginType) =>
-			formatUrl('/market', { asset, accountType, tab: 'transfers' }),
-	},
-	Stats: {
-		Home: '/stats',
+		Orders: (asset: string) =>
+			formatUrl('/market', { asset, tab: 'orders' }),
+		ConditionalOrders: (asset: string) =>
+			formatUrl('/market', { asset, tab: 'conditional_orders' }),
+		Trades: (asset: string) =>
+			formatUrl('/market', { asset, tab: 'trades' }),
+		Transfers: (asset: string) =>
+			formatUrl('/market', { asset, tab: 'transfers' }),
 	},
 	Wallet: {
 		Home: '/wallet',
@@ -68,10 +53,7 @@ export const ROUTES = {
 	},
 	Referrals: {
 		Home: '/referrals',
-		nftMint: (asset: FuturesMarketAsset, ref: string) => formatUrl('/market', { asset, ref }),
-	},
-	Earn: {
-		Home: '/earn',
+		nftMint: (asset: string, ref: string) => formatUrl('/market', { asset, ref }),
 	},
 }
 
@@ -91,7 +73,7 @@ export const setLastVisited = (
 	baseCurrencyPair: string,
 	accountType: AppFuturesMarginType
 ): void => {
-	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair, accountType))
+	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair))
 }
 
 export default ROUTES

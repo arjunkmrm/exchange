@@ -1,10 +1,9 @@
-import { TransactionStatus, FuturesMarketKey, OperationalStatus, GasPrice } from '@kwenta/sdk/types'
+import { TransactionStatus, GasPrice } from '@bitly/sdk/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { notifyError } from 'components/ErrorNotifier'
 import { isUserDeniedError } from 'utils/formatters/error'
 
-import { checkSynthetixStatus, fetchKwentaStatus } from './actions'
 import { AppState, FuturesPositionModalType, ModalType, Transaction } from './types'
 
 export const APP_INITIAL_STATE: AppState = {
@@ -17,11 +16,6 @@ export const APP_INITIAL_STATE: AppState = {
 	},
 	gasSpeed: 'fast',
 	synthetixOnMaintenance: false,
-	kwentaStatus: {
-		status: OperationalStatus.FullyOperational,
-		message: '',
-		lastUpdatedAt: undefined,
-	},
 	acknowledgedOrdersWarning: false,
 	showBanner: true,
 }
@@ -38,7 +32,7 @@ const appSlice = createSlice({
 		},
 		setShowPositionModal: (
 			state,
-			action: PayloadAction<{ type: FuturesPositionModalType; marketKey: FuturesMarketKey } | null>
+			action: PayloadAction<{ type: FuturesPositionModalType; marketKey: string } | null>
 		) => {
 			if (action.payload) {
 				state.showModal = null
@@ -78,14 +72,6 @@ const appSlice = createSlice({
 		setShowBanner: (state, action: PayloadAction<boolean>) => {
 			state.showBanner = action.payload
 		},
-	},
-	extraReducers: (builder) => {
-		builder.addCase(checkSynthetixStatus.fulfilled, (state, action) => {
-			state.synthetixOnMaintenance = action.payload
-		})
-		builder.addCase(fetchKwentaStatus.fulfilled, (state, action) => {
-			state.kwentaStatus = action.payload
-		})
 	},
 })
 

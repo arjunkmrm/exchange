@@ -1,7 +1,4 @@
 import { useMemo } from 'react'
-import { UseQueryResult } from 'react-query'
-
-import useGetFile from 'queries/files/useGetFile'
 import {
 	selectOptimismMarkPrices,
 	selectOptimismMarkets,
@@ -27,9 +24,6 @@ const useStatsData = () => {
 	const prices = useAppSelector(selectOptimismMarkPrices)
 	const minTimestamp = useAppSelector(selectMinTimestamp)
 
-	const { data: dailyStatsData, isLoading: dailyStatsIsLoading }: UseQueryResult<DailyStat[]> =
-		useGetFile('stats/daily_stats.json')
-
 	const openInterestData = useMemo(() => {
 		return futuresMarkets.map(({ marketKey, asset, marketSize }) => {
 			return {
@@ -40,8 +34,8 @@ const useStatsData = () => {
 	}, [futuresMarkets, prices])
 
 	return {
-		dailyStatsData: dailyStatsData?.filter(({ timestamp }) => timestamp > minTimestamp) ?? [],
-		dailyStatsIsLoading,
+		dailyStatsData: [],
+		dailyStatsIsLoading: true,
 		openInterestData,
 	}
 }

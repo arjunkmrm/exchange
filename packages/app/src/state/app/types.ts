@@ -49,7 +49,6 @@ export type AppState = {
 	gasPrice: GasPrice<string>
 	transaction?: Transaction | undefined
 	synthetixOnMaintenance: boolean
-	kwentaStatus: KwentaStatus
 	acknowledgedOrdersWarning: boolean
 	showBanner: boolean
 }

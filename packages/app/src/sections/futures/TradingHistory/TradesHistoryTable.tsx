@@ -110,7 +110,7 @@ const TradesHistoryTable: FC<TradesHistoryTableProps> = ({ mobile, display }) =>
 				lastRef={lastElementRef}
 				onTableRowClick={(_row) => {
 					return _row.original.id !== NO_VALUE
-						? window.open(`${blockExplorer.addressLink(_row.original.account)}`)
+						? window.open(`${blockExplorer.addressLink?.(_row.original.account)}`)
 						: undefined
 				}}
 				highlightRowsOnHover

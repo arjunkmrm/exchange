@@ -1,4 +1,4 @@
-import { formatNumber, FormatNumberOptions } from '@kwenta/sdk/utils'
+import { FormatNumberOptions } from '@bitly/sdk/utils'
 import { wei, WeiSource } from '@synthetixio/wei'
 import React, { FC, memo, ReactNode, useMemo } from 'react'
 import styled from 'styled-components'

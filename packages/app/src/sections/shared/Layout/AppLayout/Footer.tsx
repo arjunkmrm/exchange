@@ -10,14 +10,9 @@ import { EXTERNAL_LINKS } from 'constants/links'
 import ROUTES from 'constants/routes'
 import { FOOTER_HEIGHT } from 'styles/common'
 
-import GitHashID from './GitHashID'
-import OperationStatus from './OperationStatus'
-
 const Footer = () => {
 	return (
 		<FooterContainer>
-			<OperationStatus />
-			<GitHashID />
 			<RightContainer>
 				{/* <FooterLinkInternal onClick={() => router.push(ROUTES.Stats.Home)}>
 					<StatsIcon />

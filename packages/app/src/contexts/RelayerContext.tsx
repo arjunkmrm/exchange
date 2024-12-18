@@ -1,4 +1,4 @@
-import { TransactionStatusData } from '@kwenta/sdk/types'
+import { TransactionStatusData } from '@bitly/sdk/types'
 import { toast } from 'react-toastify'
 
 import {
@@ -19,7 +19,7 @@ export const monitorTransaction = ({
 	onTxConfirmed?: () => void
 	onTxFailed?: (failureMessage: TransactionStatusData) => void
 }) => {
-	const link = blockExplorer.txLink(txHash)
+	const link = blockExplorer.txLink?.(txHash)
 
 	const toastProps = {
 		onClick: () => window.open(link, '_blank'),

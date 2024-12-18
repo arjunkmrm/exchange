@@ -1,6 +1,7 @@
 import BitlySDK from '..';
-import { calcBlockHeight, price2Point, toPlainAmount, toRealAmount } from '../utils';
+import { calcBlockHeight, point2Price, price2Point, toPlainAmount, toRealAmount } from '../utils';
 import { 
+	ExchangeOrdersType,
     ExchangeMarketType, 
     ExchangeOrderDetails, 
     ExchangePairsType, 
@@ -14,18 +15,22 @@ import {
     TokenInfoTypeWithAddress 
 } from '../types/exchange';
 import { DEFAULT_REFERRAL_ADDRESS, PERIOD_IN_SECONDS } from '../constants';
-import { ExchangeReadContracts, PairReadContracts, PairWriteContract } from '../utils/contract';
+import { ExchangeReadContracts, getMarketLog, PairReadContracts, PairWriteContract } from '../utils/contract';
 import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
 
 export default class ExchangeService {
     private sdk: BitlySDK
-    public markets: ExchangeMarketType[] | undefined
+    public markets: ExchangeMarketType[] = []
     private tokens: TokenInfoTypeWithAddress[] | undefined
     private marketName: string = ''
 
     constructor(sdk: BitlySDK) {
         this.sdk = sdk
     }
+
+	public getMarketsInfo(markets: string[]) {
+		return this.markets.filter(e=>markets.includes(e.marketAddress));
+	}
 
     public async getMarkets(marketName: string = ''): Promise<ExchangeMarketType[]> {
         if (this.marketName == marketName && this.markets) {
@@ -48,7 +53,7 @@ export default class ExchangeService {
     }
 
     public async getDailyVolumes(markets: string[]): Promise<MarketsVolumes> {
-        const allMarkets = await this.getMarkets();
+        const allMarkets = await this.markets;
         markets = markets.filter(market=>allMarkets.map(e=>e.marketAddress).includes(market));
 
         const marketsVolume: PairTotalVolumeType[] = await PairReadContracts(this.sdk, markets, ['totalVolume']);
@@ -73,7 +78,7 @@ export default class ExchangeService {
 
     public async getLimitOrders(markets: string[]): Promise<ExchangeOrderDetails> {
         const wallet = this.sdk.context.walletAddress;
-        const allMarkets = await this.getMarkets();
+        const allMarkets = await this.markets;
         const targetMarkets = allMarkets.filter(market=>markets.includes(market.marketAddress));
 
         const limOrdersViews: PairLimitOrdersType[] = 
@@ -105,10 +110,7 @@ export default class ExchangeService {
     }
 
     public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number) {
-        const targetMarket: ExchangeMarketType | undefined = this.markets?.filter(e=>e.marketAddress=market)?.[0];
-        if (!targetMarket) {
-            throw new Error(TARGET_MARKET_NOT_FOUND);
-        }
+        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
 
         const originToken = direction == OrderDirection.buy ? targetMarket.tokenY : targetMarket.tokenX;
         const point = price2Point(price);
@@ -122,7 +124,7 @@ export default class ExchangeService {
     public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
         slippage: number) 
     {
-        const targetMarket: ExchangeMarketType | undefined = this.markets?.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
@@ -139,7 +141,7 @@ export default class ExchangeService {
     }
 
     public async cancelLimitOrder(market: string, direction: OrderDirection, point: number) {
-        const targetMarket: ExchangeMarketType | undefined = this.markets?.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
@@ -149,7 +151,7 @@ export default class ExchangeService {
     }
 
     public async cancelAllLimitOrder(market: string) {
-        const targetMarket: ExchangeMarketType | undefined = this.markets?.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
@@ -158,7 +160,7 @@ export default class ExchangeService {
     }
 
     public async claimEarning(market: string, direction: OrderDirection, point: number) {
-        const targetMarket: ExchangeMarketType | undefined = this.markets?.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
@@ -168,13 +170,73 @@ export default class ExchangeService {
     }
 
     public async claimAllEarnings(market: string) {
-        const targetMarket: ExchangeMarketType | undefined = this.markets?.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
 
         return await PairWriteContract(this.sdk, market, 'claimAllEarnings');
     }
+
+	public async getFinishedOrders(markets: string[], relativeFromInSec: number, relativeToInSec: number) {
+		const fromBlock = await calcBlockHeight(relativeFromInSec, this.sdk.context.provider);
+		const toBlock = await calcBlockHeight(relativeToInSec, this.sdk.context.provider);
+
+		const allMarkets = await this.markets;
+        const targetMarkets = allMarkets.filter(market=>markets.includes(market.marketAddress));
+
+		const orders: ExchangeOrdersType = {};
+		for (const market of targetMarkets) {
+			const logs = await getMarketLog(
+				this.sdk, market.marketAddress, fromBlock, toBlock, 'EarningClaimed(address,int24,uint128,address)',
+				[undefined, undefined, undefined, this.sdk.context.walletAddress]
+			);
+			orders[market.marketAddress] = 
+				logs.map(l=>{
+					const targetToken: string = l.args['targetToken'];
+					const direction = targetToken == market.tokenX.address 
+						? OrderDirection.buy 
+						: OrderDirection.sell;
+					const decimal = targetToken == market.tokenX.address
+						? market.tokenX.decimals
+						: market.tokenY.decimals;
+					return {
+						direction,
+						volume: toRealAmount(l.args['earning'], decimal),
+						price: point2Price(l.args['point'])
+					};
+				});
+		}
+
+		return orders;
+	}
+
+	public async getMarketOrderHistory(markets: string[], relativeFromInSec: number, relativeToInSec: number) {
+		const fromBlock = await calcBlockHeight(relativeFromInSec, this.sdk.context.provider);
+		const toBlock = await calcBlockHeight(relativeToInSec, this.sdk.context.provider);
+
+		const allMarkets = await this.markets;
+        const targetMarkets = allMarkets.filter(market=>markets.includes(market.marketAddress));
+
+		const orders: ExchangeOrdersType = {};
+		for (const market of targetMarkets) {
+			const logs = await getMarketLog(this.sdk, market.marketAddress, fromBlock, toBlock, 'Swapped(address,int24,uint128)');
+			orders[market.marketAddress] = logs.map(l=>{
+				const originToken: string = l.args['originToken'];
+				const direction = originToken == market.tokenX.address 
+					? OrderDirection.sell 
+					: OrderDirection.buy;
+				const decimal = market.tokenY.decimals
+				return {
+					direction,
+					volume: toRealAmount(l.args['volume'], decimal),
+					price: point2Price(l.args['point'])
+				};
+			});
+		}
+
+		return orders;
+	}
 
     // Private methods
 

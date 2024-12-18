@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { FuturesPositionTablePositionActive } from 'types/futures'
+import { FuturesPositionTablePositionActive } from 'types/common'
 
 import MobilePNLGraphicPNG from 'assets/png/mobile-pnl-graphic.png'
 import PNLGraphicPNG from 'assets/png/pnl-graphic.png'

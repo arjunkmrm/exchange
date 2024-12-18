@@ -9,10 +9,3 @@ export const checkSynthetixStatus = createAsyncThunk<boolean, void, ThunkConfig>
 		return sdk.system.getSynthetixStatus()
 	}
 )
-
-export const fetchKwentaStatus = createAsyncThunk<KwentaStatus, void, ThunkConfig>(
-	'app/fetchKwentaStatus',
-	(_, { extra: { sdk } }) => {
-		return sdk.system.getKwentaStatus()
-	}
-)

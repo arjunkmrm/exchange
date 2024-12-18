@@ -1,4 +1,4 @@
-import { truncateString } from '@kwenta/sdk/utils'
+import { truncateString } from '@bitly/sdk/utils'
 import React, { FC, useMemo, memo } from 'react'
 import styled from 'styled-components'
 

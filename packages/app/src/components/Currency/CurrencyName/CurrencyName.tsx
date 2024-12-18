@@ -1,4 +1,3 @@
-import { MarketClosureReason } from '@kwenta/sdk/types'
 import React, { memo, FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
@@ -15,7 +14,7 @@ type CurrencyNameProps = {
 	name?: string | null
 	showIcon?: boolean
 	iconProps?: Partial<CurrencyIconProps>
-	marketClosureReason?: MarketClosureReason
+	marketClosureReason?: string
 	isDeprecated?: boolean
 }
 

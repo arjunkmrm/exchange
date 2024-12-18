@@ -43,3 +43,10 @@ export type GasPrice<T = BigNumber> = {
 }
 
 export type GasLimitEstimate = BigNumber | null
+
+export enum TransactionStatus {
+	AwaitingExecution = 'AwaitingExecution',
+	Executed = 'Executed',
+	Confirmed = 'Confirmed',
+	Failed = 'Failed',
+}

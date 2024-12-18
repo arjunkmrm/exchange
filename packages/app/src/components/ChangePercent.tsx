@@ -1,4 +1,3 @@
-import { formatPercent } from '@kwenta/sdk/utils'
 import { wei, WeiSource } from '@synthetixio/wei'
 import { FC, memo } from 'react'
 import styled from 'styled-components'
@@ -6,6 +5,7 @@ import styled from 'styled-components'
 import ChangeNegativeIcon from 'assets/svg/app/change-negative.svg'
 import ChangePositiveIcon from 'assets/svg/app/change-positive.svg'
 import { NO_VALUE } from 'constants/placeholder'
+import { formatPercent } from 'utils/prices'
 
 type ChangePercentProps = {
 	value: WeiSource
@@ -30,7 +30,7 @@ export const ChangePercent: FC<ChangePercentProps> = memo(
 				) : (
 					<ChangeNegativeIcon />
 				)}
-				{!isZero && value && formatPercent(wei(value).abs(), { minDecimals: decimals })}
+				{!isZero && value && formatPercent(Math.abs(value), { minDecimals: decimals })}
 			</CurrencyChange>
 		)
 	}

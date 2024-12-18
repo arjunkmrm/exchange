@@ -5,7 +5,7 @@ import { toPng } from 'html-to-image'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { FuturesPositionTablePositionActive } from 'types/futures'
+import { FuturesPositionTablePositionActive } from 'types/common'
 
 import TwitterIcon from 'assets/svg/social/twitter.svg'
 import Button from 'components/Button'

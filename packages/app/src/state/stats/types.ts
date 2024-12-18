@@ -1,4 +1,4 @@
-import BitlySDK from '@kwenta/sdk'
+import BitlySDK from '@bitly/sdk'
 
 import { StatsTimeframe } from 'hooks/useStatsData'
 import { QueryStatus } from 'state/types'

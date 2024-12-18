@@ -1,5 +1,3 @@
-import { NetworkId, ConditionalOrder, PricesListener } from '@kwenta/sdk/types'
-import { formatOrderDisplayType, formatNumber, suggestedDecimals } from '@kwenta/sdk/utils'
 import {
 	ChartingLibraryWidgetOptions,
 	IChartingLibraryWidget,
@@ -14,7 +12,6 @@ import { ThemeContext } from 'styled-components'
 
 import Connector from 'containers/Connector'
 import { chain } from 'containers/Connector/config'
-import { ChartBody } from 'sections/exchange/TradeCard/Charts/common/styles'
 import { useAppSelector } from 'state/hooks'
 import { selectCurrentTheme } from 'state/preferences/selectors'
 import sdk from 'state/sdk'
@@ -24,11 +21,21 @@ import { DEFAULT_RESOLUTION } from './constants'
 import DataFeedFactory from './DataFeed'
 import { ChartPosition } from './types'
 import { loadChartState, saveChartState } from './utils'
+import { ExchangeEarningType, OrderDirection, PricesListener } from '@bitly/sdk/dist/types'
+
+import styled from 'styled-components'
+import { suggestedDecimals } from 'utils/prices'
+
+export const ChartBody = styled.div<{ paddingTop?: string }>`
+	padding-top: ${(props) => props.paddingTop || '0'};
+	height: 100%;
+	width: 100%;
+`
 
 export type ChartProps = {
 	activePosition?: ChartPosition | null
 	potentialTrade?: ChartPosition | null
-	openOrders: ConditionalOrder[]
+	openOrders: ExchangeEarningType[]
 	showOrderLines: boolean
 	initialPrice: string
 	onChartReady?: () => void
@@ -94,7 +101,7 @@ export function TVChart({
 	}
 
 	const decimals =
-		Number(initialPrice) > 100 && Number(initialPrice) < 1000 ? 3 : suggestedDecimals(initialPrice)
+		Number(initialPrice) > 100 && Number(initialPrice) < 1000 ? 3 : suggestedDecimals(Number(initialPrice))
 	const chartScale = 10 ** decimals
 
 	useEffect(() => {
@@ -110,17 +117,17 @@ export function TVChart({
 			_widget.current?.chart().dataReady(() => {
 				clearOrderLines()
 				_oderLineRefs.current = openOrders.reduce((acc, order) => {
-					if (order.targetPrice) {
+					if (order.price) {
 						const color =
-							colors.selectedTheme.chartLine[order.isSlTp ? 'default' : order.side ?? 'short']
+							colors.selectedTheme.chartLine[order.direction == OrderDirection.buy ? 'buy' : 'sell']
 
 						const orderLine = _widget.current
 							?.chart()
 							.createPositionLine()
-							.setText(formatOrderDisplayType(order.orderType, order.reduceOnly))
-							.setTooltip('Average entry price')
-							.setQuantity(order.isSlTp ? '100%' : formatNumber(order.size.abs()))
-							.setPrice(order.targetPrice?.toNumber())
+							// .setText(formatOrderDisplayType(order.orderType, order.reduceOnly))
+							.setTooltip('Average price')
+							.setQuantity(order.volume.toString())
+							.setPrice(order.price)
 							.setExtendLeft(false)
 							.setQuantityTextColor(colors.white)
 							.setBodyTextColor(darkTheme.black)
@@ -169,9 +176,9 @@ export function TVChart({
 		const chartData = loadChartState()
 
 		const widgetOptions: ChartingLibraryWidgetOptions = {
-			symbol: marketAsset + ':sUSD',
+			symbol: marketAsset as string,
 			datafeed: DataFeedFactory(
-				(network?.id ?? chain.optimism.id) as NetworkId,
+				sdk.exchange.markets,
 				chartScale,
 				onSubscribe
 			),
@@ -244,7 +251,7 @@ export function TVChart({
 			clearExistingWidget()
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [network?.id as NetworkId, currentTheme, marketAssetLoaded, chartScale])
+	}, [network?.id, currentTheme, marketAssetLoaded, chartScale])
 
 	useEffect(() => {
 		if (onToggleShowOrderLines) {
@@ -268,29 +275,12 @@ export function TVChart({
 						.createPositionLine()
 						.setText('Entry')
 						.setTooltip('Average entry price')
-						.setQuantity(formatNumber(position.size.abs()))
-						.setPrice(position.price.toNumber())
+						.setQuantity(Math.abs(position.size).toString())
+						.setPrice(position.price)
 						.setExtendLeft(false)
 						.setBodyTextColor(darkTheme.black)
 						.setLineStyle(active ? 0 : 2)
 						.setLineLength(25)
-					if (position.liqPrice) {
-						_liquidationLine.current = _widget.current
-							?.chart()
-							.createPositionLine()
-							.setText('Liquidation')
-							.setTooltip('Liquidation price')
-							.setQuantity(formatNumber(position.size.abs()))
-							.setPrice(position.liqPrice.toNumber())
-							.setExtendLeft(false)
-							.setBodyTextColor(darkTheme.black)
-							.setLineStyle(active ? 0 : 2)
-							.setLineColor(colors.selectedTheme.orange)
-							.setBodyBorderColor(colors.selectedTheme.orange)
-							.setQuantityBackgroundColor(colors.selectedTheme.orange)
-							.setQuantityBorderColor(colors.selectedTheme.orange)
-							.setLineLength(25)
-					}
 				}
 				// Always show potential over existing
 				if (potentialTrade) {

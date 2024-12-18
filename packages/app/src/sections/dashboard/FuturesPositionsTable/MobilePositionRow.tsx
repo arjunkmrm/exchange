@@ -3,7 +3,7 @@ import { getMarketName, MarketKeyByAsset, formatNumber } from '@kwenta/sdk/utils
 import { wei } from '@synthetixio/wei'
 import { memo, FC } from 'react'
 import styled, { css } from 'styled-components'
-import { FuturesPositionTablePositionActive } from 'types/futures'
+import { FuturesPositionTablePositionActive } from 'types/common'
 
 import { border } from 'components/Button'
 import ChangePercent from 'components/ChangePercent'

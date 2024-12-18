@@ -1,4 +1,4 @@
-import BitlySDK from '@kwenta/sdk'
+import BitlySDK from '@bitly/sdk'
 
 import { wagmiClient } from 'containers/Connector/config'
 import logError from 'utils/logError'

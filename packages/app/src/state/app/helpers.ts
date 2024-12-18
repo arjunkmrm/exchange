@@ -1,4 +1,4 @@
-import { GasPrice, TransactionStatus } from '@kwenta/sdk/types'
+import { GasPrice, TransactionStatus } from '@bitly/sdk/types'
 import { BigNumber, ethers } from 'ethers'
 
 import { AppDispatch } from 'state/store'

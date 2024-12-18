@@ -1,4 +1,3 @@
-import { NetworkId, NetworkIdByName } from '@kwenta/sdk/types'
 import React from 'react'
 import styled, { useTheme } from 'styled-components'
 
@@ -18,24 +17,24 @@ const ConnectionDot: React.FC<ConnectionDotProps> = (props) => {
 	let background = theme.colors.noNetwork
 
 	if (network && isWalletConnected) {
-		switch (network?.id as NetworkId) {
-			case NetworkIdByName.mainnet:
-				background = theme.colors.mainnet
-				break
-			case NetworkIdByName.kovan:
-				background = theme.colors.kovan
-				break
-			case NetworkIdByName.goerli:
-				background = theme.colors.goerli
-				break
-			case NetworkIdByName['mainnet-ovm']:
-				background = theme.colors.optimism
-				break
-			default:
-				if (isL2) {
+		// switch (network?.id) {
+		// 	case .mainnet:
+		// 		background = theme.colors.mainnet
+		// 		break
+		// 	case NetworkIdByName.kovan:
+		// 		background = theme.colors.kovan
+		// 		break
+		// 	case NetworkIdByName.goerli:
+		// 		background = theme.colors.goerli
+		// 		break
+		// 	case NetworkIdByName['mainnet-ovm']:
+		// 		background = theme.colors.optimism
+		// 		break
+		// 	default:
+		// 		if (isL2) {
 					background = theme.colors.connectedDefault
-				}
-		}
+		// 		}
+		// }
 	}
 	return <Dot {...props} background={background} />
 }

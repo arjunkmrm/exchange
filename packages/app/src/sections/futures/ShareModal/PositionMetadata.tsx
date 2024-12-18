@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { useLayoutEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { FuturesPositionTablePosition } from 'types/futures'
+import { FuturesPositionTablePosition } from 'types/common'
 
 import media from 'styles/media'
 import getLocale from 'utils/formatters/getLocale'

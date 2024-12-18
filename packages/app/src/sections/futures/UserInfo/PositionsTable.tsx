@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { FC, memo, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { FuturesPositionTablePositionActive } from 'types/futures'
+import { FuturesPositionTablePositionActive } from 'types/common'
 
 import UploadIcon from 'assets/svg/futures/upload-icon.svg'
 import Currency from 'components/Currency'

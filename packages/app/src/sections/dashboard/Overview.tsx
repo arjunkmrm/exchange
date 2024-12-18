@@ -10,7 +10,6 @@ import { ExchangeTokens } from 'types/synths'
 
 import TabButton from 'components/Button/TabButton'
 import { DesktopOnlyView, MobileOrTabletView } from 'components/Media'
-import FuturesIcon from 'components/Nav/FuturesIcon'
 import { TabPanel } from 'components/Tab'
 import Search from 'components/Table/Search'
 import * as Text from 'components/Text'

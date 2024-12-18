@@ -1,4 +1,4 @@
-import { truncateString } from '@kwenta/sdk/utils'
+import { truncateString } from '@bitly/sdk/utils'
 import { useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import styled, { useTheme } from 'styled-components'

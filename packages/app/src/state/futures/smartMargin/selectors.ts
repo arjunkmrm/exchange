@@ -1,11 +1,11 @@
-import { SL_TP_MAX_SIZE, ZERO_WEI } from '@kwenta/sdk/constants'
+import { SL_TP_MAX_SIZE, ZERO_WEI } from '@bitly/sdk/constants'
 import {
 	TransactionStatus,
 	ConditionalOrderTypeEnum,
 	PositionSide,
 	FuturesMarketKey,
 	SwapDepositToken,
-} from '@kwenta/sdk/types'
+} from '@bitly/sdk/types'
 import {
 	calculateDesiredFillPrice,
 	getDefaultPriceImpact,
@@ -13,10 +13,10 @@ import {
 	MarketKeyByAsset,
 	MarketAssetByKey,
 	stripZeros,
-} from '@kwenta/sdk/utils'
+} from '@bitly/sdk/utils'
 import { createSelector } from '@reduxjs/toolkit'
 import Wei, { wei } from '@synthetixio/wei'
-import { FuturesPositionTablePosition, FuturesPositionTablePositionActive } from 'types/futures'
+import { FuturesPositionTablePosition, FuturesPositionTablePositionActive } from 'types/common'
 
 import { DEFAULT_DELAYED_CANCEL_BUFFER } from 'constants/defaults'
 import { selectSusdBalance } from 'state/balances/selectors'

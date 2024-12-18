@@ -1,4 +1,3 @@
-import { MarketClosureReason } from '@kwenta/sdk/types'
 import { FC, memo } from 'react'
 
 import CircuitBreakerIcon from 'assets/svg/app/market-closure/circuit-breaker.svg'
@@ -7,7 +6,7 @@ import FrozenIcon from 'assets/svg/app/market-closure/frozen.svg'
 import MarketPauseIcon from 'assets/svg/app/market-closure/market-pause.svg'
 
 type MarketClosureIconProps = {
-	marketClosureReason: MarketClosureReason | 'frozen'
+	marketClosureReason: string
 	size?: 'sm' | 'lg'
 }
 

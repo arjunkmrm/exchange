@@ -1,11 +1,8 @@
-import { PERIOD_IN_SECONDS, Period } from '@kwenta/sdk/constants'
+import { PERIOD_IN_SECONDS, Period } from '@bitly/sdk/constants'
 import {
-	FuturesPositionHistory,
-	FuturesMarketAsset,
-	NetworkId,
+	ExchangeOrdersType,
 	TransactionStatus,
-	FuturesMarginType,
-} from '@kwenta/sdk/types'
+} from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { notifyError } from 'components/ErrorNotifier'
@@ -42,7 +39,6 @@ import {
 } from './smartMargin/reducer'
 import {
 	selectSmartMarginAccount,
-	selectSmartMarginSupportedNetwork,
 } from './smartMargin/selectors'
 
 export const fetchMarkets = createAsyncThunk<void, void, ThunkConfig>(
@@ -89,36 +85,29 @@ export const editTradeSizeInput =
 	(size: string, currencyType: 'usd' | 'native'): AppThunk =>
 	(dispatch, getState) => {
 		const type = selectFuturesType(getState())
-		if (type === FuturesMarginType.CROSS_MARGIN) {
-			dispatch(editCrossMarginTradeSize(size, currencyType))
-		} else {
-			dispatch(editSmartMarginTradeSize(size, currencyType))
-		}
+		dispatch(editSmartMarginTradeSize(size, currencyType))
 	}
 
 export const fetchFuturesPositionHistory = createAsyncThunk<void, void, ThunkConfig>(
 	'futures/fetchFuturesPositionHistory',
 	async (_, { getState, dispatch }) => {
-		const accountType = selectFuturesAccount(getState())
-		accountType === FuturesMarginType.CROSS_MARGIN
-			? dispatch(fetchPositionHistoryV3())
-			: dispatch(fetchPositionHistoryV2())
+		dispatch(fetchPositionHistoryV2())
 	}
 )
 
 export const fetchPositionHistoryForTrader = createAsyncThunk<
-	{ history: FuturesPositionHistory<string>[]; address: string; networkId: NetworkId } | undefined,
-	string,
+	{ history: ExchangeOrdersType; address: string; networkId: number } | undefined,
+	void,
 	ThunkConfig
->('futures/fetchPositionHistoryForTrader', async (traderAddress, { getState, extra: { sdk } }) => {
+>('futures/fetchPositionHistoryForTrader', async (_, {getState, extra: { sdk } }) => {
+	const wallet = sdk.context.walletAddress
 	try {
 		const networkId = selectNetwork(getState())
-		const futuresSupported = selectSmartMarginSupportedNetwork(getState())
-		if (!futuresSupported) return
-		const history = await sdk.futures.getPositionHistory(traderAddress, 'eoa')
-		return { history: serializePositionHistory(history), networkId, address: traderAddress }
+		
+		const history = await sdk.exchange.getFinishedOrders()
+		return { history, networkId, address: wallet }
 	} catch (err) {
-		notifyError('Failed to fetch history for trader ' + traderAddress, err)
+		notifyError('Failed to fetch history for trader ' + wallet, err)
 		throw err
 	}
 })
@@ -156,8 +145,8 @@ export const cancelDelayedOrder = createAsyncThunk<void, string, ThunkConfig>(
 // Utils
 
 export const fetchFundingRatesHistory = createAsyncThunk<
-	{ marketAsset: FuturesMarketAsset; rates: any },
-	{ marketAsset: FuturesMarketAsset; period: Period },
+	{ marketAsset: string; rates: any },
+	{ marketAsset: string; period: Period },
 	ThunkConfig
 >('futures/fetchFundingRatesHistory', async ({ marketAsset, period }, { extra: { sdk } }) => {
 	const rates = await sdk.futures.getMarketFundingRatesHistory(

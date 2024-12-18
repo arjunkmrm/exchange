@@ -7,7 +7,7 @@ import {
 } from '@kwenta/sdk/utils'
 import { createSelector } from '@reduxjs/toolkit'
 import Wei, { wei } from '@synthetixio/wei'
-import { FuturesPositionTablePosition, FuturesPositionTablePositionActive } from 'types/futures'
+import { FuturesPositionTablePosition, FuturesPositionTablePositionActive } from 'types/common'
 
 import { DEFAULT_DELAYED_CANCEL_BUFFER } from 'constants/defaults'
 import { selectSynthV3Balances } from 'state/balances/selectors'

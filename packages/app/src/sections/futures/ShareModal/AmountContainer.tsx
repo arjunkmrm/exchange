@@ -3,7 +3,7 @@ import { PositionSide } from '@kwenta/sdk/types'
 import { MarketKeyByAsset, formatNumber, getMarketName } from '@kwenta/sdk/utils'
 import { FC, useMemo } from 'react'
 import styled from 'styled-components'
-import { FuturesPositionTablePosition } from 'types/futures'
+import { FuturesPositionTablePosition } from 'types/common'
 
 import CurrencyIcon from 'components/Currency/CurrencyIcon'
 import { selectMarketAsset } from 'state/futures/common/selectors'
