@@ -1,4 +1,3 @@
-import { FIAT_SYNTHS } from '@kwenta/sdk/constants'
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 import moment from 'moment-business-time'
 
@@ -255,8 +254,6 @@ export const marketNextOpen = (currencyKey: CurrencyKey) => {
 		return lseHours().nextOpen
 	} else if (TSE_SYNTHS.has(currencyKey)) {
 		return tseHours().nextOpen
-	} else if (FIAT_SYNTHS.has(currencyKey)) {
-		return forexHours().nextOpen
 	} else if (COMMODITY_SYNTHS.has(currencyKey)) {
 		return forexHours().nextOpen
 	} else {
@@ -271,8 +268,6 @@ export const marketNextTransition = (currencyKey: CurrencyKey) => {
 		return lseHours().nextTransition
 	} else if (TSE_SYNTHS.has(currencyKey)) {
 		return tseHours().nextTransition
-	} else if (FIAT_SYNTHS.has(currencyKey)) {
-		return forexHours().nextTransition
 	} else if (COMMODITY_SYNTHS.has(currencyKey)) {
 		return forexHours().nextTransition
 	} else {
@@ -287,8 +282,6 @@ export const marketIsOpen = (currencyKey: CurrencyKey) => {
 		return lseHours().isWorkingTime
 	} else if (TSE_SYNTHS.has(currencyKey)) {
 		return tseHours().isWorkingTime
-	} else if (FIAT_SYNTHS.has(currencyKey)) {
-		return forexHours().isWorkingTime
 	} else if (COMMODITY_SYNTHS.has(currencyKey)) {
 		return forexHours().isWorkingTime
 	} else {

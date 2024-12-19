@@ -1,4 +1,4 @@
-import type BitlySDK from '@kwenta/sdk'
+import type BitlySDK from '@bitly/sdk'
 
 import type { AppDispatch, RootState } from './store'
 

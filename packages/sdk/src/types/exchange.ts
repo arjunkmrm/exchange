@@ -9,7 +9,7 @@ export type TokenInfoTypeWithAddress = UnwrapPromise<ReturnType<BitlyExchange['t
 export type PairTotalVolumeType = UnwrapPromise<ReturnType<TokenExchange['totalVolume']>>;
 
 export type MarketsVolumes = {
-    [market: string]: BigNumber;
+    [market: string]: number;
 };
 
 export type ExchangePairsType = UnwrapPromise<ReturnType<BitlyExchange['pairs']>>;

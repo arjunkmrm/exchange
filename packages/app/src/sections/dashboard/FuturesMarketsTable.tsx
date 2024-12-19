@@ -1,11 +1,4 @@
-import { FuturesMarket, FuturesMarketAsset } from '@kwenta/sdk/types'
-import {
-	AssetDisplayByAsset,
-	MarketKeyByAsset,
-	getDisplayAsset,
-	formatDollars,
-} from '@kwenta/sdk/utils'
-import { wei } from '@synthetixio/wei'
+import { ExchangeMarketType } from '@bitly/sdk/types'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -16,17 +9,15 @@ import ColoredPrice from 'components/ColoredPrice'
 import Currency from 'components/Currency'
 import { FlexDivRowCentered } from 'components/layout/flex'
 import MarketBadge from 'components/MarketBadge'
-import { DesktopOnlyView, MobileOrTabletView } from 'components/Media'
 import Spacer from 'components/Spacer'
 import Table, { TableHeader } from 'components/Table'
 import ROUTES from 'constants/routes'
-import { selectFuturesType } from 'state/futures/common/selectors'
-import { selectMarketVolumes, selectMarkPrices } from 'state/futures/selectors'
+import { selectMarketVolumes } from 'state/futures/selectors'
 import { useAppSelector } from 'state/hooks'
 import { selectPreviousDayPrices, selectOnChainPricesInfo } from 'state/prices/selectors'
-import { getSynthDescription } from 'utils/futures'
-import { weiSortingFn } from 'utils/table'
-import { selectMarkPricesV2, selectV2Markets } from 'state/futures/smartMargin/selectors'
+import { selectV2Markets } from 'state/futures/smartMargin/selectors'
+import { formatDollars } from 'utils/prices'
+import { PriceChange } from 'state/prices/types'
 
 type FuturesMarketsTableProps = {
 	search?: string
@@ -39,44 +30,51 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
 	const router = useRouter()
 
 	const futuresMarkets = useAppSelector(selectV2Markets)
-	const pastRates = useAppSelector(selectPreviousDayPrices)
+	const laggedPrices = useAppSelector(selectPreviousDayPrices)
 	const futuresVolumes = useAppSelector(selectMarketVolumes)
-	const pricesInfo = useAppSelector(selectOnChainPricesInfo)
-	const markPrices = useAppSelector(selectMarkPricesV2)
+	const marketPrices = useAppSelector(selectOnChainPricesInfo)
 
 	let data = useMemo(() => {
 		const lowerSearch = search?.toLowerCase()
-		const markets: FuturesMarket[] = lowerSearch
-			? (futuresMarkets as FuturesMarket[]).filter(
+		const markets: ExchangeMarketType[] = lowerSearch
+			? (futuresMarkets as ExchangeMarketType[]).filter(
 					(m) =>
-						m.asset.toLowerCase().includes(lowerSearch) ||
-						AssetDisplayByAsset[m.asset]?.toLocaleLowerCase().includes(lowerSearch)
+						m.marketAddress.toLowerCase().includes(lowerSearch) ||
+						m.displayName?.toLowerCase().includes(lowerSearch)
 			  )
 			: futuresMarkets
 		return markets.map((market) => {
-			const description = getSynthDescription(market.asset, t)
-			const volume = futuresVolumes[market.marketKey]?.volume
-			const assetPriceInfo = pricesInfo[market.asset]
-			const pastPrice = pastRates.find(
-				(price) => price.synth === getDisplayAsset(market.asset)?.toUpperCase()
-			)
-			const marketPrice = markPrices[market.marketKey] ?? wei(0)
+			const marketAddress = market.marketAddress
+			const description = market.displayName
+			const volume = futuresVolumes[marketAddress]
+			const pastPrice = laggedPrices[marketAddress] ?? 0
+			const marketPrice = marketPrices[marketAddress] ?? 0
+			const change: PriceChange = (()=>{
+				if (marketPrice - pastPrice > 0) {
+					return 'up'
+				} else if (marketPrice - pastPrice < 0) {
+					return 'down'
+				} else {
+					return null
+				}
+			})()
+
+			
 
 			return {
-				asset: market.asset,
-				market: market.marketName,
+				asset: market.marketAddress,
 				description,
 				price: marketPrice,
-				priceInfo: assetPriceInfo,
-				volume: volume?.toNumber() ?? 0,
-				pastPrice: pastPrice?.rate,
+				change,
+				volume,
+				pastPrice: pastPrice,
 				priceChange:
-					pastPrice?.rate && marketPrice.gt(0)
-						? marketPrice.sub(pastPrice?.rate).div(marketPrice)
-						: wei(0),
+					pastPrice && marketPrice > 0
+						? (marketPrice - pastPrice) / marketPrice 
+						: 0,
 			}
 		})
-	}, [search, futuresMarkets, t, futuresVolumes, pricesInfo, pastRates, markPrices])
+	}, [search, futuresMarkets, t, futuresVolumes, laggedPrices, marketPrices])
 
 	return (
         <TableContainer>
@@ -98,7 +96,7 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
                                 <MarketContainer>
                                     <IconContainer>
                                         <StyledCurrencyIcon
-                                            currencyKey={MarketKeyByAsset[cellProps.row.original.asset]}
+                                            currencyKey={cellProps.row.original.asset}
                                         />
                                     </IconContainer>
                                     <StyledText>
@@ -135,7 +133,7 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
                         },
                         size: 125,
                         enableSorting: true,
-                        sortingFn: weiSortingFn('volume'),
+                        sortingFn: (a, b) => a.original.volume > b.original.volume ? 1 : -1,
                     },
                     {
                         header: () => (
@@ -146,7 +144,7 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
                         accessorKey: 'price',
                         cell: (cellProps) => {
                             return (
-                                <ColoredPrice priceChange={cellProps.row.original.priceInfo?.change}>
+                                <ColoredPrice priceChange={cellProps.row.original.change}>
                                     {formatDollars(cellProps.row.original.price, {
                                         suggestDecimalsForAsset: cellProps.row.original.asset,
                                     })}
@@ -155,7 +153,7 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
                         },
                         size: 130,
                         enableSorting: true,
-                        sortingFn: weiSortingFn('price'),
+                        sortingFn: (a, b) => a.original.price > b.original.price ? 1 : -1,
                     },
                     {
                         header: () => (
@@ -175,7 +173,7 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
                         },
                         size: 105,
                         enableSorting: true,
-                        sortingFn: weiSortingFn('priceChange'),
+                        sortingFn: (a, b) => a.original.priceChange > b.original.priceChange ? 1 : -1,
                     },
                 ]}
             />

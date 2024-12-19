@@ -1,4 +1,3 @@
-import { getSynthsForNetwork } from '@kwenta/sdk/data'
 import { createSelector } from '@reduxjs/toolkit'
 
 import { DEFAULT_NETWORK_ID } from 'constants/defaults'
@@ -13,27 +12,3 @@ export const selectIsWalletConnected = createSelector(
 	(walletAddress) => !!walletAddress
 )
 
-export const selectIsL2 = createSelector(
-	(state: RootState) => state.wallet.networkId,
-	(networkId) => networkId && (networkId === 10 || networkId === 420)
-)
-
-export const selectIsL1 = createSelector(
-	(state: RootState) => state.wallet.networkId,
-	(networkId) => networkId && (networkId === 1 || networkId === 5)
-)
-
-export const selectIsTestnet = createSelector(
-	(state: RootState) => state.wallet.networkId,
-	(networkId) => networkId && (networkId === 5 || networkId === 420)
-)
-
-export const selectIsMainnet = createSelector(
-	(state: RootState) => state.wallet.networkId,
-	(networkId) => networkId && (networkId === 5 || networkId === 420)
-)
-
-export const selectSynthsMap = createSelector(
-	(state: RootState) => state.wallet.networkId,
-	(networkId) => (networkId ? getSynthsForNetwork(networkId) : {})
-)

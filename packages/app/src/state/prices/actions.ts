@@ -1,37 +1,32 @@
-import { SynthPrice, PricesMap, PriceType } from '@kwenta/sdk/types'
+import { PERIOD_IN_SECONDS } from '@bitly/sdk/dist/constants'
+import { PricesMap } from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { notifyError } from 'components/ErrorNotifier'
 import { selectPrices } from 'state/prices/selectors'
 import { AppThunk } from 'state/store'
 import { ThunkConfig } from 'state/types'
-import { getPricesInfo } from 'utils/prices'
 
-import { setOffChainPrices, setOnChainPrices } from './reducer'
+import { setOnChainPrices } from './reducer'
 
 export const updatePrices =
-	(newPrices: PricesMap<string>, type: PriceType): AppThunk =>
+	(newPrices: PricesMap): AppThunk =>
 	(dispatch, getState) => {
-		const { prices } = getState()
-		if (type === 'off_chain') {
-			dispatch(setOffChainPrices(getPricesInfo(prices.offChainPrices, newPrices)))
-		} else {
-			dispatch(setOnChainPrices(getPricesInfo(prices.onChainPrices, newPrices)))
-		}
+		dispatch(setOnChainPrices(newPrices))
 	}
 
 export const fetchPreviousDayPrices = createAsyncThunk<
-	SynthPrice[],
-	boolean | undefined,
+	PricesMap,
+	void,
 	ThunkConfig
->('prices/fetchPreviousDayPrices', async (mainnet, { getState, extra: { sdk } }) => {
+>('prices/fetchPreviousDayPrices', async (_, { getState, extra: { sdk } }) => {
 	try {
 		const prices = selectPrices(getState())
 		const marketAssets = Object.keys(prices)
 
-		const laggedPrices = await sdk.prices.getPreviousDayPrices(
+		const laggedPrices = await sdk.prices.getPrices(
 			marketAssets,
-			undefined
+			-PERIOD_IN_SECONDS.ONE_DAY
 		)
 
 		return laggedPrices

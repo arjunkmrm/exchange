@@ -1,4 +1,3 @@
-import { SynthV3Asset } from '@kwenta/sdk/types'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { FetchStatus } from 'state/types'
@@ -39,11 +38,7 @@ const balancesSlice = createSlice({
 		})
 		builder.addCase(fetchBalances.fulfilled, (state, action) => {
 			state.status = FetchStatus.Success
-			state.synthBalances = action.payload.synthBalances
-			state.totalUSDBalance = action.payload.totalUSDBalance
-			state.synthBalancesMap = action.payload.synthBalancesMap
-			state.susdWalletBalance = action.payload.susdWalletBalance
-			state.tokenBalances = action.payload.tokenBalances
+			// state.tokenBalances = action.payload.tokenBalances
 		})
 		builder.addCase(fetchBalances.rejected, (state) => {
 			state.status = FetchStatus.Error

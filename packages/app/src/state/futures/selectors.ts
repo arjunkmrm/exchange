@@ -120,7 +120,7 @@ export const selectMarkets = createSelector(
 
 export const selectMarketVolumes = createSelector(
 	(state: RootState) => state.smartMargin.dailyMarketVolumes,
-	(dailyMarketVolumes) => unserializeFuturesVolumes(dailyMarketVolumes)
+	(dailyMarketVolumes) => dailyMarketVolumes
 )
 
 export const selectMarketKey = createSelector(

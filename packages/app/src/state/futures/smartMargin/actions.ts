@@ -1,41 +1,13 @@
-import BitlySDK from '@kwenta/sdk'
+import BitlySDK from '@bitly/sdk'
 import {
-	DEFAULT_PRICE_IMPACT_DELTA_PERCENT,
-	MIN_ACCOUNT_KEEPER_BAL,
-	SL_TP_MAX_SIZE,
 	ZERO_ADDRESS,
-	ZERO_WEI,
-} from '@kwenta/sdk/constants'
+} from '@bitly/sdk/constants'
 import {
-	PerpsMarketV2,
-	ConditionalOrder,
-	PerpsV2Position,
-	FuturesPositionHistory,
-	FuturesPotentialTradeDetails,
-	FuturesTrade,
-	FuturesVolumes,
-	MarginTransfer,
-	PositionSide,
-	PotentialTradeStatus,
-	SmartMarginOrderInputs,
-	ConditionalOrderTypeEnum,
-	SLTPOrderInputs,
-	FuturesMarketKey,
-	FuturesMarketAsset,
-	NetworkId,
+	ExchangeMarketType,
+	MarketsVolumes,
 	TransactionStatus,
-	FuturesMarginType,
-	SwapDepositToken,
-} from '@kwenta/sdk/types'
-import {
-	calculateDesiredFillPrice,
-	getTradeStatusMessage,
-	serializePotentialTrade,
-	marketOverrides,
-	floorNumber,
-} from '@kwenta/sdk/utils'
+} from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import Wei, { wei } from '@synthetixio/wei'
 import { debounce } from 'lodash'
 
 import { notifyError } from 'components/ErrorNotifier'
@@ -49,23 +21,9 @@ import {
 } from 'state/app/reducer'
 import { fetchBalances } from 'state/balances/actions'
 import { EST_KEEPER_GAS_FEE, ZERO_CM_FEES, ZERO_STATE_TRADE_INPUTS } from 'state/constants'
-import { serializeWeiObject } from 'state/helpers'
-import { selectSelectedEpoch } from 'state/staking/selectors'
 import { AppDispatch, AppThunk, RootState } from 'state/store'
 import { ThunkConfig } from 'state/types'
 import { selectNetwork, selectWallet } from 'state/wallet/selectors'
-import { computeDelayedOrderFee } from 'utils/costCalculations'
-import {
-	formatDelayedOrders,
-	orderPriceInvalidLabel,
-	serializeCmBalanceInfo,
-	serializeDelayedOrders,
-	serializeConditionalOrders,
-	serializeFuturesVolumes,
-	serializeV2Markets,
-	serializePositionHistory,
-	serializeTrades,
-} from 'utils/futures'
 import logError from 'utils/logError'
 import { refetchWithComparator } from 'utils/queries'
 
@@ -103,7 +61,6 @@ import {
 	selectSmartMarginAccount,
 	selectSmartMarginMarginDelta,
 	selectSmartMarginOrderPrice,
-	selectSmartMarginSupportedNetwork,
 	selectIsConditionalOrder,
 	selectKeeperEthBalance,
 	selectSmartMarginLeverageSide,
@@ -133,28 +90,14 @@ import {
 import { SmartMarginBalanceInfo } from './types'
 
 export const fetchMarketsV2 = createAsyncThunk<
-	{ markets: PerpsMarketV2<string>[]; networkId: NetworkId } | undefined,
+	{ markets: ExchangeMarketType[]; networkId: number } | undefined,
 	void,
 	ThunkConfig
 >('futures/fetchMarkets', async (_, { getState, extra: { sdk } }) => {
-	// const supportedNetwork = selectSmartMarginSupportedNetwork(getState())
-	const networkId = selectNetwork(getState())
-
-	// if (!supportedNetwork) return
 	try {
-		const markets = await sdk.futures.getMarkets()
-		// apply overrides
-		const overrideMarkets = markets.map((m) => {
-			return marketOverrides[m.marketKey]
-				? {
-						...m,
-						...marketOverrides[m.marketKey],
-				  }
-				: m
-		})
-
-		const serializedMarkets = serializeV2Markets(overrideMarkets)
-		return { markets: serializedMarkets, networkId }
+		const markets = await sdk.exchange.getMarkets()
+		const networkId = selectNetwork(getState())
+		return { markets, networkId }
 	} catch (err) {
 		logError(err)
 		notifyError('Failed to fetch markets', err)
@@ -278,11 +221,11 @@ export const fetchSmartMarginAccount = createAsyncThunk<
 	}
 })
 
-export const fetchDailyVolumesV2 = createAsyncThunk<FuturesVolumes<string>, void, ThunkConfig>(
+export const fetchDailyVolumesV2 = createAsyncThunk<MarketsVolumes, void, ThunkConfig>(
 	'futures/fetchDailyVolumesV2',
 	async (_, { extra: { sdk } }) => {
-		const volumes = await sdk.futures.getDailyVolumes()
-		return serializeFuturesVolumes(volumes)
+		const markets = await sdk.exchange.markets
+		return await sdk.exchange.getDailyVolumes(markets.map(e=>e.marketAddress))
 	}
 )
 

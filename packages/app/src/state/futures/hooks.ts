@@ -40,7 +40,6 @@ import {
 } from './smartMargin/actions'
 import {
 	selectSmartMarginAccount,
-	selectSmartMarginSupportedNetwork,
 } from './smartMargin/selectors'
 
 // TODO: Optimise polling and queries

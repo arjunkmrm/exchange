@@ -1,4 +1,3 @@
-import { NetworkId } from '@kwenta/sdk/types'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,7 +5,6 @@ import styled from 'styled-components'
 
 import Button from 'components/Button'
 import Connector from 'containers/Connector'
-import { isSupportedNetworkId } from 'utils/network'
 
 import ConnectionDot from '../ConnectionDot'
 
@@ -67,10 +65,8 @@ const MobileWalletButton: React.FC<MobileWalletButtonProps> = ({ toggleModal }) 
 
 	if (!isWalletConnected) {
 		return <MobileConnectButton toggleModal={toggleModal} />
-	} else if (isSupportedNetworkId(network?.id as NetworkId)) {
-		return <MobileWalletActions />
 	} else {
-		return <MobileUnsupportedButton />
+		return <MobileWalletActions />
 	}
 }
 

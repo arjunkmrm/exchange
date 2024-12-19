@@ -6,6 +6,7 @@ import { ContainerRowMixin } from 'components/layout/grid'
 import { NumericValue } from 'components/Text'
 import { CurrencyKey } from 'constants/currency'
 import { formatCurrency } from 'utils/prices'
+import { FormatCurrencyOptions } from 'types/common'
 
 type CurrencyPriceProps = {
 	currencyKey?: CurrencyKey
@@ -14,6 +15,7 @@ type CurrencyPriceProps = {
 	sign?: string
 	change?: number
 	conversionRate?: number
+	formatOptions?: FormatCurrencyOptions
 	colorType?: 'secondary' | 'positive' | 'negative' | 'preview'
 	colored?: boolean
 }

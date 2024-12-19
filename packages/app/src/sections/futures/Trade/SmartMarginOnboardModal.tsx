@@ -1,4 +1,3 @@
-import { formatDollars } from '@kwenta/sdk/utils'
 import dynamic from 'next/dynamic'
 import React, { memo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +8,7 @@ import { FlexDivRowCentered } from 'components/layout/flex'
 import Spacer from 'components/Spacer'
 import { selectSNXUSDBalance } from 'state/balances/selectors'
 import { useAppSelector } from 'state/hooks'
+import { formatDollars } from 'utils/prices'
 
 type Props = {
 	onDismiss(): void
@@ -40,7 +40,7 @@ const SmartMarginOnboardModal: React.FC<Props> = memo(({ onDismiss }) => {
 			<BalanceContainer>
 				<BalanceText>{t('futures.market.trade.margin.modal.balance')}:</BalanceText>
 				<BalanceText>
-					<span>{formatDollars(susdBalance)}</span> sUSD
+					<span>{formatDollars(susdBalance)}</span> USD
 				</BalanceText>
 			</BalanceContainer>
 

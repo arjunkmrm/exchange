@@ -1,3 +1,4 @@
+import { ExchangeMarketType, MarketsVolumes } from '@bitly/sdk/dist/types'
 import {
 	TransactionStatus,
 	SmartMarginOrderType,
@@ -116,9 +117,9 @@ export type SmartMarginAccountData = FuturesAccountData & {
 }
 
 export type SmartMarginState = {
-	markets: Record<FuturesNetwork, PerpsMarketV2<string>[]>
+	markets: Record<FuturesNetwork, ExchangeMarketType[]>
 	selectedMarketAsset: FuturesMarketAsset
-	dailyMarketVolumes: FuturesVolumes<string>
+	dailyMarketVolumes: MarketsVolumes
 	fundingRates: FundingRate<string>[]
 	historicalFundingRates: HistoricalFundingRates
 	queryStatuses: SmartMarginQueryStatuses

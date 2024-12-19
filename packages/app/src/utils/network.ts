@@ -1,4 +1,3 @@
-import { NetworkId } from '@kwenta/sdk/types'
 import { ethers, providers } from 'ethers'
 
 import { BLAST_NETWORK_LOOKUP } from 'constants/network'
@@ -6,11 +5,7 @@ import { chains } from 'containers/Connector/config'
 
 export const staticMainnetProvider = new ethers.providers.InfuraProvider()
 
-export function isSupportedNetworkId(id: NetworkId): boolean {
-	return chains.filter(chain=>chain.id==id).length > 0;
-}
-
-const loadInfuraProvider = (networkId: NetworkId) => {
+const loadInfuraProvider = (networkId: number) => {
 	if (!process.env.NEXT_PUBLIC_INFURA_PROJECT_ID) {
 		throw new Error('You must define NEXT_PUBLIC_INFURA_PROJECT_ID in your environment')
 	}
@@ -18,7 +13,7 @@ const loadInfuraProvider = (networkId: NetworkId) => {
 	return new ethers.providers.InfuraProvider(networkId, process.env.NEXT_PUBLIC_INFURA_PROJECT_ID)
 }
 
-const loadBlastProvider = (networkId: NetworkId) => {
+const loadBlastProvider = (networkId: number) => {
 	if (!process.env.NEXT_PUBLIC_BLASTAPI_PROJECT_ID) {
 		throw new Error('You must define NEXT_PUBLIC_BLASTAPI_PROJECT_ID in your environment')
 	}
@@ -32,7 +27,7 @@ const loadBlastProvider = (networkId: NetworkId) => {
 	}
 }
 
-export const getDefaultProvider = (networkId: NetworkId) => {
+export const getDefaultProvider = (networkId: number) => {
 	const providerId = process.env.NEXT_PUBLIC_PROVIDER_ID
 
 	let ethersProvider

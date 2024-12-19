@@ -9,18 +9,11 @@ import { notifyError } from 'components/ErrorNotifier'
 import { monitorAndAwaitTransaction } from 'state/app/helpers'
 import { handleTransactionError, setTransaction } from 'state/app/reducer'
 import { ZERO_CM_FEES, ZERO_STATE_TRADE_INPUTS } from 'state/constants'
-import {
-	editCrossMarginTradeSize,
-	fetchV3Markets,
-	fetchPositionHistoryV3,
-} from 'state/futures/crossMargin/actions'
 import { AppThunk } from 'state/store'
 import { ThunkConfig } from 'state/types'
 import { selectNetwork } from 'state/wallet/selectors'
-import { serializePositionHistory } from 'utils/futures'
 
 import { selectFuturesType } from './common/selectors'
-import { selectFuturesAccount } from './selectors'
 import {
 	editSmartMarginTradeSize,
 	fetchDailyVolumesV2,
@@ -44,19 +37,7 @@ import {
 export const fetchMarkets = createAsyncThunk<void, void, ThunkConfig>(
 	'futures/fetchMarkets',
 	async (_, { dispatch, getState }) => {
-		// if (getState().futures.selectedType === FuturesMarginType.SMART_MARGIN) {
-			dispatch(fetchMarketsV2())
-		// } else {
-		// 	dispatch(fetchV3Markets())
-		// }
-	}
-)
-
-export const fetchDailyVolumes = createAsyncThunk<void, void, ThunkConfig>(
-	'futures/fetchDailyVolumes',
-	async (_, { dispatch }) => {
-		// TODO: Fetch v3 daily volumes
-		dispatch(fetchDailyVolumesV2())
+		dispatch(fetchMarketsV2())
 	}
 )
 

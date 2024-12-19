@@ -11,29 +11,6 @@ const thresholds = [
 	{ value: 1e3, divisor: 1e3, unit: 'K', decimals: 0 },
 ]
 
-export const getPricesInfo = (oldPrices: PricesInfoMap, newPrices: PricesMap) => {
-	let pricesInfo: PricesInfoMap = {}
-
-	let asset: keyof PricesMap
-	for (asset in newPrices) {
-		const newPrice = newPrices[asset]
-		const oldPrice = oldPrices[asset]?.price
-		const oldChange = oldPrices[asset]?.change
-
-		pricesInfo[asset] = {
-			price: newPrice,
-			change: !!oldPrice
-				? newPrice > oldPrice
-					? 'up'
-					: oldPrice > newPrice
-					? 'down'
-					: oldChange ?? null
-				: null,
-		}
-	}
-	return pricesInfo
-}
-
 export const suggestedDecimals = (value: number) => {
 	value = Math.abs(value)
 	if (value >= 100000) return 0

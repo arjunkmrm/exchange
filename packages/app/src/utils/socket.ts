@@ -1,4 +1,4 @@
-import { ADDRESSES } from '@kwenta/sdk/constants'
+import { ADDRESSES } from '@bitly/sdk/constants'
 import { DefaultTheme } from 'styled-components'
 
 import { RGB, SocketCustomizationProps } from 'components/SocketBridge/types'

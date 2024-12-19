@@ -1,3 +1,4 @@
+import { PricesMap } from '@bitly/sdk/dist/types'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
@@ -8,9 +9,8 @@ import { PricesState } from './types'
 
 export const PRICES_INITIAL_STATE: PricesState = {
 	onChainPrices: {},
-	offChainPrices: {},
 	connectionError: null,
-	previousDayPrices: [],
+	previousDayPrices: {},
 	queryStatuses: {
 		previousDayPrices: DEFAULT_QUERY_STATUS,
 	},
@@ -20,14 +20,8 @@ const pricesSlice = createSlice({
 	name: 'prices',
 	initialState: PRICES_INITIAL_STATE,
 	reducers: {
-		setOffChainPrices: (state, action) => {
-			state.offChainPrices = action.payload
-		},
 		setOnChainPrices: (state, action) => {
 			state.onChainPrices = action.payload
-		},
-		setConnectionError: (state, action) => {
-			state.connectionError = action.payload
 		},
 	},
 	extraReducers: (builder) => {
@@ -36,7 +30,11 @@ const pricesSlice = createSlice({
 			pricesState.queryStatuses.previousDayPrices = LOADING_STATUS
 		})
 		builder.addCase(fetchPreviousDayPrices.fulfilled, (pricesState, action) => {
-			pricesState.previousDayPrices = action.payload
+			const prices: PricesMap = {}
+			Object.entries(action.payload).forEach(([key, price]) => {
+				prices[key] = price
+			})
+			pricesState.previousDayPrices = prices
 			pricesState.queryStatuses.previousDayPrices = SUCCESS_STATUS
 		})
 		builder.addCase(fetchPreviousDayPrices.rejected, (pricesState) => {
@@ -48,6 +46,6 @@ const pricesSlice = createSlice({
 	},
 })
 
-export const { setOffChainPrices, setOnChainPrices, setConnectionError } = pricesSlice.actions
+export const { setOnChainPrices } = pricesSlice.actions
 
 export default pricesSlice.reducer

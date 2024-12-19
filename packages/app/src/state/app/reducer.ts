@@ -39,9 +39,6 @@ const appSlice = createSlice({
 			}
 			state.showPositionModal = action.payload
 		},
-		setGasPrice: (state, action: PayloadAction<GasPrice<string>>) => {
-			state.gasPrice = action.payload
-		},
 		setTransaction: (state, action: PayloadAction<Transaction | undefined>) => {
 			state.transaction = action.payload
 		},
@@ -78,7 +75,6 @@ const appSlice = createSlice({
 export const {
 	setOpenModal,
 	setShowPositionModal,
-	setGasPrice,
 	setTransaction,
 	handleTransactionError,
 	updateTransactionStatus,

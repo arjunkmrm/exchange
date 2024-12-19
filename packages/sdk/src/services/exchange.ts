@@ -54,12 +54,13 @@ export default class ExchangeService {
 
     public async getDailyVolumes(markets: string[]): Promise<MarketsVolumes> {
         const allMarkets = await this.markets;
-        markets = markets.filter(market=>allMarkets.map(e=>e.marketAddress).includes(market));
+        const targetMarkets = allMarkets.filter(market=>markets.includes(market.marketAddress));
 
-        const marketsVolume: PairTotalVolumeType[] = await PairReadContracts(this.sdk, markets, ['totalVolume']);
+        const marketsVolume: PairTotalVolumeType[] = 
+			await PairReadContracts(this.sdk, targetMarkets.map(e=>e.marketAddress), ['totalVolume']);
         const marketsVolumeYesterday: PairTotalVolumeType[] = await PairReadContracts(
             this.sdk, 
-            markets, 
+            targetMarkets.map(e=>e.marketAddress), 
             ['totalVolume'], 
             [[]], 
             {blockTag: await calcBlockHeight(-PERIOD_IN_SECONDS.ONE_DAY, this.sdk.context.provider)}
@@ -67,10 +68,11 @@ export default class ExchangeService {
 
         const volumes24H: MarketsVolumes = {};
         for (let i = 0; i < marketsVolume.length; i++) {
-            const market = markets[i];
+            const market = targetMarkets[i];
             const volume = marketsVolume[i];
             const volumeYesterday = marketsVolumeYesterday[i];
-            volumes24H[market] = volume.sub(volumeYesterday);
+			const decimal = market.tokenY.decimals;
+            volumes24H[market.marketAddress] = toRealAmount(volume.sub(volumeYesterday), decimal);
         }
 
         return volumes24H;

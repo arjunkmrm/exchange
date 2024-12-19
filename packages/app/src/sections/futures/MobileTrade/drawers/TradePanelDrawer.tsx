@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import FullScreenModal from 'components/FullScreenModal'
 import { zIndex } from 'constants/ui'
-import TradePanelCrossMargin from 'sections/futures/Trade/TradePanelCrossMargin'
 import TradePanelSmartMargin from 'sections/futures/Trade/TradePanelSmartMargin'
 import { selectFuturesType } from 'state/futures/common/selectors'
 import { useAppSelector } from 'state/hooks'
@@ -20,11 +19,7 @@ const TradePanelDrawer: FC<TradePanelDrawerProps> = ({ open, closeDrawer }) => {
 			<Background>
 				<Closer onClick={closeDrawer} />
 				<Foreground>
-					{type === FuturesMarginType.CROSS_MARGIN ? (
-						<TradePanelCrossMargin mobile closeDrawer={closeDrawer} />
-					) : (
-						<TradePanelSmartMargin mobile closeDrawer={closeDrawer} />
-					)}
+					<TradePanelSmartMargin mobile closeDrawer={closeDrawer} />
 				</Foreground>
 			</Background>
 		</StyledModal>
