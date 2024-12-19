@@ -13,7 +13,6 @@ import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { setTheme } from 'state/preferences/reducer'
 import { selectCurrentTheme } from 'state/preferences/selectors'
 
-import BalanceActions from './BalanceActions'
 import ConnectionDot from './ConnectionDot'
 import NetworksSwitcher from './NetworksSwitcher'
 import WalletActions from './WalletActions'

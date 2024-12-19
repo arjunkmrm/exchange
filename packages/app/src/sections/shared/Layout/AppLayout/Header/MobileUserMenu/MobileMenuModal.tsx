@@ -12,7 +12,6 @@ import KwentaYellowIcon from 'assets/svg/brand/logo-yellow.svg'
 import FullScreenModal from 'components/FullScreenModal'
 import { FlexDivRow, FlexDivRowCentered } from 'components/layout/flex'
 import SegmentedControl from 'components/SegmentedControl'
-import ROUTES from 'constants/routes'
 import Links from 'sections/dashboard/Links'
 import Logo from 'sections/shared/Layout/Logo'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
@@ -36,11 +35,6 @@ export const MobileMenuModal: FC<MobileMenuModalProps> = ({ onDismiss }) => {
 	const menuLinks = MOBILE_NAV_LINKS
 
 	const currentTheme = useAppSelector(selectCurrentTheme)
-
-	const showStatsPage = useCallback(() => {
-		router.push(ROUTES.Stats.Home)
-		onDismiss()
-	}, [router, onDismiss])
 
 	const toggleTheme = useCallback(
 		(index: number) => {
@@ -78,15 +72,6 @@ export const MobileMenuModal: FC<MobileMenuModalProps> = ({ onDismiss }) => {
 									defaultOpen={router.asPath.includes(link)}
 									onDismiss={onDismiss}
 								/>
-							) : link === ROUTES.Stats.Home ? (
-								<MenuButton
-									currentTheme={currentTheme}
-									isActive={router.asPath.includes(link)}
-									onClick={showStatsPage}
-								>
-									{t(i18nLabel)}
-									<MobileMenuArrow />
-								</MenuButton>
 							) : (
 								<Link href={link}>
 									<MenuButton

@@ -11,8 +11,8 @@ import Button from 'components/Button'
 import ROUTES from 'constants/routes'
 import { zIndex } from 'constants/ui'
 import { MOBILE_FOOTER_HEIGHT } from 'constants/ui'
-import { setTradePanelDrawerOpen } from 'state/futures/reducer'
-import { setLeverageSide } from 'state/futures/smartMargin/reducer'
+// import { setTradePanelDrawerOpen } from 'state/futures/reducer'
+// import { setLeverageSide } from 'state/futures/smartMargin/reducer'
 import { useAppDispatch } from 'state/hooks'
 import { FixedFooterMixin } from 'styles/common'
 
@@ -28,8 +28,8 @@ const MobileUserMenu: FC = () => {
 
 	const handleSideSelect = useCallback(
 		(side: OrderDirection) => () => {
-			dispatch(setLeverageSide(side))
-			dispatch(setTradePanelDrawerOpen(true))
+			// dispatch(setLeverageSide(side))
+			// dispatch(setTradePanelDrawerOpen(true))
 		},
 		[dispatch]
 	)

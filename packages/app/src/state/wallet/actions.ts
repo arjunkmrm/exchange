@@ -2,14 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as Sentry from '@sentry/browser'
 import { ethers } from 'ethers'
 
-import { fetchBalances } from 'state/balances/actions'
-import {
-	fetchClaimableRewards,
-	fetchEscrowData,
-	fetchMigrationDetails,
-	fetchStakingData,
-} from 'state/staking/actions'
-import { setSelectedUserMigrationInfo } from 'state/stakingMigration/reducer'
 import type { ThunkConfig } from 'state/types'
 
 import { setWalletAddress } from './reducer'
@@ -18,12 +10,6 @@ export const resetWalletAddress = createAsyncThunk<void, string | undefined, Thu
 	'wallet/resetWalletAddress',
 	async (walletAddress, { dispatch }) => {
 		dispatch(setWalletAddress(walletAddress))
-		dispatch(setSelectedUserMigrationInfo(walletAddress))
-		dispatch(fetchBalances())
-		dispatch(fetchClaimableRewards())
-		dispatch(fetchStakingData())
-		dispatch(fetchEscrowData())
-		dispatch(fetchMigrationDetails())
 	}
 )
 

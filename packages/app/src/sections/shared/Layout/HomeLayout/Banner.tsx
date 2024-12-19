@@ -12,13 +12,13 @@ import {
 	BANNER_WAITING_TIME,
 } from 'constants/announcement'
 import useWindowSize from 'hooks/useWindowSize'
-import { MARKET_SELECTOR_HEIGHT_MOBILE } from 'sections/futures/Trade/MarketsDropdownSelector'
 import CloseIconWithHover from 'sections/shared/components/CloseIconWithHover'
 import { setShowBanner } from 'state/app/reducer'
 import { selectShowBanner } from 'state/app/selectors'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import media from 'styles/media'
 import localStore from 'utils/localStore'
+import { MARKET_SELECTOR_HEIGHT_MOBILE } from 'constants/defaults'
 
 type BannerViewProps = {
 	mode: 'mobile' | 'desktop'

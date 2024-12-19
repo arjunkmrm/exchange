@@ -21,8 +21,6 @@ export default function AcknowledgementModal() {
 	>
 
 	const protectedRoute =
-		router.asPath.startsWith(ROUTES.Earn.Home) ||
-		router.asPath.startsWith(ROUTES.Exchange.Home) ||
 		router.asPath.includes('/market')
 
 	if (

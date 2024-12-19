@@ -12,7 +12,6 @@ import { FlexDivRow, FlexDivRowCentered } from 'components/layout/flex'
 import { GridDivCenteredCol } from 'components/layout/grid'
 import { DesktopOnlyView, MobileOrTabletView } from 'components/Media'
 import { Body } from 'components/Text'
-import { DEFAULT_FUTURES_MARGIN_TYPE } from 'constants/defaults'
 import { EXTERNAL_LINKS } from 'constants/links'
 import ROUTES from 'constants/routes'
 import RefButton from 'sections/shared/components/RefButton'
@@ -80,7 +79,7 @@ const Header = memo(() => {
 		{
 			id: 'E-mail',
 			label: t('homepage.nav.socials.E-mail'),
-			onClick: () => window.open(EXTERNAL_LINKS.Social.Discord, '_blank'),
+			onClick: () => window.open(EXTERNAL_LINKS.Social.Email, '_blank'),
 			icon: <EMailLogo />,
 		},
 		{
@@ -124,7 +123,7 @@ const Header = memo(() => {
 						))}
 					</Links>
 					<MenuContainer>
-						<Link href={ROUTES.Markets.Home(DEFAULT_FUTURES_MARGIN_TYPE)}>
+						<Link href={ROUTES.Markets.Home()}>
 							<RefButton noOutline size="medium">
 								{t('homepage.nav.start-trade')}
 							</RefButton>
@@ -259,3 +258,7 @@ const MenuContainer = styled(GridDivCenteredCol)`
 `
 
 export default Header
+function DEFAULT_FUTURES_MARGIN_TYPE(DEFAULT_FUTURES_MARGIN_TYPE: any): string | import("url").UrlObject {
+	throw new Error('Function not implemented.')
+}
+

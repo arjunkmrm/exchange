@@ -39,3 +39,5 @@ export const ORDERS_WARNING_DISABLED = true
 export const DEFAULT_LEVERAGE = '1'
 
 export const SWAP_QUOTE_BUFFER = 0.2
+
+export const MARKET_SELECTOR_HEIGHT_MOBILE = 58

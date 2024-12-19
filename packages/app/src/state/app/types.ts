@@ -1,7 +1,5 @@
 import { TransactionStatus, GasPrice } from '@bitly/sdk/types'
 
-import { FuturesTransactionType } from 'state/futures/common/types'
-
 export type ModalType =
 	| 'futures_deposit_withdraw_smart_margin'
 	| 'futures_deposit_withdraw_cross_margin'
@@ -26,11 +24,8 @@ export type FuturesPositionModalType =
 
 export type GasSpeed = 'average' | 'fast' | 'fastest'
 
-export type TransactionType =
-	| FuturesTransactionType
-
 export type Transaction = {
-	type: TransactionType
+	type: string
 	status: TransactionStatus
 	error?: string
 	hash: string | null

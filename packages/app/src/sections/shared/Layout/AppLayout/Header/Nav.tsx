@@ -12,7 +12,7 @@ import LabelContainer from 'components/Nav/DropDownLabel'
 import Select from 'components/Select'
 import { DropdownIndicator, IndicatorSeparator } from 'components/Select'
 import Tooltip from 'components/Tooltip/Tooltip'
-import { selectMarketAsset } from 'state/futures/common/selectors'
+// import { selectMarketAsset } from 'state/futures/common/selectors'
 import { useAppSelector } from 'state/hooks'
 import { linkCSS } from 'styles/common'
 import media from 'styles/media'
@@ -32,15 +32,17 @@ type ReactSelectOptionProps = {
 const Nav: FC = memo(() => {
 	const { t } = useTranslation()
 	const { asPath } = useRouter()
-	const marketAsset = useAppSelector(selectMarketAsset)
+	// const marketAsset = useAppSelector(selectMarketAsset)
 
 	const getLink = useCallback(
 		(link: string) => {
-			return link.indexOf('/market') === 0
-				? `/market/?accountType=smart_margin&asset=${marketAsset}`
-				: link
+			// return link.indexOf('/market') === 0
+			// 	? `/market/?asset=${marketAsset}`
+			// 	: link
+			return link
 		},
-		[marketAsset]
+		// [marketAsset]
+		[]
 	)
 
 	const formatOptionLabel = ({

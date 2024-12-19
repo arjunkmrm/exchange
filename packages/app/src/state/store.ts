@@ -3,7 +3,6 @@ import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolki
 import type { AnyAction, ThunkAction } from '@reduxjs/toolkit'
 import logger from 'redux-logger'
 import {
-	createMigrate,
 	persistReducer,
 	persistStore,
 	FLUSH,
@@ -14,48 +13,24 @@ import {
 	REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-
 import appReducer from './app/reducer'
-import balancesReducer from './balances/reducer'
-import earnReducer from './earn/reducer'
-import crossMarginReducer from './futures/crossMargin/reducer'
-import futuresReducer from './futures/reducer'
-import smartMarginReducer from './futures/smartMargin/reducer'
-import homeReducer from './home/reducer'
 import preferencesReducer from './preferences/reducer'
-import pricesReducer from './prices/reducer'
-import referralsReducer from './referrals/reducer'
-import sdk from './sdk'
-import stakingReducer from './staking/reducer'
-import stakingMigrationReducer from './stakingMigration/reducer'
-import statsReducer from './stats/reducer'
 import walletReducer from './wallet/reducer'
+import sdk from './sdk'
 
 const LOG_REDUX = false
 
 const persistConfig = {
-	key: 'root1',
+	key: 'root',
 	storage,
-	version: 40,
+	version: 1,
 	blacklist: ['app', 'wallet'],
-	migrate: createMigrate(migrations, { debug: true }),
 }
 
 const combinedReducers = combineReducers({
 	app: appReducer,
-	wallet: walletReducer,
-	balances: balancesReducer,
-	futures: futuresReducer,
-	crossMargin: crossMarginReducer,
-	smartMargin: smartMarginReducer,
-	home: homeReducer,
-	earn: earnReducer,
-	staking: stakingReducer,
 	preferenes: preferencesReducer,
-	prices: pricesReducer,
-	stats: statsReducer,
-	stakingMigration: stakingMigrationReducer,
-	referrals: referralsReducer,
+	wallet: walletReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, combinedReducers)
