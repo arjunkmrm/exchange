@@ -18,6 +18,8 @@ export const APP_INITIAL_STATE: AppState = {
 	synthetixOnMaintenance: false,
 	acknowledgedOrdersWarning: false,
 	showBanner: true,
+	marketName: undefined,
+	previousMarketName: undefined,
 }
 
 const appSlice = createSlice({
@@ -69,6 +71,13 @@ const appSlice = createSlice({
 		setShowBanner: (state, action: PayloadAction<boolean>) => {
 			state.showBanner = action.payload
 		},
+		setMarketName: (state, action: PayloadAction<string>) => {
+			state.previousMarketName = state.marketName
+			state.marketName = action.payload
+		},
+		updatePreviousMarketName: (state) => {
+			state.previousMarketName = state.marketName
+		},
 	},
 })
 
@@ -81,6 +90,8 @@ export const {
 	updateTransactionHash,
 	setAcknowledgedOrdersWarning,
 	setShowBanner,
+	setMarketName,
+	updatePreviousMarketName,
 } = appSlice.actions
 
 export default appSlice.reducer

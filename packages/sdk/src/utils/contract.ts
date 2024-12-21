@@ -31,7 +31,7 @@ export async function ERC20ReadContracts(
         }
     }
 
-    return await sdk.context.multicallProvider.all(calls, override);
+    return await sdk.context.multicallProvider.tryAll(calls, override);
 }
 
 export async function ERC20WriteContract(sdk: BitlySDK, token: string, funcName: ERC20FuncNames, 
@@ -52,7 +52,7 @@ export async function ExchangeReadContracts(sdk: BitlySDK, funcNames: ExchangeFu
         }
     }
 
-    return await sdk.context.multicallProvider.all(calls, override);
+    return await sdk.context.multicallProvider.tryAll(calls, override);
 }
 
 export async function ExchangeWriteContract(sdk: BitlySDK, funcName: ExchangeFuncNames, arg: SingleCallArgs = []) {
@@ -76,7 +76,7 @@ export async function PairReadContracts(sdk: BitlySDK, addresses: string[], func
         }
     }
 
-    return await sdk.context.multicallProvider.all(calls, override);
+    return await sdk.context.multicallProvider.tryAll(calls, override);
 }
 
 export async function PairWriteContract(sdk: BitlySDK, market: string, funcName: PairFuncNames, 
@@ -97,7 +97,7 @@ export async function BankReadContracts(sdk: BitlySDK, funcNames: BankFuncNames[
         }
     }
 
-    return await sdk.context.multicallProvider.all(calls, override);
+    return await sdk.context.multicallProvider.tryAll(calls, override);
 }
 
 export async function BankWriteContract(sdk: BitlySDK, funcName: BankFuncNames, arg: SingleCallArgs = []) {
@@ -119,7 +119,7 @@ export async function BTLYReadContracts(sdk: BitlySDK, funcNames: BTLYFuncNames[
         }
     }
 
-    return await sdk.context.multicallProvider.all(calls, override);
+    return await sdk.context.multicallProvider.tryAll(calls, override);
 }
 
 export async function BTLYWriteContract(sdk: BitlySDK, funcName: BTLYFuncNames, arg: SingleCallArgs = []) {

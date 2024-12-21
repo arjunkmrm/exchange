@@ -63,6 +63,7 @@ export declare namespace TokenExchange {
 export interface TokenExchangeInterface extends utils.Interface {
   functions: {
     "_claimEarningInternal(address,int24)": FunctionFragment;
+    "blockDeployed()": FunctionFragment;
     "cancelAllLimitOrders()": FunctionFragment;
     "cancelLimitOrder(address,int24)": FunctionFragment;
     "claimAllEarnings()": FunctionFragment;
@@ -86,6 +87,7 @@ export interface TokenExchangeInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "_claimEarningInternal"
+      | "blockDeployed"
       | "cancelAllLimitOrders"
       | "cancelLimitOrder"
       | "claimAllEarnings"
@@ -109,6 +111,10 @@ export interface TokenExchangeInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "_claimEarningInternal",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "blockDeployed",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "cancelAllLimitOrders",
@@ -186,6 +192,10 @@ export interface TokenExchangeInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "_claimEarningInternal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "blockDeployed",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -381,6 +391,8 @@ export interface TokenExchange extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    blockDeployed(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     cancelAllLimitOrders(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -487,6 +499,8 @@ export interface TokenExchange extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  blockDeployed(overrides?: CallOverrides): Promise<BigNumber>;
+
   cancelAllLimitOrders(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -588,6 +602,8 @@ export interface TokenExchange extends BaseContract {
       point: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    blockDeployed(overrides?: CallOverrides): Promise<BigNumber>;
 
     cancelAllLimitOrders(overrides?: CallOverrides): Promise<void>;
 
@@ -765,6 +781,8 @@ export interface TokenExchange extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    blockDeployed(overrides?: CallOverrides): Promise<BigNumber>;
+
     cancelAllLimitOrders(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -854,6 +872,8 @@ export interface TokenExchange extends BaseContract {
       point: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    blockDeployed(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     cancelAllLimitOrders(
       overrides?: Overrides & { from?: PromiseOrValue<string> }

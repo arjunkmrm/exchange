@@ -21,7 +21,7 @@ import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
 export default class ExchangeService {
     private sdk: BitlySDK
     public markets: ExchangeMarketType[] = []
-    private tokens: TokenInfoTypeWithAddress[] | undefined
+    public tokens: TokenInfoTypeWithAddress[] = []
     private marketName: string = ''
 
     constructor(sdk: BitlySDK) {
@@ -32,8 +32,12 @@ export default class ExchangeService {
 		return this.markets.filter(e=>markets.includes(e.marketAddress));
 	}
 
+	public getTokensInfo(tokens: string[]) {
+		return this.tokens.filter(e=>tokens.includes(e.address));
+	}
+
     public async getMarkets(marketName: string = ''): Promise<ExchangeMarketType[]> {
-        if (this.marketName == marketName && this.markets) {
+        if (this.marketName == marketName && this.markets.length !== 0) {
             return this.markets;
         }
 
@@ -43,7 +47,7 @@ export default class ExchangeService {
     }
 
     public async getTokens(marketName: string = ''): Promise<TokenInfoTypeWithAddress[]> {
-        if (this.marketName == marketName && this.tokens) {
+        if (this.marketName == marketName && this.tokens.length !== 0) {
             return this.tokens;
         }
 
@@ -52,30 +56,44 @@ export default class ExchangeService {
         return this.tokens as unknown as TokenInfoTypeWithAddress[];
     }
 
-    public async getDailyVolumes(markets: string[]): Promise<MarketsVolumes> {
+    public async getVolumes(markets: string[], relativeTimeInSec: number = 0): Promise<MarketsVolumes> {
         const allMarkets = await this.markets;
         const targetMarkets = allMarkets.filter(market=>markets.includes(market.marketAddress));
 
-        const marketsVolume: PairTotalVolumeType[] = 
-			await PairReadContracts(this.sdk, targetMarkets.map(e=>e.marketAddress), ['totalVolume']);
-        const marketsVolumeYesterday: PairTotalVolumeType[] = await PairReadContracts(
+		const blockDeployed = await PairReadContracts(
+			this.sdk,
+			targetMarkets.map(e=>e.marketAddress),
+			['blockDeployed'],
+			[[]]
+		);
+		const targetBlockHeight = await calcBlockHeight(relativeTimeInSec, this.sdk.context.provider);
+
+		const marketInvovledList= [];
+		for (let i = 0; i < targetMarkets.length; i++) {
+			const market = targetMarkets[i];
+			const block = blockDeployed[i];
+			if (block <= targetBlockHeight) {
+				marketInvovledList.push(market);
+			}
+		}
+
+        const volumes: PairTotalVolumeType[] = await PairReadContracts(
             this.sdk, 
-            targetMarkets.map(e=>e.marketAddress), 
+            marketInvovledList.map(e=>e.marketAddress), 
             ['totalVolume'], 
             [[]], 
-            {blockTag: await calcBlockHeight(-PERIOD_IN_SECONDS.ONE_DAY, this.sdk.context.provider)}
+            {blockTag: targetBlockHeight}
         );
 
-        const volumes24H: MarketsVolumes = {};
-        for (let i = 0; i < marketsVolume.length; i++) {
-            const market = targetMarkets[i];
-            const volume = marketsVolume[i];
-            const volumeYesterday = marketsVolumeYesterday[i];
+		const marketInvoledDict: MarketsVolumes = {};
+		for (let i = 0; i < marketInvovledList.length; i++) {
+			const market = marketInvovledList[i];
+			const volume = volumes[i];
 			const decimal = market.tokenY.decimals;
-            volumes24H[market.marketAddress] = toRealAmount(volume.sub(volumeYesterday), decimal);
-        }
+			marketInvoledDict[market.marketAddress] = toRealAmount(volume, decimal);
+		}
 
-        return volumes24H;
+        return marketInvoledDict;
     }
 
     public async getLimitOrders(markets: string[]): Promise<ExchangeOrderDetails> {
@@ -243,14 +261,14 @@ export default class ExchangeService {
     // Private methods
 
     private async _fetchMarketsAndTokens(marketName: string = "") {
-        const pairs: ExchangePairsType = await ExchangeReadContracts(this.sdk, ['pairs'], [[marketName]]);
+        const pairs: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], [[marketName]]);
 
         if (!pairs) {
             return [];
         }
 
         const tokensSet = new Set<string>();
-        for (const pair of pairs) {
+        for (const pair of pairs[0]) {
             tokensSet.add(pair.tokenX);
             tokensSet.add(pair.tokenY);
         }
@@ -268,8 +286,8 @@ export default class ExchangeService {
 
         const markets: ExchangeMarketType[] = [];
 
-        for (let i = 0; i < pairs.length; i++) {
-            const pair = pairs[i];
+        for (let i = 0; i < pairs[0].length; i++) {
+            const pair = pairs[0][i];
 
             const tokenXInfo = { ...tokensObj[pair.tokenX], address: pair.tokenX } as TokenInfoTypeWithAddress;
             const tokenYInfo = { ...tokensObj[pair.tokenY], address: pair.tokenY } as TokenInfoTypeWithAddress;

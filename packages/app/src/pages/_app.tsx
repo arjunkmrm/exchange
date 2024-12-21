@@ -34,6 +34,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import '@reach/dialog/styles.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import '../i18n'
+import { usePollExchangeData } from 'state/exchange/hooks'
 
 type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode

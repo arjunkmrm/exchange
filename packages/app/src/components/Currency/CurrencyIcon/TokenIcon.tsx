@@ -1,8 +1,9 @@
-import { FC, memo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import styled from 'styled-components'
 
 import { FlexDivCentered } from 'components/layout/flex'
 import { useAppSelector } from 'state/hooks'
+import { selectTokens } from 'state/exchange/selectors'
 
 export type TokenIconProps = {
 	currencyKey: string
@@ -16,11 +17,15 @@ export type TokenIconProps = {
 }
 
 const TokenIcon: FC<TokenIconProps> = memo(({ currencyKey, isDeprecated, ...props }) => {
-	const tokensMap = useAppSelector(({ exchange }) => exchange.tokensMap)
+	const tokensMap = useAppSelector(selectTokens)
 
-	if (!!tokensMap[currencyKey]) {
+	const tokenInfo = useMemo(()=>{
+		return tokensMap.filter(e=>e.address==currencyKey)[0]
+	}, [tokensMap])
+
+	if (!!tokenInfo) {
 		return (
-			<TokenImage src={tokensMap[currencyKey].logoURI} $isDeprecated={isDeprecated} {...props} />
+			<TokenImage src={tokenInfo.logo} $isDeprecated={isDeprecated} {...props} />
 		)
 	} else {
 		return (

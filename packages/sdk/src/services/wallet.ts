@@ -12,6 +12,7 @@ import {
 } from '../utils/contract';
 import { BANK_ADDRESS_INVALID } from '../common/errors';
 import { ADDRESSES } from '../constants';
+import { toRealAmount } from '../utils';
 
 export default class WalletService {
     private sdk: BitlySDK
@@ -36,16 +37,34 @@ export default class WalletService {
         return await ERC20WriteContract(this.sdk, token, 'approve', [spender, amount]);
     }
 
-    public async balancesInWallet(tokens: string[]): Promise<BalanceType[]> {
-        return await ERC20ReadContracts(this.sdk, tokens, ['balanceOf'], [[this.sdk.context.walletAddress]]);
+    public async balancesInWallet(tokens: string[]): Promise<number[]> {
+        const ret: BalanceType[] = 
+			await ERC20ReadContracts(this.sdk, tokens, ['balanceOf'], [[this.sdk.context.walletAddress]]);
+		
+		const balances: number[] = [];
+		const tokensInfo = this.sdk.exchange.tokens;
+		for (let i = 0; i < ret.length; i++) {
+			const balance = ret[i];
+			const tokenAddress = tokens[i];
+			balances.push(toRealAmount(balance, tokensInfo.filter(e=>e.address==tokenAddress)[0]?.decimals));
+		}
+		return balances;
     }
 
-    public async balancesInBank(tokens: string[]) {
-        return await BankReadContracts(
+    public async balancesInBank(tokens: string[]): Promise<number[]> {
+        const ret: BalanceType[] = await BankReadContracts(
             this.sdk, 
             ['balances'], 
             tokens.map(e=>([this.sdk.context.walletAddress, tokens]))
         );
+		const balances: number[] = [];
+		const tokensInfo = this.sdk.exchange.tokens;
+		for (let i = 0; i < ret.length; i++) {
+			const balance = ret[i];
+			const tokenAddress = tokens[i];
+			balances.push(toRealAmount(balance, tokensInfo.filter(e=>e.address==tokenAddress)[0]?.decimals));
+		}
+		return balances;
     }
 
     // Private methods

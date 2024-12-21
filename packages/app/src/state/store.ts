@@ -16,6 +16,9 @@ import storage from 'redux-persist/lib/storage'
 import appReducer from './app/reducer'
 import preferencesReducer from './preferences/reducer'
 import walletReducer from './wallet/reducer'
+import pricesReducer from './prices/reducer'
+import balancesReducer from './balances/reducer'
+import exchangeReducer from './exchange/reducer'
 import sdk from './sdk'
 
 const LOG_REDUX = false
@@ -31,6 +34,9 @@ const combinedReducers = combineReducers({
 	app: appReducer,
 	preferenes: preferencesReducer,
 	wallet: walletReducer,
+	prices: pricesReducer,
+	balances: balancesReducer,
+	exchange: exchangeReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, combinedReducers)

@@ -13,3 +13,9 @@ export const selectAckedOrdersWarning = (state: RootState) => {
 }
 
 export const selectShowBanner = (state: RootState) => state.app.showBanner
+
+export const selectMarketName = (state: RootState) => state.app.marketName
+
+export const selectIsMarketNameUpdated = (state: RootState) => {
+	return state.app.marketName !== state.app.previousMarketName
+}

@@ -3,7 +3,6 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import DeprecatedXIcon from 'assets/svg/app/deprecated-x.svg'
-import { SYNTH_ICONS } from 'utils/icons'
 
 import TokenIcon from './TokenIcon'
 
@@ -28,12 +27,11 @@ const CurrencyIconContainer: FC<CurrencyIconProps> = React.memo(({ className, ..
 	</Container>
 ))
 
-const CurrencyIcon: FC<CurrencyIconProps> = React.memo(({ currencyKey, isDeprecated, ...rest }) => {
+const CurrencyIcon: FC<CurrencyIconProps> = React.memo(({ url, currencyKey, isDeprecated, ...rest }) => {
 	const props = { width: 30, height: 30, alt: currencyKey, ...rest }
-	const src = SYNTH_ICONS[currencyKey]
-
-	if (src) {
-		return <Image src={src} {...props} className={`${currencyKey !== 'KWENTA' && 'synth-icon'}`} />
+	
+	if (url) {
+		return <Image src={url} {...props} className={'synth-icon'} />
 	} else {
 		return <TokenIcon currencyKey={currencyKey} isDeprecated={isDeprecated} {...props} />
 	}

@@ -40,4 +40,6 @@ export type AppState = {
 	synthetixOnMaintenance: boolean
 	acknowledgedOrdersWarning: boolean
 	showBanner: boolean
+	marketName?: string
+	previousMarketName?: string
 }

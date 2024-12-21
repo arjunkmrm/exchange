@@ -17,7 +17,7 @@ type ChangePercentProps = {
 export const ChangePercent: FC<ChangePercentProps> = memo(
 	({ value, decimals = 2, showArrow = true, ...rest }) => {
 		const isValid = !!value
-		const isZero = value && wei(value).eq(0)
+		const isZero = value == 0
 		const isPositive = value && wei(value).gt(0)
 		return (
 			<CurrencyChange isValid={isValid} isPositive={isPositive} isZero={isZero} {...rest}>
