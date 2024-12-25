@@ -1,20 +1,22 @@
+import { POLL_INTERVAL_MS } from 'constants/defaults'
+import { selectMarketName, selectNetwork, selectWallet } from 'state/app/selectors'
 import { useAppSelector, useFetchAction, usePollAction } from 'state/hooks'
-import { selectNetwork, selectWallet } from "state/wallet/selectors"
-import { fetchDailyVolumes, fetchMarkets, fetchTokenList } from "./actions"
-import { selectMarkets } from "./selectors"
+import { fetchDailyVolumes, fetchMarkets } from "./actions"
 
 export const usePollExchangeData = () => {
-	const networkId = useAppSelector(selectNetwork)
-	const markets = useAppSelector(selectMarkets)
 	const wallet = useAppSelector(selectWallet)
+	const network = useAppSelector(selectNetwork)
+	const curMarketName = useAppSelector(selectMarketName)
 
 	usePollAction('fetchDailyVolumes', fetchDailyVolumes, {
-		dependencies: [networkId],
-		intervalTime: 60000,
+		dependencies: [network],
+		intervalTime: POLL_INTERVAL_MS,
+		disabled: curMarketName === undefined,
 	})
 
-	useFetchAction(fetchMarkets, { dependencies: [networkId] })
-
-	useFetchAction(fetchTokenList, { dependencies: [networkId] })
+	useFetchAction(fetchMarkets, { 
+		dependencies: [network, curMarketName],
+		disabled: curMarketName === undefined,
+	})
 }
 

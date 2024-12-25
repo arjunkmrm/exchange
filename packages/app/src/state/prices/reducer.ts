@@ -4,15 +4,17 @@ import { createSlice } from '@reduxjs/toolkit'
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
 import { FetchStatus } from 'state/types'
 
-import { fetchPreviousDayPrices } from './actions'
+import { fetchPreviousDayPrices, fetchPricesSeries } from './actions'
 import { PricesState } from './types'
 
 export const PRICES_INITIAL_STATE: PricesState = {
 	onChainPrices: {},
 	connectionError: null,
 	previousDayPrices: {},
+	pricesSeries: {},
 	queryStatuses: {
 		previousDayPrices: DEFAULT_QUERY_STATUS,
+		pricesSeries: DEFAULT_QUERY_STATUS,
 	},
 }
 
@@ -41,6 +43,21 @@ const pricesSlice = createSlice({
 		builder.addCase(fetchPreviousDayPrices.rejected, (pricesState) => {
 			pricesState.queryStatuses.previousDayPrices = {
 				error: 'Failed to fetch past prices',
+				status: FetchStatus.Error,
+			}
+		})
+
+		// Fetch prices series
+		builder.addCase(fetchPricesSeries.pending, (pricesState) => {
+			pricesState.queryStatuses.pricesSeries = LOADING_STATUS
+		})
+		builder.addCase(fetchPricesSeries.fulfilled, (pricesState, action) => {
+			pricesState.pricesSeries = action.payload
+			pricesState.queryStatuses.pricesSeries = SUCCESS_STATUS
+		})
+		builder.addCase(fetchPricesSeries.rejected, (pricesState) => {
+			pricesState.queryStatuses.pricesSeries = {
+				error: 'Failed to fetch past prices series',
 				status: FetchStatus.Error,
 			}
 		})

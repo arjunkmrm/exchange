@@ -1,12 +1,13 @@
-import { FormatNumberOptions } from '@bitly/sdk/utils'
 import { wei, WeiSource } from '@synthetixio/wei'
 import React, { FC, memo, ReactNode, useMemo } from 'react'
 import styled from 'styled-components'
+import { FormatNumberOptions } from 'types/common'
+import { formatNumber } from 'utils/prices'
 
 import Body, { BodyProps } from './Body'
 
 type NumericValueProps = BodyProps & {
-	value?: WeiSource
+	value?: number
 	preview?: boolean
 	colored?: boolean
 	options?: FormatNumberOptions
@@ -22,9 +23,9 @@ const NumericValue: FC<NumericValueProps> = memo(
 			} else if (preview) {
 				return 'preview'
 			} else if (colored && value) {
-				if (wei(value).gt(0)) {
+				if (value > 0) {
 					return 'positive'
-				} else if (wei(value).lt(0)) {
+				} else if (value < 0) {
 					return 'negative'
 				}
 			} else {

@@ -58,9 +58,6 @@ export const getContractsByNetwork = (
         BTLYToken: (ADDRESSES.BTLY[networkId]
             ? BTLY__factory.connect(ADDRESSES.BTLY[networkId], provider)
             : undefined) as BTLY | undefined,
-        USDT: ADDRESSES.USDT[networkId]
-            ? ERC20__factory.connect(ADDRESSES.USDT[networkId], provider)
-            : undefined,
     };
 }
 
@@ -75,12 +72,10 @@ export const getMulticallContractsByNetwork = (networkId: number) => {
         BTLYToken: ADDRESSES.BTLY[networkId]
             ? new EthCallContract(ADDRESSES.BTLY[networkId], BTLYABI)
             : undefined,
-        USDT: ADDRESSES.USDT[networkId]
-            ? new EthCallContract(ADDRESSES.USDT[networkId], ERC20ABI)
-            : undefined,
     }
 }
 
 export type ContractsMap = ReturnType<typeof getContractsByNetwork>
 export type MulticallContractsMap = ReturnType<typeof getMulticallContractsByNetwork>
 export type ContractName = keyof UnwrapPromise<ContractsMap>
+export * from './constants'

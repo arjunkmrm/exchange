@@ -28,3 +28,11 @@ export type FormatCurrencyOptions = {
 	suggestDecimalsForAsset?: string
 } & TruncatedOptions
 
+export type BalanceDataType = {
+	address: string
+	logo: string
+	name: string
+	symbol: string
+	balanceInBank: number
+	balanceInWallet: number
+}

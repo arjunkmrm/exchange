@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
 import { FetchStatus } from 'state/types'
-import { fetchDailyVolumes, fetchMarkets, fetchTokenList } from './actions'
+import { fetchDailyVolumes, fetchMarkets, fetchOpenOrders, fetchTokenList } from './actions'
 import { ExchangeState } from './types'
 
 export const EXCHANGE_INITIAL_STATE: ExchangeState = {
 	markets: {},
 	tokensMap: {},
 	selectedMarketAsset: '',
+	openOrders: {},
 	dailyMarketVolumes: {},
 	queryStatuses: {
 		markets: DEFAULT_QUERY_STATUS,
 		dailyVolumes: DEFAULT_QUERY_STATUS,
 		tokenList: DEFAULT_QUERY_STATUS,
+		openOrders: DEFAULT_QUERY_STATUS,
 	},
 }
 
@@ -22,7 +24,7 @@ const exchangeSlice = createSlice({
 	reducers: {
 	},
 
-	extraReducers(builder) {
+	extraReducers: (builder) => {
 		// Markets
 		builder.addCase(fetchMarkets.pending, (exchangeState) => {
 			exchangeState.queryStatuses.markets = LOADING_STATUS
@@ -71,6 +73,23 @@ const exchangeSlice = createSlice({
 			state.queryStatuses.tokenList = {
 				status: FetchStatus.Error,
 				error: 'Failed to fetch token list',
+			}
+		})
+
+		// Open orders
+		builder.addCase(fetchOpenOrders.pending, (state) => {
+			state.queryStatuses.openOrders = LOADING_STATUS
+		})
+		builder.addCase(fetchOpenOrders.fulfilled, (state, { payload }) => {
+			state.queryStatuses.openOrders = SUCCESS_STATUS
+			if (payload) {
+				state.openOrders[payload.networkId] = payload.openOrders
+			}
+		})
+		builder.addCase(fetchOpenOrders.rejected, (state) => {
+			state.queryStatuses.openOrders = {
+				status: FetchStatus.Error,
+				error: 'Failed to fetch open orders',
 			}
 		})
 	},

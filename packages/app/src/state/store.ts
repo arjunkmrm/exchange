@@ -17,7 +17,6 @@ import appReducer from './app/reducer'
 import preferencesReducer from './preferences/reducer'
 import walletReducer from './wallet/reducer'
 import pricesReducer from './prices/reducer'
-import balancesReducer from './balances/reducer'
 import exchangeReducer from './exchange/reducer'
 import sdk from './sdk'
 
@@ -27,7 +26,7 @@ const persistConfig = {
 	key: 'root',
 	storage,
 	version: 1,
-	blacklist: ['app', 'wallet'],
+	whitelist: [],
 }
 
 const combinedReducers = combineReducers({
@@ -35,7 +34,6 @@ const combinedReducers = combineReducers({
 	preferenes: preferencesReducer,
 	wallet: walletReducer,
 	prices: pricesReducer,
-	balances: balancesReducer,
 	exchange: exchangeReducer,
 })
 

@@ -13,3 +13,5 @@ export const selectLatestEthPrice = createSelector(selectPrices, (prices) => {
 })
 
 export const selectPricesConnectionError = (state: RootState) => state.prices.connectionError
+
+export const selectPriceSeries = (state: RootState) => state.prices.pricesSeries

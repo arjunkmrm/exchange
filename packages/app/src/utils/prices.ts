@@ -1,7 +1,7 @@
-import { PricesMap } from '@bitly/sdk/dist/types'
+import { ExchangeMarketType, TokenInfoTypeWithAddress } from '@bitly/sdk/dist/types'
+import { STABLE_COINS } from '@bitly/sdk/constants'
 import { DecimalsForAsset } from 'constants/currency'
 import { DEFAULT_CRYPTO_DECIMALS, DEFAULT_FIAT_DECIMALS, DEFAULT_NUMBER_DECIMALS } from 'constants/defaults'
-import { PricesInfoMap } from 'state/prices/types'
 import { FormatCurrencyOptions, FormatNumberOptions } from 'types/common'
 
 const thresholds = [
@@ -101,7 +101,7 @@ export const formatNumber = (value: number, options?: FormatNumberOptions) => {
 		? Math.min(defaultDecimals, options.maxDecimals)
 		: defaultDecimals
 
-	const withCommas = commifyAndPadDecimals(valueBeforeAsString.toString(decimals), decimals)
+	const withCommas = commifyAndPadDecimals(valueBeforeAsString.toString(), decimals)
 
 	formattedValue.push(withCommas)
 
@@ -141,3 +141,23 @@ export const commifyAndPadDecimals = (value: string, decimals: number) => {
 
 const commify = (num: string): string => 
     num.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+export const getPairBasedOnStableCoin = (token: string, tokenInfo: TokenInfoTypeWithAddress, networkId: number) => {
+	const stableCoins = STABLE_COINS[networkId]
+	if (stableCoins.length == 0) {
+		return null;
+	}
+
+	for (const stableCoin of stableCoins) {
+		if (token == stableCoin) {
+			return undefined;
+		}
+		for (const pairInfo of tokenInfo.pairs) {
+			if (pairInfo.tokenY == stableCoin) {
+				return pairInfo.pair;
+			}
+		}
+	}
+
+	return null;
+};

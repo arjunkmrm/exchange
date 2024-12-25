@@ -6,12 +6,14 @@ export type PriceChange = 'up' | 'down' | null
 export const pricesInfoKeys = new Set(['price'])
 
 export type PricesQueryStatuses = {
-	previousDayPrices: QueryStatus
+	previousDayPrices: QueryStatus,
+	pricesSeries: QueryStatus,
 }
 
 export type PricesState = {
 	onChainPrices: PricesMap
-	connectionError: null | undefined
 	previousDayPrices: PricesMap
+	pricesSeries: Record<number, PricesMap>
+	connectionError: null | undefined
 	queryStatuses: PricesQueryStatuses
 }

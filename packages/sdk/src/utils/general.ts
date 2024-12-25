@@ -41,9 +41,9 @@ export const calcRealTime = async (blockHeight: number, provider: ethers.provide
 };
 
 export const toPlainAmount = (realAmount: number, decimal: number = DEFAULT_DECIMAL) => {
-    return BigNumber.from(realAmount).shl(decimal);
+    return BigNumber.from(realAmount).mul(BigNumber.from(10).pow(decimal));
 };
 
 export const toRealAmount = (plainAmount: BigNumber, decimal: number = DEFAULT_DECIMAL) => {
-    return plainAmount.shr(decimal).toNumber();
+    return plainAmount.div(BigNumber.from(10).pow(decimal)).toNumber();
 };

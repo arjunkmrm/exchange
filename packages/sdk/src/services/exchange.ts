@@ -17,44 +17,44 @@ import {
 import { DEFAULT_REFERRAL_ADDRESS, PERIOD_IN_SECONDS } from '../constants';
 import { ExchangeReadContracts, getMarketLog, PairReadContracts, PairWriteContract } from '../utils/contract';
 import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
+import { ContractTransaction } from 'ethers';
 
 export default class ExchangeService {
     private sdk: BitlySDK
-    public markets: ExchangeMarketType[] = []
-    public tokens: TokenInfoTypeWithAddress[] = []
-    private marketName: string = ''
+    private markets: ExchangeMarketType[] = []
+    private tokens: TokenInfoTypeWithAddress[] = []
+    private marketName? : string
 
     constructor(sdk: BitlySDK) {
         this.sdk = sdk
     }
 
+	public async setMarketName(marketName: string = ''): Promise<void> {
+		if (this.marketName === marketName) {
+            return;
+        }
+
+		await this._fetchMarketsAndTokens(marketName);
+        this.marketName = marketName;
+	}
+
+	public getMarketName(): string | undefined {
+		return this.marketName;
+	}
+
 	public getMarketsInfo(markets: string[]) {
+		if (markets.length === 0) {
+			return this.markets;
+		}
 		return this.markets.filter(e=>markets.includes(e.marketAddress));
 	}
 
 	public getTokensInfo(tokens: string[]) {
+		if (tokens.length === 0) {
+			return this.tokens;
+		}
 		return this.tokens.filter(e=>tokens.includes(e.address));
 	}
-
-    public async getMarkets(marketName: string = ''): Promise<ExchangeMarketType[]> {
-        if (this.marketName == marketName && this.markets.length !== 0) {
-            return this.markets;
-        }
-
-        await this._fetchMarketsAndTokens(marketName);
-        this.marketName = marketName;
-        return this.markets as unknown as ExchangeMarketType[];
-    }
-
-    public async getTokens(marketName: string = ''): Promise<TokenInfoTypeWithAddress[]> {
-        if (this.marketName == marketName && this.tokens.length !== 0) {
-            return this.tokens;
-        }
-
-        await this._fetchMarketsAndTokens(marketName);
-        this.marketName = marketName;
-        return this.tokens as unknown as TokenInfoTypeWithAddress[];
-    }
 
     public async getVolumes(markets: string[], relativeTimeInSec: number = 0): Promise<MarketsVolumes> {
         const allMarkets = await this.markets;
@@ -122,14 +122,16 @@ export default class ExchangeService {
                     sold: toRealAmount(e.sold),
                     selling: toRealAmount(e.selling),
                     ...orderViewsPerMarket[i]
-                } as unknown as PairEarningsTypeWithOrderInfo;
+                } as PairEarningsTypeWithOrderInfo;
             });
             earnings[market] = formattedOrderDetails;
         }
         return earnings;
     }
 
-    public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number) {
+    public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number)
+		: Promise<ContractTransaction> 
+	{
         const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
 
         const originToken = direction == OrderDirection.buy ? targetMarket.tokenY : targetMarket.tokenX;
@@ -142,7 +144,7 @@ export default class ExchangeService {
     }
 
     public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
-        slippage: number) 
+        slippage: number): Promise<ContractTransaction>
     {
         const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
@@ -160,7 +162,9 @@ export default class ExchangeService {
         );
     }
 
-    public async cancelLimitOrder(market: string, direction: OrderDirection, point: number) {
+    public async cancelLimitOrder(market: string, direction: OrderDirection, point: number)
+		: Promise<ContractTransaction> 
+	{
         const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
@@ -170,7 +174,7 @@ export default class ExchangeService {
         return await PairWriteContract(this.sdk, market, 'cancelLimitOrder', [originToken, point]);
     }
 
-    public async cancelAllLimitOrder(market: string) {
+    public async cancelAllLimitOrder(market: string): Promise<ContractTransaction> {
         const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
@@ -179,7 +183,7 @@ export default class ExchangeService {
         return await PairWriteContract(this.sdk, market, 'cancelAllLimitOrders', []);
     }
 
-    public async claimEarning(market: string, direction: OrderDirection, point: number) {
+    public async claimEarning(market: string, direction: OrderDirection, point: number): Promise<ContractTransaction> {
         const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
@@ -189,7 +193,7 @@ export default class ExchangeService {
         return await PairWriteContract(this.sdk, market, 'claimEarning', [originToken, point]);
     }
 
-    public async claimAllEarnings(market: string) {
+    public async claimAllEarnings(market: string): Promise<ContractTransaction> {
         const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);

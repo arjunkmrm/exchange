@@ -4,6 +4,7 @@ import Context, { IContext } from './context'
 import ExchangeService from './services/exchange'
 import PricesService from './services/prices'
 import TransactionsService from './services/transactions'
+import WalletService from './services/wallet'
 
 export default class BitlySDK {
 	public context: Context
@@ -11,12 +12,14 @@ export default class BitlySDK {
 	public exchange: ExchangeService
 	public transactions: TransactionsService
 	public prices: PricesService
+	public wallet: WalletService
 
 	constructor(context: IContext) {
 		this.context = new Context(context)
 		this.exchange = new ExchangeService(this)
 		this.prices = new PricesService(this)
 		this.transactions = new TransactionsService(this)
+		this.wallet = new WalletService(this)
 	}
 
 	public setProvider(provider: ethers.providers.Provider) {

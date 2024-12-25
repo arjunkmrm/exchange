@@ -1,8 +1,12 @@
+import { Period } from '@bitly/sdk/constants'
 import { TransactionStatus, GasPrice } from '@bitly/sdk/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { notifyError } from 'components/ErrorNotifier'
+import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
+import { FetchStatus } from 'state/types'
 import { isUserDeniedError } from 'utils/formatters/error'
+import { setMarketName } from './actions'
 
 import { AppState, FuturesPositionModalType, ModalType, Transaction } from './types'
 
@@ -19,7 +23,10 @@ export const APP_INITIAL_STATE: AppState = {
 	acknowledgedOrdersWarning: false,
 	showBanner: true,
 	marketName: undefined,
-	previousMarketName: undefined,
+	selectedPortfolioTimeframe: Period.ONE_WEEK,
+	queryStatuses: {
+		marketName: DEFAULT_QUERY_STATUS,
+	},
 }
 
 const appSlice = createSlice({
@@ -71,13 +78,25 @@ const appSlice = createSlice({
 		setShowBanner: (state, action: PayloadAction<boolean>) => {
 			state.showBanner = action.payload
 		},
-		setMarketName: (state, action: PayloadAction<string>) => {
-			state.previousMarketName = state.marketName
-			state.marketName = action.payload
+		setSelectedPortfolioTimeframe: (state, action: PayloadAction<Period>) => {
+			state.selectedPortfolioTimeframe = action.payload
 		},
-		updatePreviousMarketName: (state) => {
-			state.previousMarketName = state.marketName
-		},
+	},
+	extraReducers: (builder) => {
+		// Set market name
+		builder.addCase(setMarketName.pending, (appState) => {
+			appState.queryStatuses.marketName = LOADING_STATUS
+		})
+		builder.addCase(setMarketName.fulfilled, (appState, action) => {
+			appState.marketName = action.payload
+			appState.queryStatuses.marketName = SUCCESS_STATUS
+		})
+		builder.addCase(setMarketName.rejected, (appState) => {
+			appState.queryStatuses.marketName = {
+				error: 'Failed to set market name',
+				status: FetchStatus.Error,
+			}
+		})
 	},
 })
 
@@ -90,8 +109,7 @@ export const {
 	updateTransactionHash,
 	setAcknowledgedOrdersWarning,
 	setShowBanner,
-	setMarketName,
-	updatePreviousMarketName,
+	setSelectedPortfolioTimeframe,
 } = appSlice.actions
 
 export default appSlice.reducer

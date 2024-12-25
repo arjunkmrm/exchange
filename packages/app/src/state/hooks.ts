@@ -5,6 +5,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import Connector from 'containers/Connector'
 
 import type { AppDispatch, AppThunk, RootState } from './store'
+import { DEFAULT_POLL_DELAY_TIME_MS } from 'constants/defaults'
 
 export const useAppDispatch: () => AppDispatch = useDispatch
 
@@ -80,7 +81,10 @@ export const usePollAction = (
 
 	useEffect(() => {
 		if (!options?.disabled && providerReady) {
-			startPolling(actionName, action, options?.intervalTime || DEFAULT_INTERVAL)
+			setTimeout(
+				() => startPolling(actionName, action, options?.intervalTime || DEFAULT_INTERVAL),
+				DEFAULT_POLL_DELAY_TIME_MS
+			)
 		}
 		// eslint-disable-next-line
 	}, [providerReady, options?.disabled, ...(options?.dependencies || [])])

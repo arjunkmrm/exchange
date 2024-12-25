@@ -1,4 +1,6 @@
+import { Period } from '@bitly/sdk/dist/constants'
 import { TransactionStatus, GasPrice } from '@bitly/sdk/types'
+import { QueryStatus } from 'state/types'
 
 export type ModalType =
 	| 'futures_deposit_withdraw_smart_margin'
@@ -31,6 +33,11 @@ export type Transaction = {
 	hash: string | null
 }
 
+export type AppQueryStatuses = {
+	marketName: QueryStatus,
+}
+
+
 export type AppState = {
 	showModal?: ModalType
 	showPositionModal?: { type: FuturesPositionModalType; marketKey: string } | null
@@ -41,5 +48,6 @@ export type AppState = {
 	acknowledgedOrdersWarning: boolean
 	showBanner: boolean
 	marketName?: string
-	previousMarketName?: string
+	selectedPortfolioTimeframe: Period
+	queryStatuses: AppQueryStatuses,
 }

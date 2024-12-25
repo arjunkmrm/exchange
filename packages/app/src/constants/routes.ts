@@ -1,5 +1,3 @@
-import { AppFuturesMarginType } from 'state/futures/common/types'
-
 import { EXTERNAL_LINKS } from './links'
 
 const prettyURLsDisabled = !!process.env.NEXT_PUBLIC_DISABLE_PRETTY_URLS
@@ -29,7 +27,7 @@ export const ROUTES = {
 	},
 	Markets: {
 		Home: () =>
-			formatUrl('/market', { asset: 'sETH' }),
+			formatUrl('/market', { asset: '' }),
 		MarketPair: (asset: string) =>
 			formatUrl('/market', { asset }),
 		Position: (asset: string) =>
@@ -48,12 +46,14 @@ export const ROUTES = {
 	},
 	Wallet: {
 		Home: '/wallet',
-		Trader: (trader: string) => `/wallet/?trader=${trader}`,
-		Competition: (round: string) => `/wallet/?competitionRound=${round}`,
+		Asset: (address: string) => `/wallet/asset?address=${address}`,
 	},
 	Referrals: {
 		Home: '/referrals',
 		nftMint: (asset: string, ref: string) => formatUrl('/market', { asset, ref }),
+	},
+	NotFound: {
+		Home: '/404'
 	},
 }
 
@@ -71,7 +71,6 @@ export const SUB_MENUS = {
 
 export const setLastVisited = (
 	baseCurrencyPair: string,
-	accountType: AppFuturesMarginType
 ): void => {
 	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair))
 }

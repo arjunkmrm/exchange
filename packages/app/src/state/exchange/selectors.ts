@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { selectNetwork } from "state/app/selectors";
 import { RootState } from "state/store";
-import { selectNetwork } from "state/wallet/selectors";
 
 export const selectMarkets = createSelector(
 	selectNetwork,
@@ -23,5 +23,13 @@ export const selectTokens = createSelector(
 	(state: RootState) => state.exchange.tokensMap,
 	(network, tokens) => {
 		return tokens[network] ?? []
+	}
+)
+
+export const selectOpenOrders = createSelector(
+	selectNetwork,
+	(state: RootState) => state.exchange.openOrders,
+	(network, openOrders) => {
+		return openOrders[network] ?? []
 	}
 )

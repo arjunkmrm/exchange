@@ -1,4 +1,4 @@
-import { ORDERS_WARNING_DISABLED } from 'constants/defaults'
+import { DEFAULT_NETWORK_ID, ORDERS_WARNING_DISABLED } from 'constants/defaults'
 import { RootState } from 'state/store'
 
 export const selectShowModal = (state: RootState) => state.app.showModal
@@ -16,6 +16,9 @@ export const selectShowBanner = (state: RootState) => state.app.showBanner
 
 export const selectMarketName = (state: RootState) => state.app.marketName
 
-export const selectIsMarketNameUpdated = (state: RootState) => {
-	return state.app.marketName !== state.app.previousMarketName
-}
+export const selectSelectedPortfolioTimeframe = (state: RootState) =>
+	state.app.selectedPortfolioTimeframe
+
+export const selectWallet = (state: RootState) => state.wallet.walletAddress ?? null
+
+export const selectNetwork = (state: RootState) => state.wallet.networkId ?? DEFAULT_NETWORK_ID

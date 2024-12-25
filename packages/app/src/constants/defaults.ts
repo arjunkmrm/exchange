@@ -41,3 +41,7 @@ export const DEFAULT_LEVERAGE = '1'
 export const SWAP_QUOTE_BUFFER = 0.2
 
 export const MARKET_SELECTOR_HEIGHT_MOBILE = 58
+
+export const POLL_INTERVAL_MS = 60000
+
+export const DEFAULT_POLL_DELAY_TIME_MS = 0

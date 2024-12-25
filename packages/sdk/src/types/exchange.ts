@@ -23,13 +23,15 @@ export type ExchangeMarketType = {
 
 export type PairLimitOrdersType = UnwrapPromise<ReturnType<TokenExchange['limitOrders']>>;
 
+export type PairLimitOrderType = UnwrapPromise<ReturnType<TokenExchange['limitOrders']>>[number];
+
 export type PairEarningsType = UnwrapPromise<ReturnType<TokenExchange['queryEarning']>>;
 
-export type PairEarningsTypeWithOrderInfo = PairLimitOrdersType & {
-    sold: number,
-    earned: number,
-    selling: number
-    direction: OrderDirection
+export type PairEarningsTypeWithOrderInfo = PairLimitOrderType & {
+    sold: number;
+    earned: number;
+    selling: number;
+    direction: OrderDirection;
 };
 
 export type ExchangeOrderDetails = {
@@ -37,6 +39,8 @@ export type ExchangeOrderDetails = {
 };
 
 export type BalanceType = UnwrapPromise<ReturnType<ERC20['balanceOf']>>;
+
+export type AllowanceType = UnwrapPromise<ReturnType<ERC20['allowance']>>;
 
 export enum OrderDirection {
     buy = 'BUY',

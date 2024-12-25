@@ -1,10 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as Sentry from '@sentry/browser'
 import { ethers } from 'ethers'
+import { AllowancesType, BalancesType } from '@bitly/sdk/types'
 
-import type { ThunkConfig } from 'state/types'
+import { FetchStatus, ThunkConfig } from 'state/types'
 
 import { setWalletAddress } from './reducer'
+import { notifyError } from 'components/ErrorNotifier'
+import { truncateTimestamp } from 'utils/date'
+import { PERIOD_IN_SECONDS } from '@bitly/sdk/constants'
+import { monitorTransaction } from 'contexts/RelayerContext'
+import logError from 'utils/logError'
 
 export const resetWalletAddress = createAsyncThunk<void, string | undefined, ThunkConfig>(
 	'wallet/resetWalletAddress',
@@ -24,5 +30,135 @@ export const setSigner = createAsyncThunk<void, ethers.Signer | null | undefined
 			dispatch(resetWalletAddress(undefined))
 			dispatch({ type: 'balances/clearBalances' })
 		}
+	}
+)
+
+export const fetchBalance = createAsyncThunk<
+	{balancesInWallet: BalancesType; balancesInBank: BalancesType},
+	void,
+	ThunkConfig
+>('wallet/fetchBalance', async (_, { extra: { sdk } }) => {
+	try {
+		const tokens = sdk.exchange.getTokensInfo([])
+		const balancesInWallet = await sdk.wallet.balancesInWallet(tokens.map(e=>e.address))
+		const balancesInBank = await sdk.wallet.balancesInBank(tokens.map(e=>e.address))
+	
+		console.log("ww: fetchBalances: ", tokens, balancesInBank, balancesInWallet)
+		return {balancesInBank, balancesInWallet}
+	} catch (err) {
+		notifyError('Failed to fetch balances', err)
+		throw err
+	}
+})
+
+export const fetchBalanceSeries = createAsyncThunk<
+	Record<number, BalancesType>,
+	number,
+	ThunkConfig
+>('wallet/fetchBalanceSeries', async (timeSpanInDay, { extra: { sdk } }) => {
+	try {
+		const tokens = sdk.exchange.getTokensInfo([])
+
+		const balanceSeries: Record<number, BalancesType> = {}
+
+		const nowSec: number = Math.floor((new Date()).getTime() / 1000)
+
+		for (let i = 0; i < timeSpanInDay - 1; i++) {
+			const targetTimestamp = truncateTimestamp(nowSec - i * PERIOD_IN_SECONDS.ONE_DAY, PERIOD_IN_SECONDS.ONE_DAY)
+			const balances = await sdk.wallet.balancesInBank(
+				tokens.map(e=>e.address),
+				targetTimestamp - nowSec
+			)
+			balanceSeries[targetTimestamp] = balances
+		}
+
+		return balanceSeries
+	} catch (err) {
+		notifyError('Failed to fetch historical balance series', err)
+		throw err
+	}
+})
+
+export const deposit = createAsyncThunk<
+	void, 
+	{amount: number, token: string}, 
+	ThunkConfig
+>('wallet/deposit', async ({amount, token}, { dispatch, extra: { sdk } }) => {
+	const { hash } = await sdk.wallet.deposit(token, amount)
+
+	monitorTransaction({
+		txHash: hash,
+		onTxConfirmed: () => {
+			dispatch({ type: 'wallet/setDepositStatus', payload: FetchStatus.Success })
+			dispatch(bundleFetchCurrentWalletData())
+		},
+		onTxFailed: () => {
+			dispatch({ type: 'wallet/setDepositStatus', payload: FetchStatus.Error })
+			dispatch(bundleFetchCurrentWalletData())
+		},
+	})
+})
+
+export const withdraw = createAsyncThunk<
+	void, 
+	{amount: number, token: string}, 
+	ThunkConfig
+>('wallet/withdraw', async ({amount, token}, { dispatch, extra: { sdk } }) => {
+	const { hash } = await sdk.wallet.withdraw(token, amount)
+
+	monitorTransaction({
+		txHash: hash,
+		onTxConfirmed: () => {
+			dispatch({ type: 'wallet/setWithdrawStatus', payload: FetchStatus.Success })
+			dispatch(bundleFetchCurrentWalletData())
+		},
+		onTxFailed: () => {
+			dispatch({ type: 'wallet/setWithdrawStatus', payload: FetchStatus.Error })
+			dispatch(bundleFetchCurrentWalletData())
+		},
+	})
+})
+
+export const approve = createAsyncThunk<
+	void, 
+	{amount: number, token: string}, 
+	ThunkConfig
+>('wallet/approve', async ({amount, token}, { dispatch, extra: { sdk } }) => {
+	console.log("ww: approving")
+	const { hash } = await sdk.wallet.approve(token, amount)
+	console.log("ww: approving: hash: ", hash)
+
+	monitorTransaction({
+		txHash: hash,
+		onTxConfirmed: () => {
+			dispatch({ type: 'wallet/setApproveStatus', payload: FetchStatus.Success })
+			dispatch(bundleFetchCurrentWalletData())
+		},
+		onTxFailed: () => {
+			dispatch({ type: 'wallet/setApproveStatus', payload: FetchStatus.Error })
+			dispatch(bundleFetchCurrentWalletData())
+		},
+	})
+})
+
+export const fetchAllowance = createAsyncThunk<
+	AllowancesType, void, ThunkConfig
+>('wallet/fetchAllowance', async (_, { extra: { sdk } }) => {
+	try {
+		const tokens = sdk.exchange.getTokensInfo([])
+		const allownces = await sdk.wallet.allowance(tokens.map(e=>e.address))
+		return allownces
+	} catch (err) {
+		logError(err)
+		notifyError('Failed to fetch allowances data', err)
+		throw err
+	}
+})
+
+export const bundleFetchCurrentWalletData = createAsyncThunk<void, void, ThunkConfig>(
+	'wallet/fetchMigrateData',
+	async (_, { dispatch }) => {
+		dispatch(fetchAllowance())
+		dispatch(fetchBalance())
 	}
 )

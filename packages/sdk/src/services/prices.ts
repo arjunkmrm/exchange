@@ -21,10 +21,10 @@ export default class PricesService {
 		if (!this.ratesInterval) {
 			this.ratesInterval = startInterval(async () => {
 				try {
-					if (!this.sdk.exchange.markets) {
+					if (!this.sdk.exchange.getMarketsInfo([])) {
 						return;
 					}
-					this.onChainPrices = await this.getPrices(this.sdk.exchange.markets.map(e=>e.marketAddress), 0);
+					this.onChainPrices = await this.getPrices(this.sdk.exchange.getMarketsInfo([]).map(e=>e.marketAddress), 0);
 					this.sdk.context.events.emit('prices_updated', {
 						prices: this.onChainPrices,
 					});
@@ -48,7 +48,7 @@ export default class PricesService {
 	}
 
 	public async getPrices(markets: string[], relativeTimeInSec: number): Promise<PricesMap> {
-		const allMarkets = await this.sdk.exchange.markets;
+		const allMarkets = await this.sdk.exchange.getMarketsInfo([]);
         markets = markets.filter(market=>allMarkets?.map(e=>e.marketAddress).includes(market));
 
 		const blockDeployed = await PairReadContracts(
@@ -92,7 +92,7 @@ export default class PricesService {
     ) {
         let klines = [];
 
-        const allMarkets = await this.sdk.exchange.markets;
+        const allMarkets = await this.sdk.exchange.getMarketsInfo([]);
         const targetMarkets = allMarkets?.filter(market=>markets.includes(market.marketAddress));
 
         if (!targetMarkets) {

@@ -1,4 +1,3 @@
-export * from './date';
 export * from './general';
 export * from './interval';
 export * from './transactions';

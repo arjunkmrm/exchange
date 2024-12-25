@@ -2,7 +2,7 @@ import { FC, memo, useCallback } from 'react'
 import styled, { css } from 'styled-components'
 
 import Spacer from 'components/Spacer'
-import { isInvalidNumber } from 'utils/input'
+import { isInvalidNumber } from 'utils/number'
 
 type NumericInputProps = Omit<
 	React.InputHTMLAttributes<HTMLInputElement>,
