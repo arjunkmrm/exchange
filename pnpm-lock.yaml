@@ -65,6 +65,9 @@ importers:
       lint-staged:
         specifier: 13.2.3
         version: 13.2.3
+      next:
+        specifier: 13.4.13
+        version: 13.4.13(@babel/core@7.23.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       prettier:
         specifier: 2.8.8
         version: 2.8.8
@@ -20305,6 +20308,32 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
+  next@13.4.13(@babel/core@7.23.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      '@next/env': 13.4.13
+      '@swc/helpers': 0.5.1
+      busboy: 1.6.0
+      caniuse-lite: 1.0.30001518
+      postcss: 8.4.31
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      styled-jsx: 5.1.1(@babel/core@7.23.0)(react@18.2.0)
+      watchpack: 2.4.0
+      zod: 3.22.4
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 13.4.13
+      '@next/swc-darwin-x64': 13.4.13
+      '@next/swc-linux-arm64-gnu': 13.4.13
+      '@next/swc-linux-arm64-musl': 13.4.13
+      '@next/swc-linux-x64-gnu': 13.4.13
+      '@next/swc-linux-x64-musl': 13.4.13
+      '@next/swc-win32-arm64-msvc': 13.4.13
+      '@next/swc-win32-ia32-msvc': 13.4.13
+      '@next/swc-win32-x64-msvc': 13.4.13
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
@@ -21983,6 +22012,13 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.22.9
       babel-plugin-macros: 3.1.0
+
+  styled-jsx@5.1.1(@babel/core@7.23.0)(react@18.2.0):
+    dependencies:
+      client-only: 0.0.1
+      react: 18.2.0
+    optionalDependencies:
+      '@babel/core': 7.23.0
 
   styled-media-query@2.1.2(styled-components@5.3.11(@babel/core@7.22.9)(react-dom@18.2.0(react@18.2.0))(react-is@18.2.0)(react@18.2.0)):
     dependencies:
