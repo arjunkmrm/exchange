@@ -37,8 +37,8 @@ export async function ERC20ReadContracts(
 export async function ERC20WriteContract(sdk: BitlySDK, token: string, funcName: ERC20FuncNames, 
     arg: SingleCallArgs = []
 ) {
-    const func = getTokenContract(token, sdk.context.provider)[funcName] as any;
-    return await func(...arg);
+    const contract = getTokenContract(token, sdk.context.provider);
+	return await sdk.transactions.createContractTxn(contract, funcName, arg);
 }
 
 export async function ExchangeReadContracts(sdk: BitlySDK, funcNames: ExchangeFuncNames[], args: MultiCallArgs = [[]], 
@@ -56,11 +56,11 @@ export async function ExchangeReadContracts(sdk: BitlySDK, funcNames: ExchangeFu
 }
 
 export async function ExchangeWriteContract(sdk: BitlySDK, funcName: ExchangeFuncNames, arg: SingleCallArgs = []) {
-    const func = sdk.context.contracts?.Exchange?.[funcName] as any;
-    if (!func) {
+	const contract = sdk.context.contracts?.Exchange;
+	if (!contract) {
         throw new Error(UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT);
     }
-    return await func(...arg);
+	return await sdk.transactions.createContractTxn(contract, funcName, arg);
 }
 
 export async function PairReadContracts(sdk: BitlySDK, addresses: string[], funcNames: PairFuncNames[], 
@@ -82,8 +82,8 @@ export async function PairReadContracts(sdk: BitlySDK, addresses: string[], func
 export async function PairWriteContract(sdk: BitlySDK, market: string, funcName: PairFuncNames, 
     arg: SingleCallArgs = []
 ) {
-    const func = getPairContract(market, sdk.context.provider)[funcName] as any;
-    return await func(...arg);
+	const contract = getTokenContract(market, sdk.context.provider);
+	return await sdk.transactions.createContractTxn(contract, funcName, arg);
 }
 
 export async function BankReadContracts(sdk: BitlySDK, funcNames: BankFuncNames[], args: MultiCallArgs = [[]], 
@@ -101,11 +101,11 @@ export async function BankReadContracts(sdk: BitlySDK, funcNames: BankFuncNames[
 }
 
 export async function BankWriteContract(sdk: BitlySDK, funcName: BankFuncNames, arg: SingleCallArgs = []) {
-    const func = sdk.context.contracts?.BitlyBank?.[funcName] as any;
-    if (!func) {
+	const contract = sdk.context.contracts?.BitlyBank;
+	if (!contract) {
         throw new Error(UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT);
     }
-    return await func(...arg);
+	return await sdk.transactions.createContractTxn(contract, funcName, arg);
 }
 
 export async function BTLYReadContracts(sdk: BitlySDK, funcNames: BTLYFuncNames[], args: MultiCallArgs = [[]], 
@@ -123,11 +123,11 @@ export async function BTLYReadContracts(sdk: BitlySDK, funcNames: BTLYFuncNames[
 }
 
 export async function BTLYWriteContract(sdk: BitlySDK, funcName: BTLYFuncNames, arg: SingleCallArgs = []) {
-    const func = sdk.context.contracts?.BTLYToken?.[funcName] as any;
-    if (!func) {
+	const contract = sdk.context.contracts?.BTLYToken;
+	if (!contract) {
         throw new Error(UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT);
     }
-    return await func(...arg);
+	return await sdk.transactions.createContractTxn(contract, funcName, arg);
 }
 
 export async function getMarketLog(sdk: BitlySDK, market: string, fromBlock: BlockTag, toBlock: BlockTag, event: MarketEventSignature, 

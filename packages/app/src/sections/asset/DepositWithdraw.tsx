@@ -16,7 +16,7 @@ import {
 } from 'state/wallet/selectors'
 import { approve, deposit, withdraw } from 'state/wallet/actions'
 
-const DepositWithdraw: FC<{token: string}> = ({token}) => {
+const DepositWithdraw: FC<{address: string; symbol: string}> = ({address, symbol}) => {
 	const { t } = useTranslation()
 	const dispatch = useAppDispatch()
 	const [depositAmount, setDepositAmount] = useState(0)
@@ -31,48 +31,48 @@ const DepositWithdraw: FC<{token: string}> = ({token}) => {
 	const isApproving = useAppSelector(selectIsApproving)
 
 	const isApproved = useMemo(() => {
-		return depositAmount <= allowances[token]
-	}, [depositAmount, allowances, token])
+		return depositAmount <= allowances[address]
+	}, [depositAmount, allowances, address])
 
 	const balanceInWallet = useMemo(() => {
-		return balancesInWallet[token] ?? 0
-	}, [balancesInWallet, token])
+		return balancesInWallet[address] ?? 0
+	}, [balancesInWallet, address])
 
 	const balanceInBank = useMemo(() => {
-		return balancesInBank[token] ?? 0
-	}, [balancesInBank, token])
+		return balancesInBank[address] ?? 0
+	}, [balancesInBank, address])
 
 	const handleApprove = useCallback((amount: string) => {
 		dispatch(approve({
 			amount: Number(amount),
-			token
+			token: address
 		}))
-	}, [dispatch, token])
+	}, [dispatch, address])
 
 	const handleStakeKwenta = useCallback(
 		(amount: string) => {
 			setDepositAmount(Number(amount))
 			dispatch(deposit({
 				amount: Number(amount),
-				token
+				token: address
 			}))
 		},
-		[dispatch, token]
+		[dispatch, address]
 	)
 
 	const handleUnstakeKwenta = useCallback(
 		(amount: string) => {
 			dispatch(withdraw({
 				amount: Number(amount),
-				token
+				token: address
 			}))
 		},
-		[dispatch, token]
+		[dispatch, address]
 	)
 
 	return (
 		<DWCard
-			title={t('dashboard.stake.tabs.stake-table.kwenta-token')}
+			tokenSymbol={symbol}
 			stakeBalance={balanceInWallet}
 			unstakeBalance={balanceInBank}
 			onStake={handleStakeKwenta}

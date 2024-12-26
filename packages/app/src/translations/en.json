@@ -1246,24 +1246,13 @@
 		},
 		"asset": {
 			"title": "Asset Details | Bitly Token Exchange",
-			"table": {
-				"back": "Back",
-				"timestamp": "Date/Time",
-				"market": "Market",
-				"status": "Status",
-				"liquidated": "Liquidated",
-				"total-trades": "Trades",
-				"total-volume": "Total Volume",
-				"total-pnl": "Realized P&L",
-				"funding": "Funding"
-			},
-			"mobile-table": {
-				"market": "Market",
-				"volume": "Volume",
-				"status": "Status",
-				"funding": "Funding",
-				"pnl": "PnL",
-				"timestamp": "Date"
+			"deposit-withdraw": {
+				"title": "Deposit & Withdraw",
+				"deposit": "Deposit",
+				"withdraw": "Withdraw",
+				"max": "MAX",
+				"approve": "Approve",
+				"balance": "Balance:"
 			}
 		}
 	},

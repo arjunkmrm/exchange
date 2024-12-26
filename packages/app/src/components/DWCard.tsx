@@ -9,11 +9,11 @@ import SegmentedControl from 'components/SegmentedControl'
 import { DEFAULT_CRYPTO_DECIMALS, DEFAULT_TOKEN_DECIMALS } from 'constants/defaults'
 import media from 'styles/media'
 
-import { Body, NumericValue } from './Text'
+import { Body, Heading, NumericValue } from './Text'
 import { truncateNumbers } from 'utils/number'
 
 type DWCardProps = {
-	title: string
+	tokenSymbol: string
 	stakeBalance: number
 	unstakeBalance: number
 	onStake(amount: string): void
@@ -29,7 +29,7 @@ type DWCardProps = {
 
 const DWCard: FC<DWCardProps> = memo(
 	({
-		title,
+		tokenSymbol,
 		stakeBalance,
 		unstakeBalance,
 		onStake,
@@ -110,44 +110,47 @@ const DWCard: FC<DWCardProps> = memo(
 		}, [activeTab, isStaked, isUnstaked])
 
 		return (
-			<CardGridContainer>
-				<SegmentedControl
-					values={[
-						t('dashboard.stake.tabs.stake-table.stake'),
-						t('dashboard.stake.tabs.stake-table.unstake'),
-					]}
-					onChange={handleTabChange}
-					selectedIndex={activeTab}
-				/>
-				<FlexDivCol rowGap="50px" style={{ marginTop: '15px' }}>
-					<FlexDivCol>
-						<StakeInputHeader>
-							<Body color="secondary">{title}</Body>
-							<StyledFlexDivRowCentered>
-								<Body color="secondary">{t('dashboard.stake.tabs.stake-table.balance')}</Body>
-								<NumericValueButton onClick={onMaxClick}>{balanceString}</NumericValueButton>
-							</StyledFlexDivRowCentered>
-						</StakeInputHeader>
-						<NumericInput value={amount} onChange={handleChange} bold />
+			<>
+				<StyledHeading variant="h4">{t('wallet.asset.deposit-withdraw.title')}</StyledHeading>
+				<CardGridContainer>
+					<SegmentedControl
+						values={[
+							t('wallet.asset.deposit-withdraw.deposit'),
+							t('wallet.asset.deposit-withdraw.withdraw'),
+						]}
+						onChange={handleTabChange}
+						selectedIndex={activeTab}
+					/>
+					<FlexDivCol rowGap="50px" style={{ marginTop: '15px' }}>
+						<FlexDivCol>
+							<StakeInputHeader>
+								<Body color="secondary">{tokenSymbol}</Body>
+								<StyledFlexDivRowCentered>
+									<Body color="secondary">{t('wallet.asset.deposit-withdraw.balance')}</Body>
+									<NumericValueButton onClick={onMaxClick}>{balanceString}</NumericValueButton>
+								</StyledFlexDivRowCentered>
+							</StakeInputHeader>
+							<NumericInput value={amount} onChange={handleChange} bold />
+						</FlexDivCol>
+						<FlexDivCol>
+							<Button
+								fullWidth
+								variant="flat"
+								size="small"
+								disabled={isDisabled}
+								loading={isLoading}
+								onClick={handleSubmit}
+							>
+								{activeTab === 0
+									? isApproved
+										? t('wallet.asset.deposit-withdraw.deposit')
+										: t('wallet.asset.deposit-withdraw.approve')
+									: t('wallet.asset.deposit-withdraw.withdraw')}
+							</Button>
+						</FlexDivCol>
 					</FlexDivCol>
-					<FlexDivCol>
-						<Button
-							fullWidth
-							variant="flat"
-							size="small"
-							disabled={isDisabled}
-							loading={isLoading}
-							onClick={handleSubmit}
-						>
-							{activeTab === 0
-								? isApproved
-									? t('dashboard.stake.tabs.stake-table.stake')
-									: t('dashboard.stake.tabs.stake-table.approve')
-								: t('dashboard.stake.tabs.stake-table.unstake')}
-						</Button>
-					</FlexDivCol>
-				</FlexDivCol>
-			</CardGridContainer>
+				</CardGridContainer>
+			</>
 		)
 	}
 )
@@ -222,6 +225,11 @@ const CardGridContainer = styled(StakingCard)`
 	${media.lessThan('lg')`
 		justify-content: flex-start;
 	`}
+`
+
+const StyledHeading = styled(Heading)`
+	font-weight: 400;
+	margin-bottom: 20px;
 `
 
 export default DWCard

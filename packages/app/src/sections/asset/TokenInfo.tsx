@@ -46,7 +46,7 @@ const StyledHeading = styled(Heading)`
 `
 
 const StyledCurrencyIcon = styled(Currency.Icon)`
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 	margin-right: 8px;
 `

@@ -84,6 +84,7 @@ export const deposit = createAsyncThunk<
 	{amount: number, token: string}, 
 	ThunkConfig
 >('wallet/deposit', async ({amount, token}, { dispatch, extra: { sdk } }) => {
+	console.log("ww: deposit: ", token, amount)
 	const { hash } = await sdk.wallet.deposit(token, amount)
 
 	monitorTransaction({

@@ -46,8 +46,11 @@ const StakingPage: StakingComponent = () => {
 					address = {asset?.address ?? ''}
 					description = {asset?.description ?? ''}
 				/>
+				<DepositWithdraw 
+					address={asset?.address ?? ''}
+					symbol={asset?.symbol ?? ''}
+				/>
 			</TokenInfoContainer>
-			<DepositWithdraw token={router.query.address as string} />
 		</>
 	)
 }
