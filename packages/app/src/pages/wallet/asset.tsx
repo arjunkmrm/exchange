@@ -12,6 +12,7 @@ import DepositWithdraw from 'sections/asset/DepositWithdraw'
 import ROUTES from 'constants/routes'
 import { selectTokens } from 'state/exchange/selectors'
 import { useAppSelector } from 'state/hooks'
+import { selectNetwork } from 'state/app/selectors'
 
 type StakingComponent = FC & { getLayout: (page: ReactNode) => JSX.Element }
 
@@ -19,6 +20,7 @@ const StakingPage: StakingComponent = () => {
 	const { t } = useTranslation()
 	const router = useRouter()
 	const tokensInfo = useAppSelector(selectTokens)
+	const networkId = useAppSelector(selectNetwork)
 	
 	const asset = useMemo(() => {
 		if (tokensInfo.length == 0 || !router.query.address) {
@@ -45,6 +47,7 @@ const StakingPage: StakingComponent = () => {
 					logo = {asset?.logo ?? ''}
 					address = {asset?.address ?? ''}
 					description = {asset?.description ?? ''}
+					networkId = {networkId}
 				/>
 				<DepositWithdraw 
 					address={asset?.address ?? ''}

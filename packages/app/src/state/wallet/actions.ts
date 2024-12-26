@@ -84,7 +84,6 @@ export const deposit = createAsyncThunk<
 	{amount: number, token: string}, 
 	ThunkConfig
 >('wallet/deposit', async ({amount, token}, { dispatch, extra: { sdk } }) => {
-	console.log("ww: deposit: ", token, amount)
 	const { hash } = await sdk.wallet.deposit(token, amount)
 
 	monitorTransaction({
@@ -125,9 +124,7 @@ export const approve = createAsyncThunk<
 	{amount: number, token: string}, 
 	ThunkConfig
 >('wallet/approve', async ({amount, token}, { dispatch, extra: { sdk } }) => {
-	console.log("ww: approving")
 	const { hash } = await sdk.wallet.approve(token, amount)
-	console.log("ww: approving: hash: ", hash)
 
 	monitorTransaction({
 		txHash: hash,
@@ -147,8 +144,9 @@ export const fetchAllowance = createAsyncThunk<
 >('wallet/fetchAllowance', async (_, { extra: { sdk } }) => {
 	try {
 		const tokens = sdk.exchange.getTokensInfo([])
-		const allownces = await sdk.wallet.allowance(tokens.map(e=>e.address))
-		return allownces
+		const allowances = await sdk.wallet.allowance(tokens.map(e=>e.address))
+		console.log("ww: allowances: ", allowances)
+		return allowances
 	} catch (err) {
 		logError(err)
 		notifyError('Failed to fetch allowances data', err)

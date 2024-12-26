@@ -33,7 +33,7 @@ export default class WalletService {
     public async deposit(token: string, amount: number): Promise<ContractTransaction> {
 		const tokensInfo = this.sdk.exchange.getTokensInfo([token]);
 		const plainAmount = toPlainAmount(amount, tokensInfo.find(e=>e.address===token)?.decimals);
-        return await BankWriteContract(this.sdk, 'deposit', [token, amount]);
+        return await BankWriteContract(this.sdk, 'deposit', [token, plainAmount]);
     }
 
     public async approve(token: string, amount: number): Promise<ContractTransaction> {

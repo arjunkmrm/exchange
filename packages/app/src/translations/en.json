@@ -430,7 +430,8 @@
 				"hero": "",
 				"portfolio-value": "Portfolio Value",
 				"buying-power": "Total Buying Power",
-				"upnl": "Unrealized PnL"
+				"upnl": "Unrealized PnL",
+				"claim": "Claim UPnL"
 			}
 		},
 		"earn": {
@@ -1246,6 +1247,10 @@
 		},
 		"asset": {
 			"title": "Asset Details | Bitly Token Exchange",
+			"base-info": {
+				"explorer": "Explorer",
+				"bridge": "Bridge"
+			},
 			"deposit-withdraw": {
 				"title": "Deposit & Withdraw",
 				"deposit": "Deposit",

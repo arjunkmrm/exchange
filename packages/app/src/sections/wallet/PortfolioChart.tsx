@@ -166,6 +166,13 @@ const PortfolioChart: FC = () => {
 							{upnl > 0 ? '+' : ''}
 							{formatDollars(upnl, { suggestDecimals: true })}
 						</NumericValue>
+						{
+							upnl > 0 ?
+							<Button variant="flat" size="small">
+								{t('dashboard.overview.portfolio-chart.claim')}
+							</Button> :
+							<></>
+						}
 					</GridBox>
 					{!!total && portfolioData.length >= 2 ? (
 						<ChartContainer>

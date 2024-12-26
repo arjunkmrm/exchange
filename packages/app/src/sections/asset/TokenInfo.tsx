@@ -1,10 +1,15 @@
-import { FC, memo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import styled from 'styled-components'
 
 import Button from 'components/Button'
 import { FlexDivCol, FlexDivRowCentered } from 'components/layout/flex'
 import { Body, Heading } from 'components/Text'
 import Currency from 'components/Currency'
+import { TOKEN_BRIDGES } from 'constants/address'
+import { blockExplorer } from 'containers/Connector/Connector'
+import { useTranslation } from 'react-i18next'
+import ArrowUpRightIcon from 'assets/svg/app/arrow-up-right-tg.svg'
+import { ExternalLink } from 'styles/common'
 
 interface TokenInfoProps {
 	name: string
@@ -12,9 +17,45 @@ interface TokenInfoProps {
 	logo: string
 	address: string
 	description?: string
+	networkId: number
 }
 
-export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address, description }) => {
+export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address, description, networkId }) => {
+	const { t } = useTranslation()
+
+	const bridge = useMemo(() => {
+		return TOKEN_BRIDGES[networkId][address]
+	}, [address, networkId])
+
+	const explorer = useMemo(() => {
+		return blockExplorer.tokenLink?.(address)
+	}, [networkId, address])
+
+	const links = useMemo(() => {
+		const ret = []
+		if (explorer) {
+			ret.push({
+				href: explorer, 
+				text: t('wallet.asset.base-info.explorer')
+			})
+		}
+		if (bridge) {
+			ret.push({
+				href: undefined, 
+				text: '|'
+			})
+			ret.push({
+				href: bridge, 
+				text: t('wallet.asset.base-info.bridge')
+			})
+		}
+		return (
+			<>
+				{ret.map(e=>StyledLink(e))}
+			</>
+		)
+	}, [explorer, bridge])
+
 	return (
 		<FlexDivCol>
 			<TitleContainer>
@@ -24,6 +65,9 @@ export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address
 						url={logo}
 					/>
 					<StyledHeading variant="h4">{`${name} (${symbol})`}</StyledHeading>
+					<Body color='secondary'>
+						{links}
+					</Body>
 					{description && <Body color="secondary">{description}</Body>}
 				</FlexDivCol>
 			</TitleContainer>
@@ -50,3 +94,12 @@ const StyledCurrencyIcon = styled(Currency.Icon)`
 	height: 50px;
 	margin-right: 8px;
 `
+
+const StyledLink = ({text, href}: {text: string; href?: string}) => 
+<span>
+	<ExternalLink href={href}>
+		{text}
+		{href ? <ArrowUpRightIcon /> : <></>}
+	</ExternalLink>
+	&nbsp;&nbsp;
+</span>
