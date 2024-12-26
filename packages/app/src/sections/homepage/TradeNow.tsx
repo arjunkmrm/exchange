@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 import { FlexDivColCentered } from 'components/layout/flex'
 import * as Text from 'components/Text'
-import { DEFAULT_FUTURES_MARGIN_TYPE } from 'constants/defaults'
 import ROUTES from 'constants/routes'
 import RefButton from 'sections/shared/components/RefButton'
 import { SmallGoldenHeader, WhiteHeader } from 'styles/common'

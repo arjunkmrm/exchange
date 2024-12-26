@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 
-import { isInvalidNumber } from 'utils/input'
+import { isInvalidNumber } from 'utils/number'
 
 type SplitSelectOptionInput = {
 	type: 'input'

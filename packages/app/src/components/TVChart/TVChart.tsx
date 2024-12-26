@@ -178,7 +178,7 @@ export function TVChart({
 		const widgetOptions: ChartingLibraryWidgetOptions = {
 			symbol: marketAsset as string,
 			datafeed: DataFeedFactory(
-				sdk.exchange.markets,
+				sdk.exchange.getMarketsInfo([]),
 				chartScale,
 				onSubscribe
 			),

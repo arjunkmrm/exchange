@@ -1,4 +1,3 @@
-import { truncateString } from '@bitly/sdk/utils'
 import React, { FC, useMemo, memo } from 'react'
 import styled from 'styled-components'
 
@@ -7,6 +6,7 @@ import Spacer from 'components/Spacer'
 import { formatRevert, isUserDeniedError } from 'utils/formatters/error'
 
 import { formatError } from './ErrorNotifier'
+import { truncateString } from 'utils/string'
 
 type MessageType = 'error' | 'warn'
 

@@ -7,7 +7,7 @@ import { selectPrices } from 'state/prices/selectors'
 const useSelectedPriceCurrency = () => {
 	const selectedPriceCurrency = useAppSelector(selectPreferredCurrency)
 	const prices = useAppSelector(selectPrices)
-	const selectPriceCurrencyRate = prices && prices[selectedPriceCurrency.name]?.onChain
+	const selectPriceCurrencyRate = prices && prices[selectedPriceCurrency.name]
 
 	const getPriceAtCurrentRate = (price: Wei) =>
 		selectPriceCurrencyRate ? price.div(selectPriceCurrencyRate) : price
