@@ -48,30 +48,6 @@ const appSlice = createSlice({
 			}
 			state.showPositionModal = action.payload
 		},
-		setTransaction: (state, action: PayloadAction<Transaction | undefined>) => {
-			state.transaction = action.payload
-		},
-		updateTransactionStatus: (state, action: PayloadAction<TransactionStatus>) => {
-			if (state.transaction) {
-				state.transaction.status = action.payload
-			}
-		},
-		updateTransactionHash: (state, action: PayloadAction<string>) => {
-			if (state.transaction) {
-				state.transaction.hash = action.payload
-			}
-		},
-		handleTransactionError: (state, action: PayloadAction<string>) => {
-			if (isUserDeniedError(action.payload)) {
-				state.transaction = undefined
-			} else {
-				notifyError('Transaction failed', new Error(action.payload))
-				if (state.transaction) {
-					state.transaction.status = TransactionStatus.Failed
-					state.transaction.error = action.payload
-				}
-			}
-		},
 		setAcknowledgedOrdersWarning: (state, action: PayloadAction<boolean>) => {
 			state.acknowledgedOrdersWarning = action.payload
 		},
@@ -103,10 +79,6 @@ const appSlice = createSlice({
 export const {
 	setOpenModal,
 	setShowPositionModal,
-	setTransaction,
-	handleTransactionError,
-	updateTransactionStatus,
-	updateTransactionHash,
 	setAcknowledgedOrdersWarning,
 	setShowBanner,
 	setSelectedPortfolioTimeframe,

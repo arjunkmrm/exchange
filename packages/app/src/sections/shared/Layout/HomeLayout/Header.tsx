@@ -123,7 +123,7 @@ const Header = memo(() => {
 						))}
 					</Links>
 					<MenuContainer>
-						<Link href={ROUTES.Markets.Home()}>
+						<Link href={ROUTES.Dashboard.Markets}>
 							<RefButton noOutline size="medium">
 								{t('homepage.nav.start-trade')}
 							</RefButton>

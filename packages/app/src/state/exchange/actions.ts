@@ -2,8 +2,9 @@ import { PERIOD_IN_SECONDS } from '@bitly/sdk/constants'
 import { ExchangeMarketType, ExchangeOrderDetails, MarketsVolumes, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
+import { monitorTransaction } from 'contexts/RelayerContext'
 
-import { ThunkConfig } from 'state/types'
+import { FetchStatus, ThunkConfig } from 'state/types'
 import logError from 'utils/logError'
 
 export const fetchMarkets = createAsyncThunk<
@@ -81,3 +82,22 @@ export const fetchOpenOrders = createAsyncThunk<
 		throw err
 	}
 })
+
+export const claimAllEarnings = createAsyncThunk<
+	void,
+	{ market: string }, 
+	ThunkConfig
+>('exchange/fetchOpenOrders', async ({market}, { dispatch, extra: { sdk } }) => {
+	monitorTransaction({
+		transaction: () => sdk.exchange.claimAllEarnings(market),
+		onTxConfirmed: () => {
+			dispatch({ type: 'wallet/setApproveStatus', payload: FetchStatus.Success })
+			dispatch(fetchOpenOrders())
+		},
+		onTxFailed: () => {
+			dispatch({ type: 'wallet/setApproveStatus', payload: FetchStatus.Error })
+			dispatch(fetchOpenOrders())
+		},
+	})
+})
+

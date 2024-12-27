@@ -6,8 +6,6 @@ export const selectShowPositionModal = (state: RootState) => state.app.showPosit
 
 export const selectGasSpeed = (state: RootState) => state.app.gasSpeed
 
-export const selectTransaction = (state: RootState) => state.app.transaction
-
 export const selectAckedOrdersWarning = (state: RootState) => {
 	return ORDERS_WARNING_DISABLED || state.app.acknowledgedOrdersWarning
 }

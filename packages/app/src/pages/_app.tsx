@@ -16,7 +16,6 @@ import { WagmiConfig } from 'wagmi'
 import ErrorNotifier from 'components/ErrorNotifier'
 import Connector from 'containers/Connector'
 import { chains, wagmiClient } from 'containers/Connector/config'
-import useMonitorTransactions from 'hooks/useMonitorTransactions'
 import AcknowledgementModal from 'sections/app/AcknowledgementModal'
 import Layout from 'sections/shared/Layout'
 import SystemStatus from 'sections/shared/SystemStatus'
@@ -61,7 +60,6 @@ const InnerApp: FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
 	const { providerReady } = Connector.useContainer()
 
 	useAppData(providerReady)
-	useMonitorTransactions()
 
 	const getLayout = Component.getLayout || ((page) => page)
 	const currentTheme = useAppSelector(selectCurrentTheme)

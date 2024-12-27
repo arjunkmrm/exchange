@@ -84,10 +84,8 @@ export const deposit = createAsyncThunk<
 	{amount: number, token: string}, 
 	ThunkConfig
 >('wallet/deposit', async ({amount, token}, { dispatch, extra: { sdk } }) => {
-	const { hash } = await sdk.wallet.deposit(token, amount)
-
 	monitorTransaction({
-		txHash: hash,
+		transaction: () => sdk.wallet.deposit(token, amount),
 		onTxConfirmed: () => {
 			dispatch({ type: 'wallet/setDepositStatus', payload: FetchStatus.Success })
 			dispatch(bundleFetchCurrentWalletData())
@@ -104,10 +102,8 @@ export const withdraw = createAsyncThunk<
 	{amount: number, token: string}, 
 	ThunkConfig
 >('wallet/withdraw', async ({amount, token}, { dispatch, extra: { sdk } }) => {
-	const { hash } = await sdk.wallet.withdraw(token, amount)
-
 	monitorTransaction({
-		txHash: hash,
+		transaction: () => sdk.wallet.withdraw(token, amount),
 		onTxConfirmed: () => {
 			dispatch({ type: 'wallet/setWithdrawStatus', payload: FetchStatus.Success })
 			dispatch(bundleFetchCurrentWalletData())
@@ -124,10 +120,8 @@ export const approve = createAsyncThunk<
 	{amount: number, token: string}, 
 	ThunkConfig
 >('wallet/approve', async ({amount, token}, { dispatch, extra: { sdk } }) => {
-	const { hash } = await sdk.wallet.approve(token, amount)
-
 	monitorTransaction({
-		txHash: hash,
+		transaction: () => sdk.wallet.approve(token, amount),
 		onTxConfirmed: () => {
 			dispatch({ type: 'wallet/setApproveStatus', payload: FetchStatus.Success })
 			dispatch(bundleFetchCurrentWalletData())

@@ -1,6 +1,6 @@
 import { Period } from '@bitly/sdk/constants'
 import Link from 'next/link'
-import { FC, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import styled, { useTheme } from 'styled-components'
@@ -12,13 +12,15 @@ import { GridDivCenteredRow } from 'components/layout/grid'
 import { MobileHiddenView, MobileOnlyView } from 'components/Media'
 import { Body, NumericValue, Heading } from 'components/Text'
 import ROUTES from 'constants/routes'
-import { useAppSelector } from 'state/hooks'
+import { useAppDispatch, useAppSelector } from 'state/hooks'
 
 import { Timeframe } from './Timeframe'
 import { selectTotalBalance, selectTotalBalanceHistory, selectUnrealizedBalance } from 'state/wallet/selectors'
 import { formatDollars, formatPercent } from 'utils/prices'
 import { formatChartDate, formatChartTime, formatShortDateWithTime } from 'utils/date'
 import { selectSelectedPortfolioTimeframe } from 'state/app/selectors'
+import { selectOpenOrders } from 'state/exchange/selectors'
+import { claimAllEarnings } from 'state/exchange/actions'
 
 type PriceChartProps = {
 	setHoverValue: (data: number | null) => void
@@ -115,12 +117,20 @@ const PriceChart: FC<PriceChartProps> = ({ setHoverValue, setHoverTitle }) => {
 
 const PortfolioChart: FC = () => {
 	const { t } = useTranslation()
-	const total =
-		useAppSelector(selectTotalBalance)
-	const portfolioData =
-		useAppSelector(selectTotalBalanceHistory)
+	const total = useAppSelector(selectTotalBalance)
+	const portfolioData = useAppSelector(selectTotalBalanceHistory)
+	const dispatch = useAppDispatch()
 
 	const upnl = useAppSelector(selectUnrealizedBalance)
+	const openOrders = useAppSelector(selectOpenOrders)
+
+	const onClaimAll = useCallback(async () => {
+		for (const [market, info] of Object.entries(openOrders)) {
+			if (info.length > 0) {
+				dispatch(claimAllEarnings({market}))
+			}
+		}
+	}, [openOrders, dispatch])
 
 	const [hoverValue, setHoverValue] = useState<number | null>(null)
 	const [hoverTitle, setHoverTitle] = useState<string | null>(null)
@@ -168,7 +178,7 @@ const PortfolioChart: FC = () => {
 						</NumericValue>
 						{
 							upnl > 0 ?
-							<Button variant="flat" size="small">
+							<Button variant="flat" size="small" onClick={onClaimAll} >
 								{t('dashboard.overview.portfolio-chart.claim')}
 							</Button> :
 							<></>

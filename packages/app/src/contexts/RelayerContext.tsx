@@ -8,17 +8,29 @@ import {
 } from 'components/TransactionNotification'
 import { blockExplorer } from 'containers/Connector/Connector'
 import sdk from 'state/sdk'
+import { ethers } from 'ethers'
 
-export const monitorTransaction = ({
-	txHash,
+export const monitorTransaction = async ({
+	transaction,
 	onTxConfirmed,
 	onTxFailed,
 }: {
-	txHash: string
+	transaction: () => Promise<ethers.ContractTransaction>
 	onTxSent?: () => void
 	onTxConfirmed?: () => void
 	onTxFailed?: (failureMessage: TransactionStatusData) => void
 }) => {
+	let txHash = ''
+	try {
+		txHash = (await transaction()).hash
+	} catch (e) {
+		const options = {
+			containerId: 'notifications',
+			autoClose: 5000,
+		}
+		toast(<NotificationError failureReason={e.reason} />, options)
+		return
+	}
 	const link = blockExplorer.txLink?.(txHash)
 
 	const toastProps = {

@@ -43,7 +43,6 @@ export type AppState = {
 	showPositionModal?: { type: FuturesPositionModalType; marketKey: string } | null
 	gasSpeed: GasSpeed
 	gasPrice: GasPrice<string>
-	transaction?: Transaction | undefined
 	synthetixOnMaintenance: boolean
 	acknowledgedOrdersWarning: boolean
 	showBanner: boolean
