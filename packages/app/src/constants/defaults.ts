@@ -45,3 +45,5 @@ export const MARKET_SELECTOR_HEIGHT_MOBILE = 58
 export const POLL_INTERVAL_MS = 60000
 
 export const DEFAULT_POLL_DELAY_TIME_MS = 0
+
+export const ORDER_TYPES = ['market', 'limit']

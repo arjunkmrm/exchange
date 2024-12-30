@@ -1,7 +1,5 @@
-import { BigNumber } from 'ethers';
 import { UnwrapPromise } from '../common/type';
 import {BitlyExchange, ERC20, TokenExchange} from '../contracts/typechain-types';
-import { EarningClaimedEventObject } from '../contracts/typechain-types/contracts/TokenExchange';
 
 export type TokenInfoType = UnwrapPromise<ReturnType<BitlyExchange['tokenInfo']>>;
 export type TokenInfoTypeWithAddress = UnwrapPromise<ReturnType<BitlyExchange['tokenInfo']>> & {address: string};

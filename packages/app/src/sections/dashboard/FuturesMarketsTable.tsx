@@ -85,7 +85,7 @@ const FuturesMarketsTable: React.FC<FuturesMarketsTableProps> = ({ search }) => 
             <StyledTable
                 data={data}
                 onTableRowClick={(row) => {
-                    router.push(ROUTES.Markets.MarketPair(row.original.asset))
+                    router.push(ROUTES.Markets.Home(row.original.asset))
                 }}
                 highlightRowsOnHover
                 sortBy={sortBy}

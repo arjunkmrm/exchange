@@ -48,5 +48,6 @@ export type AppState = {
 	showBanner: boolean
 	marketName?: string
 	selectedPortfolioTimeframe: Period
-	queryStatuses: AppQueryStatuses,
+	queryStatuses: AppQueryStatuses
+	tradePanelDrawerOpen: boolean
 }

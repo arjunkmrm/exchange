@@ -20,3 +20,20 @@ export const usePollExchangeData = () => {
 	})
 }
 
+export const usePollMarketData = () => {
+	const wallet = useAppSelector(selectWallet)
+	const network = useAppSelector(selectNetwork)
+	const curMarketName = useAppSelector(selectMarketName)
+
+	// usePollAction('fetchDailyVolumes', fetchDailyVolumes, {
+	// 	dependencies: [network],
+	// 	intervalTime: POLL_INTERVAL_MS,
+	// 	disabled: curMarketName === undefined,
+	// })
+
+	// useFetchAction(fetchMarkets, { 
+	// 	dependencies: [network, curMarketName],
+	// 	disabled: curMarketName === undefined,
+	// })
+}
+

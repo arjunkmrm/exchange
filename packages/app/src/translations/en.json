@@ -741,7 +741,7 @@
 			"learn-more": "Learn more",
 			"switch-to-smart-margin": "Switch to Smart Margin",
 			"dismiss": "Dismiss",
-			"close-only": "Positions are in close only mode while the Optimism network performs its Bedrock upgrade"
+			"close-only": "Markets are in close mode while the contract performs its Bedrock upgrade"
 		},
 		"wallet-overview": {
 			"no-positions": "You have no open positions. Open a position now: ",
@@ -770,8 +770,8 @@
 			"no-results": "No markets found"
 		},
 		"market": {
-			"page-title": "{{baseCurrencyKey}} Futures | Bitly",
-			"page-title-rate": "{{marketName}} - {{rate}} Futures | Bitly",
+			"page-title": "{{baseCurrencyKey}} | Bitly",
+			"page-title-rate": "{{marketName}} - {{rate}} | Bitly",
 			"sidebar-tab": {
 				"markets": "Markets",
 				"history": "History",
@@ -884,7 +884,7 @@
 					"place-next-price-order": "Place Next Price Order",
 					"place-delayed-order": "Place Order",
 					"place-limit-order": "Place Limit Order",
-					"place-stop-order": "Place Stop Market Order",
+					"place-market-order": "Place Market Order",
 					"connect-wallet": "Connect Wallet",
 					"create-account": "Create Account",
 					"deposit-funds": "Deposit Funds"

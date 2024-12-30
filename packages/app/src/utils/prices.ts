@@ -1,8 +1,8 @@
-import { ExchangeMarketType, TokenInfoTypeWithAddress } from '@bitly/sdk/dist/types'
+import { OrderDirection, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
 import { STABLE_COINS } from '@bitly/sdk/constants'
 import { DecimalsForAsset } from 'constants/currency'
 import { DEFAULT_CRYPTO_DECIMALS, DEFAULT_FIAT_DECIMALS, DEFAULT_NUMBER_DECIMALS } from 'constants/defaults'
-import { FormatCurrencyOptions, FormatNumberOptions } from 'types/common'
+import { FormatCurrencyOptions, FormatNumberOptions, OrderType } from 'types/common'
 
 const thresholds = [
 	{ value: 1e12, divisor: 1e12, unit: 'T', decimals: 2 },
@@ -127,14 +127,21 @@ const getDecimalsForFormatting = (value: number, options?: FormatNumberOptions) 
 }
 
 export const commifyAndPadDecimals = (value: string, decimals: number) => {
-	let formatted = commify(value)
-	const comps = formatted.split('.')
+	let formatted = value
+	const comps = value.split('.')
 	if (!decimals) return comps[0]
+	comps[0] = commify(comps[0])
 
-	if (comps.length === 2 && comps[1].length !== decimals) {
-		const zeros = '0'.repeat(decimals - comps[1].length)
-		const decimalSuffix = `${comps[1]}${zeros}`
-		formatted = `${comps[0]}.${decimalSuffix}`
+	if (comps.length === 2) {
+		if (comps[1].length < decimals) {
+			const zeros = '0'.repeat(decimals - comps[1].length)
+			const decimalSuffix = `${comps[1]}${zeros}`
+			formatted = `${comps[0]}.${decimalSuffix}`
+		}
+		if (comps[1].length > decimals) {
+			const decimalSuffix = `${comps[1].substr(0, decimals)}`
+			formatted = `${comps[0]}.${decimalSuffix}`
+		}
 	}
 	return formatted
 }
@@ -161,3 +168,26 @@ export const getPairBasedOnStableCoin = (token: string, tokenInfo: TokenInfoType
 
 	return null;
 };
+
+export const orderPriceInvalidLabel = (
+	orderPrice: number,
+	side: OrderDirection,
+	currentPrice: number,
+	orderType: OrderType
+): string | null => {
+	if (!orderPrice || Number(orderPrice) <= 0) return null
+	if (currentPrice === 0) return null
+	const isLong = side === OrderDirection.buy
+	if (
+		(isLong && orderType === 'limit') &&
+		orderPrice > currentPrice
+	) {
+		return 'max ' + formatNumber(currentPrice)
+	}
+	if (
+		(!isLong && orderType === 'limit') &&
+		orderPrice < currentPrice
+	)
+		return 'min ' + formatNumber(currentPrice)
+	return null
+}

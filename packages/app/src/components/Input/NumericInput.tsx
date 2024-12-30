@@ -44,7 +44,6 @@ const NumericInput: FC<NumericInputProps> = memo(
 		const handleChange = useCallback(
 			(e: React.ChangeEvent<HTMLInputElement>) => {
 				let standardizedNum = e.target.value.replace(/[^0-9.,]/g, '').replace(/,/g, '.')
-
 				if (maxLength !== 'none') {
 					standardizedNum = standardizedNum.substring(0, maxLength)
 				}

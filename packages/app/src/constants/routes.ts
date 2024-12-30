@@ -26,23 +26,8 @@ export const ROUTES = {
 		TradingRewards: formatUrl('/dashboard/staking', { tab: 'trading-rewards' }),
 	},
 	Markets: {
-		Home: () =>
-			formatUrl('/market', { asset: '' }),
-		MarketPair: (asset: string) =>
+		Home: (asset: string) =>
 			formatUrl('/market', { asset }),
-		Position: (asset: string) =>
-			formatUrl('/market', {
-				asset,
-				tab: 'position',
-			}),
-		Orders: (asset: string) =>
-			formatUrl('/market', { asset, tab: 'orders' }),
-		ConditionalOrders: (asset: string) =>
-			formatUrl('/market', { asset, tab: 'conditional_orders' }),
-		Trades: (asset: string) =>
-			formatUrl('/market', { asset, tab: 'trades' }),
-		Transfers: (asset: string) =>
-			formatUrl('/market', { asset, tab: 'transfers' }),
 	},
 	Wallet: {
 		Home: '/wallet',
@@ -72,7 +57,7 @@ export const SUB_MENUS = {
 export const setLastVisited = (
 	baseCurrencyPair: string,
 ): void => {
-	localStorage.setItem('lastVisited', ROUTES.Markets.MarketPair(baseCurrencyPair))
+	localStorage.setItem('lastVisited', ROUTES.Markets.Home(baseCurrencyPair))
 }
 
 export default ROUTES

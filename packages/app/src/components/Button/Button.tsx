@@ -14,8 +14,8 @@ export type ButtonVariant =
 	| 'text'
 	| 'select'
 	| 'yellow'
-	| 'long'
-	| 'short'
+	| 'BUY'
+	| 'SELL'
 	| 'staking-button'
 
 type BaseButtonProps = {
@@ -128,28 +128,28 @@ const BaseButton = styled.button<BaseButtonProps>`
 		`}
 
 	${(props) =>
-		props.$variant === 'long' &&
+		props.$variant === 'BUY' &&
 		css`
 			color: ${(props) =>
-				props.theme.colors.selectedTheme.newTheme.button.position.long.active.color};
+				props.theme.colors.selectedTheme.newTheme.button.position.BUY.active.color};
 			background: ${(props) =>
-				props.theme.colors.selectedTheme.newTheme.button.position.long.active.background};
+				props.theme.colors.selectedTheme.newTheme.button.position.BUY.active.background};
 			&:hover {
 				background: ${(props) =>
-					props.theme.colors.selectedTheme.newTheme.button.position.long.hover.background};
+					props.theme.colors.selectedTheme.newTheme.button.position.BUY.hover.background};
 			}
 		`}
 
 	${(props) =>
-		props.$variant === 'short' &&
+		props.$variant === 'SELL' &&
 		css`
 			color: ${(props) =>
-				props.theme.colors.selectedTheme.newTheme.button.position.short.active.color};
+				props.theme.colors.selectedTheme.newTheme.button.position.SELL.active.color};
 			background: ${(props) =>
-				props.theme.colors.selectedTheme.newTheme.button.position.short.active.background};
+				props.theme.colors.selectedTheme.newTheme.button.position.SELL.active.background};
 			&:hover {
 				background: ${(props) =>
-					props.theme.colors.selectedTheme.newTheme.button.position.short.hover.background};
+					props.theme.colors.selectedTheme.newTheme.button.position.SELL.hover.background};
 			}
 		`}
 	

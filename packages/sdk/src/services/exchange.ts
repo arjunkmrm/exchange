@@ -111,8 +111,8 @@ export default class ExchangeService {
             const orderDetails: PairEarningsType[] = await PairReadContracts(
                 this.sdk, [market], ['queryEarning'], orderViewsPerMarket.map(e=>([e.targetToken, e.point]))
             );
-            const formattedOrderDetails: PairEarningsTypeWithOrderInfo[] = orderDetails.map((e, i)=>{
-                const originToken = orderViewsPerMarket[i].originToken;
+            const formattedOrderDetails: PairEarningsTypeWithOrderInfo[] = orderDetails.map((e, j)=>{
+                const originToken = orderViewsPerMarket[j].originToken;
                 const direction = originToken == targetMarkets[i].tokenY.address 
                     ? OrderDirection.buy 
                     : OrderDirection.sell;
@@ -121,7 +121,7 @@ export default class ExchangeService {
                     earned: toRealAmount(e.earned),
                     sold: toRealAmount(e.sold),
                     selling: toRealAmount(e.selling),
-                    ...orderViewsPerMarket[i]
+                    ...orderViewsPerMarket[j]
                 } as PairEarningsTypeWithOrderInfo;
             });
             earnings[market] = formattedOrderDetails;
@@ -132,15 +132,15 @@ export default class ExchangeService {
     public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number)
 		: Promise<ContractTransaction> 
 	{
-        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket = this.markets.find(e=>e.marketAddress==market);
 
-        const originToken = direction == OrderDirection.buy ? targetMarket.tokenY : targetMarket.tokenX;
+        const originToken = direction == OrderDirection.buy ? targetMarket?.tokenY : targetMarket?.tokenX;
         const point = price2Point(price);
-        const amount = toPlainAmount(volume, originToken.decimals);
+        const amount = toPlainAmount(volume, originToken?.decimals);
         const holder = DEFAULT_REFERRAL_ADDRESS;
         const referral = DEFAULT_REFERRAL_ADDRESS;
 
-        return await PairWriteContract(this.sdk, market, 'limitOrder', [originToken, point, amount, holder, referral]);
+        return await PairWriteContract(this.sdk, market, 'limitOrder', [originToken?.address, point, amount, holder, referral]);
     }
 
     public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 

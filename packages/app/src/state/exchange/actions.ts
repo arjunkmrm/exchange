@@ -3,9 +3,13 @@ import { ExchangeMarketType, ExchangeOrderDetails, MarketsVolumes, TokenInfoType
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
 import { monitorTransaction } from 'contexts/RelayerContext'
+import { fetchPricesSeries } from 'state/prices/actions'
+import { selectCurrentMarketPrice } from 'state/prices/selectors'
 
 import { FetchStatus, ThunkConfig } from 'state/types'
 import logError from 'utils/logError'
+import { setMakeOrderStatus } from './reducer'
+import { selectCurrentMarketAsset, selectCurrentMarketInfo, selectOrderDirection, selectOrderPrice, selectOrderSize, selectOrderType, selectSlippage } from './selectors'
 
 export const fetchMarkets = createAsyncThunk<
 	{ markets: ExchangeMarketType[]; networkId: number } | undefined,
@@ -101,3 +105,32 @@ export const claimAllEarnings = createAsyncThunk<
 	})
 })
 
+export const placeOrder = createAsyncThunk<
+	void,
+	void, 
+	ThunkConfig
+>('exchange/placeOrder', async (_, { getState, dispatch, extra: { sdk } }) => {
+	const direction = selectOrderDirection(getState())
+	const amount = Number(selectOrderSize(getState()))
+	const price = Number(selectOrderPrice(getState()))
+	const type = selectOrderType(getState())
+	const slippage = selectSlippage(getState())
+	const market = selectCurrentMarketAsset(getState())
+	const curPrice = selectCurrentMarketPrice(getState())
+
+	const makeOrder = async () => {
+		dispatch(setMakeOrderStatus(FetchStatus.Loading))
+		if (type === 'limit') {
+			return await sdk.exchange.placeLimitOrder(market, direction, price, amount)
+		} else {
+			return await sdk.exchange.placeMarketOrder(market, direction, amount, curPrice, slippage)
+		}
+	}
+
+	monitorTransaction({
+		transaction: makeOrder,
+		onTxSent: () => {
+			dispatch(setMakeOrderStatus(FetchStatus.Success))
+		},
+	})
+})

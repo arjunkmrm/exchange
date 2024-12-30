@@ -16,10 +16,10 @@
 		"preinstall": "pnpm --filter \"@bitly/sdk\" build"
 	},
 	"dependencies": {
+		"@bitly/sdk": "workspace:*",
 		"@eth-optimism/contracts": "0.5.37",
 		"@ethersproject/bignumber": "^5.7.0",
 		"@ethersproject/providers": "^5.7.2",
-		"@bitly/sdk": "workspace:*",
 		"@material-ui/core": "^4.12.4",
 		"@pythnetwork/pyth-evm-js": "1.17.0",
 		"@rainbow-me/rainbowkit": "0.12.16",

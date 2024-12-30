@@ -35,7 +35,7 @@ const newTheme = {
 			inactive: common.palette.neutral.n50,
 		},
 		position: {
-			long: {
+			BUY: {
 				color: common.palette.green.g900,
 				active: {
 					background: common.palette.green.g500,
@@ -48,7 +48,7 @@ const newTheme = {
 					color: common.palette.neutral.n0,
 				},
 			},
-			short: {
+			SELL: {
 				color: common.palette.red.r800,
 				active: {
 					background: common.palette.red.r400,
@@ -203,11 +203,11 @@ const newTheme = {
 		position: {
 			background: common.palette.neutral.n20,
 			color: common.palette.neutral.n100,
-			long: {
+			BUY: {
 				color: common.palette.green.g600,
 				background: common.palette.green.g100,
 			},
-			short: {
+			SELL: {
 				color: common.palette.red.r300,
 				background: common.palette.alpha.red5,
 			},
@@ -362,8 +362,8 @@ const lightTheme = {
 		bg: '#515151',
 	},
 	chartLine: {
-		buy: common.palette.green.g700,
-		sell: common.palette.red.r600,
+		BUY: common.palette.green.g700,
+		SELL: common.palette.red.r600,
 		default: '#4094E8',
 	},
 	socket: {

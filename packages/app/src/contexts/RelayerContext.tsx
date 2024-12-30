@@ -12,6 +12,7 @@ import { ethers } from 'ethers'
 
 export const monitorTransaction = async ({
 	transaction,
+	onTxSent,
 	onTxConfirmed,
 	onTxFailed,
 }: {
@@ -40,6 +41,9 @@ export const monitorTransaction = async ({
 	const emitter = sdk.transactions.hash(txHash)
 	emitter.on('txSent', () => {
 		toast(<NotificationPending />, { ...toastProps, toastId: txHash })
+		if (onTxSent != null) {
+			onTxSent()
+		}
 	})
 	emitter.on('txConfirmed', ({ transactionHash }) => {
 		toast.update(transactionHash, {

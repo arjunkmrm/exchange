@@ -82,7 +82,7 @@ export async function PairReadContracts(sdk: BitlySDK, addresses: string[], func
 export async function PairWriteContract(sdk: BitlySDK, market: string, funcName: PairFuncNames, 
     arg: SingleCallArgs = []
 ) {
-	const contract = getTokenContract(market, sdk.context.provider);
+	const contract = getPairContract(market, sdk.context.provider);
 	return await sdk.transactions.createContractTxn(contract, funcName, arg);
 }
 

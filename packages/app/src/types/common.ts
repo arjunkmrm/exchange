@@ -36,3 +36,5 @@ export type BalanceDataType = {
 	balanceInBank: number
 	balanceInWallet: number
 }
+
+export type OrderType = 'market' | 'limit';

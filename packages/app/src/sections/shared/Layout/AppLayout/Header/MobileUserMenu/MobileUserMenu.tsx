@@ -18,6 +18,8 @@ import { FixedFooterMixin } from 'styles/common'
 
 import MobileMenuModal from './MobileMenuModal'
 import MobileWalletButton from './MobileWalletButton'
+import { setOrderDirection } from 'state/exchange/reducer'
+import { setTradePanelDrawerOpen } from 'state/app/reducer'
 
 const MobileUserMenu: FC = () => {
 	const [isOpen, toggleOpen] = useReducer((s) => !s, false)
@@ -28,8 +30,8 @@ const MobileUserMenu: FC = () => {
 
 	const handleSideSelect = useCallback(
 		(side: OrderDirection) => () => {
-			// dispatch(setLeverageSide(side))
-			// dispatch(setTradePanelDrawerOpen(true))
+			dispatch(setOrderDirection(side))
+			dispatch(setTradePanelDrawerOpen(true))
 		},
 		[dispatch]
 	)
@@ -43,28 +45,28 @@ const MobileUserMenu: FC = () => {
 				<MobileFooterSeparator />
 				<MobileFooterRight>
 					{window.location.pathname === ROUTES.Home.Root ? (
-						<Link href={ROUTES.Markets.Home()}>
+						<Link href={ROUTES.Dashboard.Markets}>
 							<Button size="small">{t('homepage.nav.start-trade')}</Button>
 						</Link>
 					) : asPath.split('/').includes('market') && !isOpen ? (
 						<PositionButtonsContainer>
 							<Button
 								size="xsmall"
-								variant="long"
+								variant="BUY"
 								fontSize={13}
 								fullWidth
 								onClick={handleSideSelect(OrderDirection.buy)}
 							>
-								Long
+								Buy
 							</Button>
 							<Button
 								size="xsmall"
-								variant="short"
+								variant="SELL"
 								fontSize={13}
 								fullWidth
 								onClick={handleSideSelect(OrderDirection.sell)}
 							>
-								Short
+								Sell
 							</Button>
 						</PositionButtonsContainer>
 					) : (

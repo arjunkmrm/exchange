@@ -27,7 +27,7 @@ export type MenuLinks = MenuLink[]
 export const HOMEPAGE_MENU_LINKS: MenuLinks = [
 	{
 		i18nLabel: 'homepage.nav.markets',
-		link: ROUTES.Markets.Home(),
+		link: ROUTES.Dashboard.Markets,
 	},
 	{
 		i18nLabel: 'homepage.nav.governance.title',

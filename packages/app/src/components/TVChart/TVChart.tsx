@@ -119,7 +119,7 @@ export function TVChart({
 				_oderLineRefs.current = openOrders.reduce((acc, order) => {
 					if (order.price) {
 						const color =
-							colors.selectedTheme.chartLine[order.direction == OrderDirection.buy ? 'buy' : 'sell']
+							colors.selectedTheme.chartLine[order.direction == OrderDirection.buy ? 'BUY' : 'SELL']
 
 						const orderLine = _widget.current
 							?.chart()

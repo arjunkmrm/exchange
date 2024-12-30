@@ -20,3 +20,5 @@ export const selectSelectedPortfolioTimeframe = (state: RootState) =>
 export const selectWallet = (state: RootState) => state.wallet.walletAddress ?? null
 
 export const selectNetwork = (state: RootState) => state.wallet.networkId ?? DEFAULT_NETWORK_ID
+
+export const selectIsTradePanelDrawerOpen = (state: RootState) => state.app.tradePanelDrawerOpen

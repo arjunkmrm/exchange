@@ -1,3 +1,5 @@
+import { suggestedDecimals } from "./prices"
+
 export const truncateNumbers = (value: number, maxDecimalDigits: number) => {
 	if (value.toString().includes('.')) {
 		const parts = value.toString().split('.')
@@ -9,3 +11,8 @@ export const truncateNumbers = (value: number, maxDecimalDigits: number) => {
 const INVALID_NUMERIC_CHARS = ['-', '+', 'e']
 
 export const isInvalidNumber = (key: string) => INVALID_NUMERIC_CHARS.includes(key)
+
+export const floorNumber = (num: number, decimals?: number) => {
+	const precision = 10 ** (decimals ?? suggestedDecimals(num))
+	return Math.floor(num * precision) / precision
+}

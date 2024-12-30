@@ -92,28 +92,6 @@ const Nav: FC = memo(() => {
 						return (
 							<Link key={url} href={url}>
 								<MenuInside isActive={isActive}>
-									{/* {i18nLabel === 'header.nav.markets' ? (
-										<CustomStyledTooltip
-											preset="bottom"
-											width="260px"
-											height="auto"
-											content={t('dashboard.stake.tabs.trading-rewards.trading-rewards-tooltip')}
-										>
-											<WithCursor cursor="pointer">
-												<FlexDivRow>
-													{t(i18nLabel)}
-													<KwentaYellowIcon height={20} width={20} style={{ paddingLeft: 5 }} />
-												</FlexDivRow>
-											</WithCursor>
-										</CustomStyledTooltip>
-									) : i18nLabel === 'header.nav.options.title' ? (
-										<FlexDivRow>
-											{t(i18nLabel)}
-											<LinkIconLight height={18} width={18} style={{ paddingLeft: 5 }} />
-										</FlexDivRow>
-									) : (
-										t(i18nLabel)
-									)} */}
                                     {t(i18nLabel)}
 								</MenuInside>
 							</Link>

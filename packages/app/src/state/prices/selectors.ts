@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit'
+import { selectCurrentMarketAsset } from 'state/exchange/selectors'
 
 import { RootState } from 'state/store'
 
@@ -15,3 +16,10 @@ export const selectLatestEthPrice = createSelector(selectPrices, (prices) => {
 export const selectPricesConnectionError = (state: RootState) => state.prices.connectionError
 
 export const selectPriceSeries = (state: RootState) => state.prices.pricesSeries
+
+export const selectCurrentMarketPrice = createSelector(
+	selectPrices, 
+	selectCurrentMarketAsset,
+	(prices, pair) => {
+	return prices[pair]
+})

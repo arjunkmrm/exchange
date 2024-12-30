@@ -1,6 +1,9 @@
-import { BigNumber, ethers } from "ethers";
+import * as ethers from "ethers";
+import BigNumber from 'bignumber.js';
 import { DEFAULT_DECIMAL } from "../constants";
 import { CONTRACT_POINT_BASE_NUMBER } from "../constants/prices";
+
+BigNumber.config({ DECIMAL_PLACES: 10, EXPONENTIAL_AT: 50 });
 
 export function notNill<Value>(value: Value | null | undefined): value is Value {
 	return !!value
@@ -41,9 +44,10 @@ export const calcRealTime = async (blockHeight: number, provider: ethers.provide
 };
 
 export const toPlainAmount = (realAmount: number, decimal: number = DEFAULT_DECIMAL) => {
-    return BigNumber.from(realAmount).mul(BigNumber.from(10).pow(decimal));
+	return ethers.BigNumber.from(BigNumber(realAmount).shiftedBy(decimal).toString());
 };
 
-export const toRealAmount = (plainAmount: BigNumber, decimal: number = DEFAULT_DECIMAL) => {
-    return plainAmount.div(BigNumber.from(10).pow(decimal)).toNumber();
+export const toRealAmount = (plainAmount: ethers.BigNumber, decimal: number = DEFAULT_DECIMAL) => {
+    // return plainAmount.div(ethers.BigNumber.from(10).pow(decimal)).toNumber();
+	return BigNumber(plainAmount.toString()).shiftedBy(-decimal).toNumber();
 };
