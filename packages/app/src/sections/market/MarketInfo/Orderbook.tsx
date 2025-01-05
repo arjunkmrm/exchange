@@ -50,6 +50,18 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 
 	return (
 		<OrderbookContainer $display={mobile || display} mobile={mobile}>
+			<StyledButton 
+				variant="flat" 
+				size="small" 
+				disabled={loading}
+				onClick={async ()=>{
+					setLoading(true)
+					await dispatch(increaseOrderbookWidth(ORDERBOOK_WIDTH_INCREASEMENT))
+					dispatch(fetchOrderbook())
+				}} 
+			>
+				{t('futures.market.trade.orders.load-more', {width: (width*100).toFixed()})}
+			</StyledButton>
 			<StyledTable
 				data={data}
 				isLoading={loading}
@@ -91,18 +103,6 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 					},
 				]}
 			/>
-			<StyledButton 
-				variant="flat" 
-				size="small" 
-				disabled={loading}
-				onClick={async ()=>{
-					setLoading(true)
-					await dispatch(increaseOrderbookWidth(ORDERBOOK_WIDTH_INCREASEMENT))
-					dispatch(fetchOrderbook())
-				}} 
-			>
-				{t('futures.market.trade.orders.load-more', {width: (width*100).toFixed()})}
-			</StyledButton>
 		</OrderbookContainer>
 	)
 }
@@ -117,7 +117,7 @@ const StyledButton = styled(Button)`
 const OrderbookContainer = styled.div<{ mobile?: boolean; $display?: boolean }>`
 	box-sizing: border-box;
 	border-left: ${(props) => props.theme.colors.selectedTheme.border};
-	height: 90%;
+	height: 100%;
 	width: ${(props) => (props.mobile ? '100%' : '300px')};
 	${(props) =>
 		props.mobile &&
