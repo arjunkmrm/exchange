@@ -144,7 +144,7 @@ export default class PricesService {
         if (endPrice == 0) {
             return [];
         }
-        const logs = await getMarketLog(this.sdk, market.marketAddress, fromBlock, toBlock, 'Swapped(address,int24,uint128)');
+        const logs = await getMarketLog(this.sdk, market.marketAddress, fromBlock, toBlock, 'Swapped(address,int24,uint128,uint256)');
 
         const increase = (curTime: Date) => {
             switch (resolution) {
@@ -178,8 +178,8 @@ export default class PricesService {
 
             for (; logBeginIndex < logs.length; logBeginIndex ++) {
                 const log = logs[logBeginIndex];
-                const eventTime = await calcRealTime(log.blockNumber, this.sdk.context.provider);
-                if (eventTime.getTime() > breakTime.getTime()) {
+                const eventTime = log.args.timestamp;
+                if (eventTime > breakTime.getTime()) {
                     break;
                 }
                 

@@ -2,6 +2,8 @@ import { useRouter } from 'next/router'
 import { useEffect, FC, ReactNode } from 'react'
 import styled from 'styled-components'
 import MarketHead from 'sections/market/MarketInfo/MarketHead'
+import MarketInfo from 'sections/market/MarketInfo/MarketInfo'
+import MobileTrade from 'sections/market/MobileTrade/MobileTrade'
 import Loader from 'components/Loader'
 import { DesktopOnlyView, MobileOrTabletView } from 'components/Media'
 import Connector from 'containers/Connector'
@@ -48,12 +50,11 @@ const Market: MarketComponent = () => {
 	return (
 		<>
 			<MarketHead />
-			{/* <SmartMarginOnboard isOpen={showOnboard} /> */}
 			<DesktopOnlyView>
 				<PageContent>
 					<StyledFullHeightContainer>
 						<TradePanelDesktop />
-						{/* <MarketInfo /> */}
+						<MarketInfo />
 					</StyledFullHeightContainer>
 				</PageContent>
 			</DesktopOnlyView>
@@ -63,16 +64,14 @@ const Market: MarketComponent = () => {
 						<TabletContainer>
 							<TradePanelDesktop />
 							<TabletRightSection>
-								{/* <MobileTrade /> */}
+								<MobileTrade />
 							</TabletRightSection>
 						</TabletContainer>
 					</PageContent>
 				) : (
-					// <MobileTrade />
-					<></>
+					<MobileTrade />
 				)}
 			</MobileOrTabletView>
-			{/* {openModal === 'futures_confirm_smart_margin_trade' && <TradeConfirmationModalCrossMargin />} */}
 		</>
 	)
 }

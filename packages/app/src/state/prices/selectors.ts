@@ -21,5 +21,12 @@ export const selectCurrentMarketPrice = createSelector(
 	selectPrices, 
 	selectCurrentMarketAsset,
 	(prices, pair) => {
-	return prices[pair]
+	return prices[pair] ?? undefined
+})
+
+export const selectCurrentMarketPastPrice = createSelector(
+	selectPreviousDayPrices, 
+	selectCurrentMarketAsset,
+	(prices, pair) => {
+	return prices[pair] ?? 0
 })

@@ -50,4 +50,5 @@ export type AppState = {
 	selectedPortfolioTimeframe: Period
 	queryStatuses: AppQueryStatuses
 	tradePanelDrawerOpen: boolean
+	showOrderbook: boolean
 }

@@ -1,5 +1,5 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -20,6 +20,7 @@ const ManagePosition: React.FC = () => {
 	const dispatch = useAppDispatch()
 	const { isWalletConnected } = Connector.useContainer()
 	const { openConnectModal } = useConnectModal()
+	const [submitted, setSubmitted] = useState(false)
 
 	const orderDirection = useAppSelector(selectOrderDirection)
 	const orderType = useAppSelector(selectOrderType)
@@ -43,8 +44,14 @@ const ManagePosition: React.FC = () => {
 
 	const onSubmit = useCallback(() => {
 		dispatch(placeOrder())
-		dispatch(setTradePanelDrawerOpen(false))
+		setSubmitted(true)
 	}, [dispatch])
+
+	useEffect(() => {
+		if (isFinished && submitted) {
+			dispatch(setTradePanelDrawerOpen(false))
+		}
+	}, [isFinished, submitted])
 
 	const otherReason = useMemo(() => {
 		if (!isWalletConnected) {

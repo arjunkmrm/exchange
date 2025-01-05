@@ -1,3 +1,5 @@
+import { OrderDirection } from "@bitly/sdk/dist/types"
+
 export const truncateAddress = (address: string, first = 5, last = 5) =>
 	`${address.slice(0, first)}...${address.slice(-last, address.length)}`
 
@@ -8,4 +10,8 @@ export const truncateString = (text: string, max = 256) => {
 
 export const strPadLeft = (string: string | number, pad: string, length: number) => {
 	return (new Array(length + 1).join(pad) + string).slice(-length)
+}
+
+export const formatOrderId = (market: string, direction: OrderDirection, point: number) => {
+	return `${market}-${direction}-${point}`
 }

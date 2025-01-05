@@ -2,6 +2,7 @@ import {
 	ExchangeMarketType, 
 	ExchangeOrderDetails, 
 	MarketsVolumes, 
+	OrderbookType, 
 	OrderDirection, 
 	TokenInfoTypeWithAddress 
 } from "@bitly/sdk/types"
@@ -13,10 +14,13 @@ export type ExchangeQueryStatuses = {
 	dailyVolumes: QueryStatus,
 	tokenList: QueryStatus,
 	openOrders: QueryStatus,
+	orderbook: QueryStatus,
 }
 
 export type ExchangeFetchStatuses = {
 	makeOrder: FetchStatus,
+	claimEarning: Record<string, FetchStatus>,
+	cancelOrder: Record<string, FetchStatus>,
 }
 
 export type ExchangeState = {
@@ -32,4 +36,6 @@ export type ExchangeState = {
 	orderPrice: string,
 	orderSize: string,
 	slippage: number,
+	orderbookWidth: number,
+	orderbooks: Record<string, OrderbookType>,
 }

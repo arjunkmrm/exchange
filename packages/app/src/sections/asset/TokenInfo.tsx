@@ -18,9 +18,10 @@ interface TokenInfoProps {
 	address: string
 	description?: string
 	networkId: number
+	website?: string
 }
 
-export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address, description, networkId }) => {
+export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address, description, networkId, website }) => {
 	const { t } = useTranslation()
 
 	const bridge = useMemo(() => {
@@ -37,6 +38,12 @@ export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address
 			ret.push({
 				href: explorer, 
 				text: t('wallet.asset.base-info.explorer')
+			})
+		}
+		if (website) {
+			ret.push({
+				href: website, 
+				text: t('wallet.asset.base-info.website')
 			})
 		}
 		if (bridge) {

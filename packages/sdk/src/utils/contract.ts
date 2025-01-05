@@ -2,6 +2,7 @@ import { BlockTag } from "ethcall";
 import { CallOverrides } from "ethcall/lib/call";
 import BitlySDK from "..";
 import { UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT } from "../common/errors";
+import { DEFAULT_MULTICALL_BATCH_SIZE } from "../constants/transactions";
 import { 
     BankFuncNames, 
     BTLYFuncNames, 
@@ -66,17 +67,31 @@ export async function ExchangeWriteContract(sdk: BitlySDK, funcName: ExchangeFun
 export async function PairReadContracts(sdk: BitlySDK, addresses: string[], funcNames: PairFuncNames[], 
     args: MultiCallArgs = [[]], override?: CallOverrides | undefined
 ): Promise<any[]> {
-    const calls = [];
-    for (const address of addresses) {
-        for (const funcName of funcNames) {
-            for (const arg of args) {
-                const func = getPairContractMulticall(address)[funcName];
-                calls.push(func(...arg));
-            }
-        }
-    }
+	const totalCalls = addresses.length * funcNames.length * args.length;
+	let ret: any[] = [];
 
-    return await sdk.context.multicallProvider.tryAll(calls, override);
+	const batchCnt = Math.floor(totalCalls / DEFAULT_MULTICALL_BATCH_SIZE) + 1;
+	for (let batchIndex = 0; batchIndex < batchCnt; batchIndex ++) {
+		const calls = [];
+		let cnt = 0;
+		for (const address of addresses) {
+			for (const funcName of funcNames) {
+				for (const arg of args) {
+					if (cnt < batchIndex * DEFAULT_MULTICALL_BATCH_SIZE ||
+						cnt >= (batchIndex + 1) * DEFAULT_MULTICALL_BATCH_SIZE) {
+						cnt ++;
+						continue;
+					}
+					cnt ++;
+					const func = getPairContractMulticall(address)[funcName];
+					calls.push(func(...arg));
+				}
+			}
+		}
+		const res = await sdk.context.multicallProvider.tryAll(calls, override);
+		ret = ret.concat(res);
+	}
+	return ret;
 }
 
 export async function PairWriteContract(sdk: BitlySDK, market: string, funcName: PairFuncNames, 

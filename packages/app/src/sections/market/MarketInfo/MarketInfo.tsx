@@ -1,19 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-
 import media from 'styles/media'
-
-// import MarketDetails from '../MarketDetails'
+import MarketDetails from '../MarketDetails'
 import { MARKETS_DETAILS_HEIGHT_DESKTOP } from '../styles'
-// import UserInfo from '../UserInfo'
-
-// import ChartWrapper from './ChartWrapper'
+import UserInfo from '../UserInfo'
+import ChartWrapper from './ChartWrapper'
 
 const MarketInfo: React.FC = React.memo(() => (
 	<Container>
-		{/* <MarketDetails />
+		<MarketDetails />
 		<ChartWrapper />
-		<UserInfo /> */}
+		<UserInfo />
 	</Container>
 ))
 

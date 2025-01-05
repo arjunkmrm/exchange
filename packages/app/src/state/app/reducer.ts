@@ -25,6 +25,7 @@ export const APP_INITIAL_STATE: AppState = {
 	marketName: undefined,
 	selectedPortfolioTimeframe: Period.ONE_WEEK,
 	tradePanelDrawerOpen: false,
+	showOrderbook: true,
 	queryStatuses: {
 		marketName: DEFAULT_QUERY_STATUS,
 	},
@@ -61,6 +62,9 @@ const appSlice = createSlice({
 		setTradePanelDrawerOpen: (state, action: PayloadAction<boolean>) => {
 			state.tradePanelDrawerOpen = action.payload
 		},
+		toggleShowOrderbook: (state, action: PayloadAction<void>) => {
+			state.showOrderbook = !state.showOrderbook
+		},
 	},
 	extraReducers: (builder) => {
 		// Set market name
@@ -87,6 +91,7 @@ export const {
 	setShowBanner,
 	setSelectedPortfolioTimeframe,
 	setTradePanelDrawerOpen,
+	toggleShowOrderbook,
 } = appSlice.actions
 
 export default appSlice.reducer

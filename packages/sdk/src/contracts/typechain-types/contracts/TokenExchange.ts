@@ -77,7 +77,7 @@ export interface TokenExchangeInterface extends utils.Interface {
     "pairInfo()": FunctionFragment;
     "pointMargin()": FunctionFragment;
     "pointOrder(int24)": FunctionFragment;
-    "queryEarning(address,int24)": FunctionFragment;
+    "queryEarning(address,int24,address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "startOff()": FunctionFragment;
     "totalVolume()": FunctionFragment;
@@ -174,7 +174,11 @@ export interface TokenExchangeInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "queryEarning",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -260,7 +264,7 @@ export interface TokenExchangeInterface extends utils.Interface {
     "LimitOrderPlaced(address,int24,uint128,uint128,address)": EventFragment;
     "MarketOrderCompleted(address,uint128,uint128)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Swapped(address,int24,uint128)": EventFragment;
+    "Swapped(address,int24,uint128,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CacheCleared"): EventFragment;
@@ -350,9 +354,10 @@ export interface SwappedEventObject {
   originToken: string;
   point: number;
   amount: BigNumber;
+  timestamp: BigNumber;
 }
 export type SwappedEvent = TypedEvent<
-  [string, number, BigNumber],
+  [string, number, BigNumber, BigNumber],
   SwappedEventObject
 >;
 
@@ -470,6 +475,7 @@ export interface TokenExchange extends BaseContract {
     queryEarning(
       targetToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
+      wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
@@ -574,6 +580,7 @@ export interface TokenExchange extends BaseContract {
   queryEarning(
     targetToken: PromiseOrValue<string>,
     point: PromiseOrValue<BigNumberish>,
+    wallet: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber, BigNumber] & {
@@ -674,6 +681,7 @@ export interface TokenExchange extends BaseContract {
     queryEarning(
       targetToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
+      wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
@@ -762,15 +770,17 @@ export interface TokenExchange extends BaseContract {
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
 
-    "Swapped(address,int24,uint128)"(
+    "Swapped(address,int24,uint128,uint256)"(
       originToken?: null,
       point?: null,
-      amount?: null
+      amount?: null,
+      timestamp?: null
     ): SwappedEventFilter;
     Swapped(
       originToken?: null,
       point?: null,
-      amount?: null
+      amount?: null,
+      timestamp?: null
     ): SwappedEventFilter;
   };
 
@@ -849,6 +859,7 @@ export interface TokenExchange extends BaseContract {
     queryEarning(
       targetToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
+      wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -941,6 +952,7 @@ export interface TokenExchange extends BaseContract {
     queryEarning(
       targetToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
+      wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

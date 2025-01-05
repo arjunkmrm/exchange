@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
 import { FetchStatus } from 'state/types'
 import { OrderType } from 'types/common'
-import { fetchDailyVolumes, fetchMarkets, fetchOpenOrders, fetchTokenList } from './actions'
+import { formatOrderId } from 'utils/string'
+import { cancelOrder, claimEarning, fetchDailyVolumes, fetchMarkets, fetchOpenOrders, fetchOrderbook, fetchTokenList } from './actions'
 import { ExchangeState } from './types'
 
 export const EXCHANGE_INITIAL_STATE: ExchangeState = {
@@ -17,15 +18,20 @@ export const EXCHANGE_INITIAL_STATE: ExchangeState = {
 		dailyVolumes: DEFAULT_QUERY_STATUS,
 		tokenList: DEFAULT_QUERY_STATUS,
 		openOrders: DEFAULT_QUERY_STATUS,
+		orderbook: DEFAULT_QUERY_STATUS,
 	},
 	writeStatuses: {
 		makeOrder: FetchStatus.Idle,
+		claimEarning: {},
+		cancelOrder: {},
 	},
 	orderType: 'limit',
 	orderDirection: OrderDirection.buy,
 	orderPrice: '0.00',
 	orderSize: '0.00',
 	slippage: 0.1,
+	orderbookWidth: 0.1,
+	orderbooks: {},
 }
 
 const exchangeSlice = createSlice({
@@ -54,6 +60,19 @@ const exchangeSlice = createSlice({
 		},
 		setMakeOrderStatus: (state, action: PayloadAction<FetchStatus>) => {
 			state.writeStatuses.makeOrder = action.payload
+		},
+		increaseOrderbookWidth: (state, action: PayloadAction<number>) => {
+			state.orderbookWidth += action.payload
+		},
+		setClaimEarningStatus: (state, action) => {
+			const id = action.payload.id
+			const status = action.payload.status
+			state.writeStatuses.claimEarning[id] = status
+		},
+		setCancelOrderStatus: (state, action) => {
+			const id = action.payload.id
+			const status = action.payload.status
+			state.writeStatuses.cancelOrder[id] = status
 		},
 	},
 
@@ -125,6 +144,37 @@ const exchangeSlice = createSlice({
 				error: 'Failed to fetch open orders',
 			}
 		})
+
+		// Orderbook
+		builder.addCase(fetchOrderbook.pending, (state) => {
+			state.queryStatuses.orderbook = LOADING_STATUS
+		})
+		builder.addCase(fetchOrderbook.fulfilled, (state, { payload }) => {
+			state.queryStatuses.orderbook = SUCCESS_STATUS
+			if (payload) {
+				state.orderbooks[payload.market] = payload.orderbook
+			}
+		})
+		builder.addCase(fetchOrderbook.rejected, (state) => {
+			state.queryStatuses.orderbook = {
+				status: FetchStatus.Error,
+				error: 'Failed to fetch orderbook',
+			}
+		})
+
+		// Write Statuses
+		builder.addCase(claimEarning.pending, (state, { meta: { arg: { market, direction, point } } }) => {
+			state.writeStatuses.claimEarning[formatOrderId(market, direction, point)] = FetchStatus.Loading
+		})
+		builder.addCase(claimEarning.rejected, (state, { meta: { arg: { market, direction, point } } }) => {
+			state.writeStatuses.claimEarning[formatOrderId(market, direction, point)] = FetchStatus.Error
+		})
+		builder.addCase(cancelOrder.pending, (state, { meta: { arg: { market, direction, point } } }) => {
+			state.writeStatuses.cancelOrder[formatOrderId(market, direction, point)] = FetchStatus.Loading
+		})
+		builder.addCase(cancelOrder.rejected, (state, { meta: { arg: { market, direction, point } } }) => {
+			state.writeStatuses.cancelOrder[formatOrderId(market, direction, point)] = FetchStatus.Error
+		})
 	},
 })
 
@@ -138,4 +188,7 @@ export const {
 	setOrderSize,
 	setSlippage,
 	setMakeOrderStatus,
+	increaseOrderbookWidth,
+	setClaimEarningStatus,
+	setCancelOrderStatus,
 } = exchangeSlice.actions

@@ -1,5 +1,5 @@
 import { PERIOD_IN_SECONDS } from '@bitly/sdk/constants'
-import { ExchangeMarketType, ExchangeOrderDetails, MarketsVolumes, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
+import { ExchangeMarketType, ExchangeOrderDetails, MarketsVolumes, OrderbookType, OrderDirection, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
 import { monitorTransaction } from 'contexts/RelayerContext'
@@ -8,8 +8,9 @@ import { selectCurrentMarketPrice } from 'state/prices/selectors'
 
 import { FetchStatus, ThunkConfig } from 'state/types'
 import logError from 'utils/logError'
+import { formatOrderId } from 'utils/string'
 import { setMakeOrderStatus } from './reducer'
-import { selectCurrentMarketAsset, selectCurrentMarketInfo, selectOrderDirection, selectOrderPrice, selectOrderSize, selectOrderType, selectSlippage } from './selectors'
+import { selectCurrentMarketAsset, selectCurrentMarketInfo, selectOrderbookWidth, selectOrderDirection, selectOrderPrice, selectOrderSize, selectOrderType, selectSlippage } from './selectors'
 
 export const fetchMarkets = createAsyncThunk<
 	{ markets: ExchangeMarketType[]; networkId: number } | undefined,
@@ -78,7 +79,7 @@ export const fetchOpenOrders = createAsyncThunk<
 		const markets = sdk.exchange.getMarketsInfo([])
 		const openOrders = await sdk.exchange.getLimitOrders(markets.map(e=>e.marketAddress))
 		const networkId = sdk.context.networkId
-		console.log("ww: ", openOrders, networkId)
+		console.log("ww: debug: query res: ", openOrders)
 		return { openOrders, networkId }
 	} catch (err) {
 		logError(err)
@@ -91,15 +92,53 @@ export const claimAllEarnings = createAsyncThunk<
 	void,
 	{ market: string }, 
 	ThunkConfig
->('exchange/fetchOpenOrders', async ({market}, { dispatch, extra: { sdk } }) => {
+>('exchange/claimAllEarnings', async ({market}, { dispatch, extra: { sdk } }) => {
 	monitorTransaction({
 		transaction: () => sdk.exchange.claimAllEarnings(market),
 		onTxConfirmed: () => {
-			dispatch({ type: 'wallet/setApproveStatus', payload: FetchStatus.Success })
 			dispatch(fetchOpenOrders())
 		},
 		onTxFailed: () => {
-			dispatch({ type: 'wallet/setApproveStatus', payload: FetchStatus.Error })
+			dispatch(fetchOpenOrders())
+		},
+	})
+})
+
+export const claimEarning = createAsyncThunk<
+	void,
+	{ market: string, direction: OrderDirection, point: number }, 
+	ThunkConfig
+>('exchange/claimEarning', async ({market, direction, point}, { dispatch, extra: { sdk } }) => {
+	monitorTransaction({
+		transaction: () => sdk.exchange.claimEarning(market, direction, point),
+		onTxConfirmed: () => {
+			dispatch({ type: 'exchange/setClaimEarningStatus', payload: FetchStatus.Success })
+			dispatch(fetchOpenOrders())
+		},
+		onTxFailed: () => {
+			dispatch({ type: 'wallet/setClaimEarningStatus', payload: FetchStatus.Error })
+			dispatch(fetchOpenOrders())
+		},
+	})
+})
+
+export const cancelOrder = createAsyncThunk<
+	void,
+	{ market: string, direction: OrderDirection, point: number }, 
+	ThunkConfig
+>('exchange/cancelOrder', async ({market, direction, point}, { dispatch, extra: { sdk } }) => {
+	monitorTransaction({
+		transaction: () => sdk.exchange.cancelLimitOrder(market, direction, point),
+		onTxConfirmed: () => {
+			dispatch({ type: 'exchange/setCancelOrderStatus', 
+				payload: {id: formatOrderId(market, direction, point), status: FetchStatus.Success} 
+			})
+			dispatch(fetchOpenOrders())
+		},
+		onTxFailed: () => {
+			dispatch({ type: 'exchange/setCancelOrderStatus', 
+				payload: {id: formatOrderId(market, direction, point), status: FetchStatus.Error} 
+			})
 			dispatch(fetchOpenOrders())
 		},
 	})
@@ -133,4 +172,26 @@ export const placeOrder = createAsyncThunk<
 			dispatch(setMakeOrderStatus(FetchStatus.Success))
 		},
 	})
+})
+
+export const fetchOrderbook = createAsyncThunk<
+	{ orderbook: OrderbookType; market: string } | undefined, 
+	void, 
+	ThunkConfig
+>('exchange/fetchOrderbook', async (_, { getState, extra: { sdk } }) => {
+	const market = selectCurrentMarketAsset(getState())
+	const width = selectOrderbookWidth(getState())
+	const curPrice = selectCurrentMarketPrice(getState())
+
+	const high = curPrice * (1 + width)
+	const low = curPrice * (1 - width)
+
+	try {
+		const orderbook = await sdk.exchange.getOrderbook(market, {high, low})
+		return { orderbook, market }
+	} catch (err) {
+		logError(err)
+		notifyError('Failed to fetch orderbook', err)
+		throw err
+	}
 })

@@ -141,7 +141,9 @@ const DataFeedFactory = (
 
 			try {
 				const nowSec = Number(((new Date()).getTime() / 1000).toFixed())
-				sdk.prices.getKlines([market], _resolution as KLINE_SOLUTION, from - nowSec, to - nowSec).then((bars) => {
+				sdk.prices.getKlines([market], _resolution as KLINE_SOLUTION, from - nowSec, to - nowSec).then((barsForMarkets) => {
+					const bars = barsForMarkets[0]
+					console.log("ww: debug: bar ori: ", bars)
 					const chartBars = bars.map((b: any) => {
 						return {
 							high: b.high,
@@ -158,6 +160,8 @@ const DataFeedFactory = (
 							asset: market,
 						}
 					}
+
+					console.log("ww: debug: bars: ", chartBars)
 
 					onHistoryCallback(chartBars, { noData: !chartBars.length })
 				})

@@ -25,10 +25,28 @@ export type PairLimitOrderType = UnwrapPromise<ReturnType<TokenExchange['limitOr
 
 export type PairEarningsType = UnwrapPromise<ReturnType<TokenExchange['queryEarning']>>;
 
+export type PointOrderType = UnwrapPromise<ReturnType<TokenExchange['pointOrder']>>;
+
+type OrderInfo = {
+	price: number;
+	amount: number;
+};
+
+export type PriceRange = {
+	low: number;
+	high: number;
+};
+
+export type OrderbookType = {
+	asks: OrderInfo[];
+	bids: OrderInfo[];
+};
+
 export type PairEarningsTypeWithOrderInfo = PairLimitOrderType & {
     sold: number;
     earned: number;
     selling: number;
+	price: number;
     direction: OrderDirection;
 };
 
@@ -51,6 +69,8 @@ export type ExchangeEarningType = {
 	price: number;
 	direction: OrderDirection;
 	volume: number;
+	timestamp: number;
+	txn: string;
 };
 
 export type ExchangeOrdersType = {

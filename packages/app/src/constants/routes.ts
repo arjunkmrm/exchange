@@ -9,6 +9,13 @@ export const formatUrl = (route: string, params: Record<string, string>) => {
 	return route + '?' + new URLSearchParams(params)
 }
 
+export enum MarketInfoTab {
+	INFO = 'info',
+	MARKET_HISTORY = 'market_history',
+	MY_ORDERS = 'my_orders',
+	MY_HISTORY = 'my_history',
+}
+
 export const ROUTES = {
 	Home: {
 		Root: '/',
@@ -28,6 +35,14 @@ export const ROUTES = {
 	Markets: {
 		Home: (asset: string) =>
 			formatUrl('/market', { asset }),
+		Info: (asset: string) =>
+			formatUrl('/market', { asset, tab: MarketInfoTab.INFO }),
+		MarketHistory: (asset: string) =>
+			formatUrl('/market', { asset, tab: MarketInfoTab.MARKET_HISTORY }),
+		MyOrders: (asset: string) =>
+			formatUrl('/market', { asset, tab: MarketInfoTab.MY_ORDERS }),
+		MyHistory: (asset: string) =>
+			formatUrl('/market', { asset, tab: MarketInfoTab.MY_HISTORY }),
 	},
 	Wallet: {
 		Home: '/wallet',

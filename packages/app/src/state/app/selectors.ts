@@ -22,3 +22,5 @@ export const selectWallet = (state: RootState) => state.wallet.walletAddress ?? 
 export const selectNetwork = (state: RootState) => state.wallet.networkId ?? DEFAULT_NETWORK_ID
 
 export const selectIsTradePanelDrawerOpen = (state: RootState) => state.app.tradePanelDrawerOpen
+
+export const selectIsShowOrderbook = (state: RootState) => state.app.showOrderbook

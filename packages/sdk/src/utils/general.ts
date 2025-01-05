@@ -17,8 +17,9 @@ export const point2Price = (point: number) => {
     return Math.pow(CONTRACT_POINT_BASE_NUMBER, point);
 };
 
-export const price2Point = (price: number) => {
-    return Number((Math.log(price) / Math.log(1.0001)).toFixed());
+export const price2Point = (price: number, margin: number = 1) => {
+    const pt = Number((Math.log(price) / Math.log(1.0001)).toFixed());
+	return Math.floor(pt / margin) * margin;
 };
 
 export const calcBlockHeight = async(relativeTime: number, provider: ethers.providers.Provider) => {

@@ -261,7 +261,7 @@
 				"seconds-ago": "sec ago"
 			},
 			"tooltips": {
-				"market-price": "The current price of the Futures market after adding a skew-based premium or discount to the index price",
+				"market-price": "The current price of the spot market",
 				"index-price": "The exact index price of this market without any adjustment for market skew applied",
 				"24h-change": "Total change in asset value within the past 24 hours",
 				"24h-vol": "Total trade volume within the past 24 hours",
@@ -1010,9 +1010,9 @@
 						"title": "Manage Account ETH Balance",
 						"withdraw": "Withdraw",
 						"deposit": "Deposit",
-
 						"withdraw-warning": "Withdrawing ETH while you still have open orders pending risks leaving insufficient balance for orders to execute."
 					},
+					"load-more": "Load More (Current Width: {{width}}%)",
 					"fee-rejection-label": "Fee Rejection",
 					"fee-rejection-tooltip": "This allows you to set a maximum fee on your order. If the dynamic fee exceeds your selected fee limit at the time of execution, the order will not execute."
 				},
@@ -1057,6 +1057,12 @@
 				"last-trades": "last trades",
 				"amount-label": "amount",
 				"price-label": "price",
+				"direction-label": "direction",
+				"claim-label": "claim",
+				"cancel-label": "cancel",
+				"selling-label": "selling",
+				"earning-label": "earning",
+				"sold-label": "sold",
 				"accrued-funding": "accrued funding",
 				"time-label": "time"
 			},
@@ -1249,7 +1255,8 @@
 			"title": "Asset Details | Bitly Token Exchange",
 			"base-info": {
 				"explorer": "Explorer",
-				"bridge": "Bridge"
+				"bridge": "Bridge",
+				"website": "Website"
 			},
 			"deposit-withdraw": {
 				"title": "Deposit & Withdraw",

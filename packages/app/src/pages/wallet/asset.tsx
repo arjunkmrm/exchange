@@ -48,6 +48,7 @@ const StakingPage: StakingComponent = () => {
 					address = {asset?.address ?? ''}
 					description = {asset?.description ?? ''}
 					networkId = {networkId}
+					website = {asset?.url ?? ''}
 				/>
 				<DepositWithdraw 
 					address={asset?.address ?? ''}

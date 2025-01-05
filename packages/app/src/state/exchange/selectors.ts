@@ -37,6 +37,14 @@ export const selectOpenOrders = createSelector(
 
 export const selectCurrentMarketAsset = (state: RootState) => state.exchange.selectedMarketAsset
 
+export const selectOrderbook = createSelector(
+	selectCurrentMarketAsset,
+	(state: RootState) => state.exchange.orderbooks,
+	(market, orderbook) => {
+		return orderbook[market] ?? {asks: [], bids: []}
+	}
+)
+
 export const selectCurrentMarketInfo = createSelector(
 	selectMarkets,
 	selectCurrentMarketAsset,
@@ -44,6 +52,10 @@ export const selectCurrentMarketInfo = createSelector(
 		return markets.find(e=>e.marketAddress == pairAddress)
 	}
 )
+
+export const selectOrderbookQueryStatus = (state: RootState) => state.exchange.queryStatuses.orderbook
+
+export const selectOpenOrdersQueryStatus = (state: RootState) => state.exchange.queryStatuses.openOrders
 
 export const selectOrderType = (state: RootState) => state.exchange.orderType
 
@@ -58,3 +70,9 @@ export const selectOrderSize = (state: RootState) => state.exchange.orderSize
 export const selectSlippage = (state: RootState) => state.exchange.slippage
 
 export const selectMakeOrderFinished = (state: RootState) => state.exchange.writeStatuses.makeOrder !== FetchStatus.Loading
+
+export const selectOrderbookWidth = (state: RootState) => state.exchange.orderbookWidth
+
+export const selectClaimEarningStatus = (state: RootState) => state.exchange.writeStatuses.claimEarning
+
+export const selectCancelOrderStatus = (state: RootState) => state.exchange.writeStatuses.cancelOrder
