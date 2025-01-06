@@ -33,9 +33,9 @@ const Hero = () => {
 						</RefButton>
 					</Link>
 				</CTAContainer>
-				<HeroImageContainer>
+				{/* <HeroImageContainer>
 					<Webp srcOrSrcset={MarketOrderPreview} StyledImg={HeroImage} />
-				</HeroImageContainer>
+				</HeroImageContainer> */}
 			</Container>
 		</StackSection>
 	)
