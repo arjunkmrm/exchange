@@ -43,9 +43,9 @@ export const fetchBalance = createAsyncThunk<
 		const balancesInWallet = await sdk.wallet.balancesInWallet(tokens.map(e=>e.address))
 		const balancesInBank = await sdk.wallet.balancesInBank(tokens.map(e=>e.address))
 	
-		console.log("ww: fetchBalances: ", tokens, balancesInBank, balancesInWallet)
 		return {balancesInBank, balancesInWallet}
 	} catch (err) {
+		logError(err)
 		notifyError('Failed to fetch balances', err)
 		throw err
 	}
@@ -139,7 +139,6 @@ export const fetchAllowance = createAsyncThunk<
 	try {
 		const tokens = sdk.exchange.getTokensInfo([])
 		const allowances = await sdk.wallet.allowance(tokens.map(e=>e.address))
-		console.log("ww: allowances: ", allowances)
 		return allowances
 	} catch (err) {
 		logError(err)

@@ -111,7 +111,6 @@ export const selectTotalBalanceHistory = createSelector(
 			.map(e=>e[1])
 
 		balanceHistoryList.push(currentBalance)
-		console.log("ww: balanceHistoryList: ", balanceHistoryList)
 		return balanceHistoryList
 	}
 )

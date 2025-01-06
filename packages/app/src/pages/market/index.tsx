@@ -43,7 +43,6 @@ const Market: MarketComponent = () => {
 			routerMarketAsset
 		) {
 			dispatch(setCurrentMarketAsset(routerMarketAsset as string))
-			// dispatch(clearTradeInputs())
 		}
 	}, [router, dispatch, routerMarketAsset, selectedMarketAsset])
 

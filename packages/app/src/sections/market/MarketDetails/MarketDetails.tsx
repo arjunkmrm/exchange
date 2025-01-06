@@ -77,7 +77,8 @@ const MarketPriceDetail: React.FC<MarketDetailsProps> = memo(({ mobile }) => {
 const DailyChangeDetail: React.FC<MarketDetailsProps> = memo(({ mobile }) => {
 	const curPrice = useAppSelector(selectCurrentMarketPrice)
 	const pastPrice = useAppSelector(selectCurrentMarketPastPrice)
-	const marketAsset = useAppSelector(selectCurrentMarketAsset)
+	
+	console.log("ww: debug: ", curPrice, pastPrice, (curPrice - pastPrice) / curPrice ?? 0)
 
 	return (
 		<MarketDetail

@@ -5,13 +5,10 @@ import styled, { css } from 'styled-components'
 import Table, { TableHeader } from 'components/Table'
 import { Body } from 'components/Text'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
-import Button from 'components/Button'
 import { selectCancelOrderStatus, selectClaimEarningStatus, selectCurrentMarketInfo, selectOpenOrders, selectOpenOrdersQueryStatus, selectOrderbook, selectOrderbookQueryStatus, selectOrderbookWidth } from 'state/exchange/selectors'
 import { formatNumber } from 'utils/prices'
-import { increaseOrderbookWidth } from 'state/exchange/reducer'
-import { ORDERBOOK_WIDTH_INCREASEMENT } from 'constants/defaults'
 import { FetchStatus } from 'state/types'
-import { cancelOrder, claimEarning, fetchOrderbook } from 'state/exchange/actions'
+import { cancelOrder, claimEarning } from 'state/exchange/actions'
 import { OrderDirection } from '@bitly/sdk/types'
 import Pill from 'components/Pill'
 import Tooltip from 'components/Tooltip/Tooltip'
@@ -44,7 +41,7 @@ const MyOpenOrders: FC<MyOpenOrdersProps> = ({ mobile, display }) => {
 	const openOrders = useAppSelector(selectOpenOrders)
 	const marketInfo = useAppSelector(selectCurrentMarketInfo)
 	const openOrdersQueryStatus = useAppSelector(selectOpenOrdersQueryStatus)
-	
+
 	useEffect(() => {
 		if (loading && (
 			openOrdersQueryStatus.status === FetchStatus.Error || 
@@ -58,13 +55,12 @@ const MyOpenOrders: FC<MyOpenOrdersProps> = ({ mobile, display }) => {
 		return openOrders[marketInfo?.marketAddress ?? ''] ?? []
 	}, [openOrders, marketInfo])
 
-	console.log("ww: debug: data: ", data, openOrders)
-
 	return (
 		<StyledTable
 			data={data}
 			isLoading={loading}
 			highlightRowsOnHover
+			columnsDeps = {[marketInfo, dispatch, cancelOrderStatus, t]}
 			columns={[
 				{
 					header: () => <TableHeader>{t('futures.market.history.direction-label')}</TableHeader>,
@@ -188,7 +184,6 @@ const MyOpenOrders: FC<MyOpenOrdersProps> = ({ mobile, display }) => {
 						const direction = cellProps.row.original.direction
 						const point = cellProps.row.original.point
 						const status = cancelOrderStatus[formatOrderId(marketInfo?.marketAddress ?? '', direction, point)]
-
 						return (
 							<Pill 
 								disabled={status === FetchStatus.Loading || status === FetchStatus.Success}

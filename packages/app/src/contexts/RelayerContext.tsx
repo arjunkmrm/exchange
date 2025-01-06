@@ -30,6 +30,9 @@ export const monitorTransaction = async ({
 			autoClose: 5000,
 		}
 		toast(<NotificationError failureReason={e.reason} />, options)
+		if (onTxFailed != null) {
+			onTxFailed({ transactionHash: '', failureReason: e.reason })
+		}
 		return
 	}
 	const link = blockExplorer.txLink?.(txHash)

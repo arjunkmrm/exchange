@@ -13,7 +13,6 @@ import { setOnChainPrices } from './reducer'
 export const updatePrices =
 	(newPrices: PricesMap): AppThunk =>
 	(dispatch, getState) => {
-		console.log("ww: prices: ", newPrices)
 		dispatch(setOnChainPrices(newPrices))
 	}
 

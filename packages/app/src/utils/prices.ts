@@ -37,7 +37,7 @@ export const formatPercent = (
 	if (options?.minDecimals) {
 		decimals = Math.max(decimals, options.minDecimals)
 	}
-	return `${(value * 100).toString(decimals)}%`
+	return `${(value * 100).toFixed(decimals).toString()}%`
 }
 
 

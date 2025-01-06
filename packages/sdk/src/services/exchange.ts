@@ -169,7 +169,7 @@ export default class ExchangeService {
     public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number)
 		: Promise<ContractTransaction> 
 	{
-        const targetMarket = this.markets.find(e=>e.marketAddress==market);
+        const targetMarket = this.markets.find(e=>e.marketAddress===market);
 
         const originToken = direction == OrderDirection.buy ? targetMarket?.tokenY : targetMarket?.tokenX;
         const point = price2Point(price);
@@ -183,7 +183,7 @@ export default class ExchangeService {
     public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
         slippage: number): Promise<ContractTransaction>
     {
-        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.find(e=>e.marketAddress===market);
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
@@ -193,26 +193,26 @@ export default class ExchangeService {
         const amount = toPlainAmount(volume, originToken.decimals);
         const holder = DEFAULT_REFERRAL_ADDRESS;
         const referral = DEFAULT_REFERRAL_ADDRESS;
-
+		
         return await PairWriteContract(
-            this.sdk, market, 'marketOrder', [originToken, amount, startPoint, slippage, holder, referral]
+            this.sdk, market, 'marketOrder', [originToken.address, amount, startPoint, slippage, holder, referral]
         );
     }
 
     public async cancelLimitOrder(market: string, direction: OrderDirection, point: number)
 		: Promise<ContractTransaction> 
 	{
-        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.find(e=>e.marketAddress===market);
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
 
         const originToken = direction == OrderDirection.buy ? targetMarket.tokenY : targetMarket.tokenX;
-        return await PairWriteContract(this.sdk, market, 'cancelLimitOrder', [originToken, point]);
+        return await PairWriteContract(this.sdk, market, 'cancelLimitOrder', [originToken.address, point]);
     }
 
     public async cancelAllLimitOrder(market: string): Promise<ContractTransaction> {
-        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress===market)?.[0];
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
@@ -221,7 +221,7 @@ export default class ExchangeService {
     }
 
     public async claimEarning(market: string, direction: OrderDirection, point: number): Promise<ContractTransaction> {
-        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.find(e=>e.marketAddress===market);
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
@@ -231,7 +231,7 @@ export default class ExchangeService {
     }
 
     public async claimAllEarnings(market: string): Promise<ContractTransaction> {
-        const targetMarket: ExchangeMarketType | undefined = this.markets.filter(e=>e.marketAddress=market)?.[0];
+        const targetMarket: ExchangeMarketType | undefined = this.markets.find(e=>e.marketAddress===market);
         if (!targetMarket) {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }

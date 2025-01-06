@@ -33,7 +33,7 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 	const marketInfo = useAppSelector(selectCurrentMarketInfo)
 	const width = useAppSelector(selectOrderbookWidth)
 	const orderbookQueryStatus = useAppSelector(selectOrderbookQueryStatus)
-	
+
 	useEffect(() => {
 		if (loading && (
 			orderbookQueryStatus.status === FetchStatus.Error || 
@@ -87,7 +87,7 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 						size: 110,
 					},
 					{
-						header: () => <TableHeader>{t('futures.market.history.price-label')} ({marketInfo?.tokenY.symbol})</TableHeader>,
+						header: () => <TableHeader>{t('futures.market.history.price-label')}</TableHeader>,
 						accessorKey: TableColumnAccessor.Price,
 						enableSorting: false,
 						cell: (cellProps) => {

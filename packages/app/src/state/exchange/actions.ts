@@ -19,7 +19,6 @@ export const fetchMarkets = createAsyncThunk<
 >('exchange/fetchMarkets', async (_, { extra: { sdk } }) => {
 	try {
 		const markets = await sdk.exchange.getMarketsInfo([])
-		console.log("ww: fetching market: ", markets)
 		const networkId = sdk.context.networkId
 		return { markets, networkId }
 	} catch (err) {
@@ -79,7 +78,6 @@ export const fetchOpenOrders = createAsyncThunk<
 		const markets = sdk.exchange.getMarketsInfo([])
 		const openOrders = await sdk.exchange.getLimitOrders(markets.map(e=>e.marketAddress))
 		const networkId = sdk.context.networkId
-		console.log("ww: debug: query res: ", openOrders)
 		return { openOrders, networkId }
 	} catch (err) {
 		logError(err)
@@ -162,7 +160,7 @@ export const placeOrder = createAsyncThunk<
 		if (type === 'limit') {
 			return await sdk.exchange.placeLimitOrder(market, direction, price, amount)
 		} else {
-			return await sdk.exchange.placeMarketOrder(market, direction, amount, curPrice, slippage)
+			return await sdk.exchange.placeMarketOrder(market, direction, amount, curPrice, Math.floor(slippage*10000))
 		}
 	}
 
@@ -170,6 +168,9 @@ export const placeOrder = createAsyncThunk<
 		transaction: makeOrder,
 		onTxSent: () => {
 			dispatch(setMakeOrderStatus(FetchStatus.Success))
+		},
+		onTxFailed: () => {
+			dispatch(setMakeOrderStatus(FetchStatus.Error))
 		},
 	})
 })

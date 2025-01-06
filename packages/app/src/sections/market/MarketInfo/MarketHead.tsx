@@ -9,8 +9,6 @@ const MarketHead: FC = () => {
 	const { t } = useTranslation()
 	const market = useAppSelector(selectCurrentMarketInfo)
 
-	console.log("ww: market header", market)
-
 	return (
 		<Head>
 			<title>

@@ -36,7 +36,6 @@ const pricesSlice = createSlice({
 			Object.entries(action.payload).forEach(([key, price]) => {
 				prices[key] = price
 			})
-			console.log("ww: previousDayPrices: ", prices)
 			pricesState.previousDayPrices = prices
 			pricesState.queryStatuses.previousDayPrices = SUCCESS_STATUS
 		})
