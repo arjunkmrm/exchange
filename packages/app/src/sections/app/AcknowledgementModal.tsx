@@ -43,17 +43,17 @@ export default function AcknowledgementModal() {
 	}
 
 	return (
-		<StyledBaseModal onDismiss={() => {}} title="Kwenta Terms of Service" showCross={false}>
+		<StyledBaseModal onDismiss={() => {}} title="Bitly Terms of Service" showCross={false}>
 			<BodyText>
-				Kwenta is a decentralized exchange, native to the internet, managed by an international
+				Bitly is a decentralized exchange, native to the internet, managed by an international
 				community, offering accessible investment tooling in an effort to improve financial
-				equality. By agreeing, you acknowledge that Kwenta is not designed for use in every legal
+				equality. By agreeing, you acknowledge that Bitly is not designed for use in every legal
 				jurisdiction and represent that you have investigated your personal legal situation and
 				consulted with a legal representative in your jurisdiction if necessary.
 				<br />
 				<br />
 				Please acknowledge that you understood your local regulations well enough to determine
-				whether you are operating within your rights when using Kwenta as Kwenta does not block
+				whether you are operating within your rights when using Bitly as Bitly does not block
 				anyone from accessing the protocol due its reliance on smart contracts and blockchain
 				systems. All users assume responsibility for their own actions.
 				<br />

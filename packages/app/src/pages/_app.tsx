@@ -48,7 +48,7 @@ Sentry.init({
 	maxBreadcrumbs: 50,
 	debug: process.env.NODE_ENV !== 'production',
 	enabled: process.env.NODE_ENV === 'production',
-	release: 'kwenta@' + process.env.GIT_HASH_ID!.toString(),
+	release: 'bitly@' + process.env.GIT_HASH_ID!.toString(),
 	autoSessionTracking: true,
 	integrations: [new BrowserTracing()],
 	tracesSampleRate: 0.3,
@@ -103,19 +103,6 @@ const App: FC<AppProps> = (props) => {
 				/>
 				<meta name="title" content={t('meta.og.title')} />
 				<meta name="description" content={t('meta.description')} />
-				{/* open graph */}
-				{/* <meta property="og:title" content={t('meta.og.title')} />
-				<meta property="og:description" content={t('meta.description')} />
-				<meta property="og:url" content="https://kwenta.eth.limo/" />
-				<meta property="og:type" content="website" />
-				<meta property="og:image:alt" content={t('meta.og.title')} />
-				<meta property="og:site_name" content={t('meta.og.site-name')} /> */}
-				{/* twitter */}
-				{/* <meta name="twitter:card" content="summary_large_image" />
-				<meta name="twitter:site" content="@kwenta_io" />
-				<meta name="twitter:creator" content="@kwenta_io" />
-				<meta name="twitter:image" content="https://kwenta.eth.limo/images/kwenta-twitter.jpg" />
-				<meta name="twitter:url" content="https://kwenta.eth.limo" /> */}
 				<link rel="icon" href="/images/favicon.svg" />
 			</Head>
 			<Provider store={store}>

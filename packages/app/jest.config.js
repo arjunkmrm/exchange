@@ -7,8 +7,8 @@ const customJestConfig = {
 	modulePaths: ['<rootDir>', 'src'],
 	moduleDirectories: ['node_modules', 'src'],
 	moduleNameMapper: {
-		'@kwenta/sdk/(.+)$': '<rootDir>/../sdk/dist/$1',
-		'@kwenta/sdk': '<rootDir>/../sdk/dist/index.js',
+		'@bitly/sdk/(.+)$': '<rootDir>/../sdk/dist/$1',
+		'@bitly/sdk': '<rootDir>/../sdk/dist/index.js',
 	},
 	globalSetup: './testing/unit/setup/global.js',
 	setupFilesAfterEnv: ['./testing/unit/setup/setup.js'],

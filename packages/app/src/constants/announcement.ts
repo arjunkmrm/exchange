@@ -5,7 +5,7 @@ export const BANNER_ENABLED = false
 // Sets the link destination for the banner component, or renders the banner as
 // plain, un-clickable text if set to a falsey value (`false`, `null`, '', etc...)
 export const BANNER_LINK_URL =
-	'https://docs.kwenta.io/kwenta-token/staking-v2-migration/how-to-migrate'
+	'https://bitly.exchange'
 // Sets the text displayed on the home page banner
 export const BANNER_TEXT = 'Staking V2 Migration Now Live! Read More  ↗'
 // Sets the height of the banner component on desktop

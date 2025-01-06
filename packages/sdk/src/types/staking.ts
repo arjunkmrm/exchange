@@ -15,11 +15,6 @@ export type FuturesFeeForAccountProps = {
 	keeperFeesPaid: BigNumber
 }
 
-export type FuturesFeeProps = {
-	timestamp: string
-	feesKwenta: BigNumber
-}
-
 export interface OperatorApprovals {
 	operator: string
 	blockTimestamp: number
