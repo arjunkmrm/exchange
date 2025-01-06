@@ -15,7 +15,7 @@ import OrderTypeSelector from './OrderTypeSelector'
 import MarginInput from './MarginInput'
 import TradePanelPriceInput from './TradePanelPriceInput'
 import ManagePosition from './ManagePosition'
-import TradeBalance from 'sections/market/TradeBalanceSmartMargin'
+import SlippageSelector from './SlippageSelector'
 
 type Props = {
 	mobile?: boolean
@@ -69,6 +69,9 @@ const TradePanelSmartMargin: FC<Props> = memo(({ mobile, closeDrawer }) => {
 								<Spacer height={16} />
 							</>
 						)}
+						{orderType === 'market' && 
+							<SlippageSelector />
+						}
 						<Spacer height={16} />
 						<ManagePosition /> 
 					</MainPanelContent>

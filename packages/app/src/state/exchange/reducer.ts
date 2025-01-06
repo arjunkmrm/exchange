@@ -29,7 +29,7 @@ export const EXCHANGE_INITIAL_STATE: ExchangeState = {
 	orderDirection: OrderDirection.buy,
 	orderPrice: '0.00',
 	orderSize: '0.00',
-	slippage: 0.1,
+	slippage: 0.01,
 	orderbookWidth: 0.1,
 	orderbooks: {},
 }

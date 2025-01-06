@@ -9,6 +9,7 @@ type Props = {
 	disabled?: boolean
 	onSelect: (index: number) => void
 	type?: StyleType
+	selectedIndex?: number
 }
 
 export default function SelectorButtons({
@@ -16,11 +17,12 @@ export default function SelectorButtons({
 	disabled,
 	options,
 	type = 'pill-button',
+	selectedIndex,
 }: Props) {
 	return (
 		<Container $flex={type === 'pill-button'}>
 			{type === 'pill-button' ? (
-				<SegmentedControl onChange={onSelect} styleType={type} values={options} />
+				<SegmentedControl selectedIndex={selectedIndex} onChange={onSelect} styleType={type} values={options} />
 			) : (
 				options.map((option, i) => (
 					<Button

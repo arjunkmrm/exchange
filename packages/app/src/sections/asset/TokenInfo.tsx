@@ -48,10 +48,6 @@ export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address
 		}
 		if (bridge) {
 			ret.push({
-				href: undefined, 
-				text: '|'
-			})
-			ret.push({
 				href: bridge, 
 				text: t('wallet.asset.base-info.bridge')
 			})
