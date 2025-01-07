@@ -11,8 +11,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
 import { DEFAULT_UPDATE_KLINE_DELAY_TIME_MS } from 'constants/defaults'
 import { monitorTransaction } from 'contexts/RelayerContext'
+import { updatePrices } from 'state/prices/actions'
 import { selectCurrentMarketPrice } from 'state/prices/selectors'
 import { FetchStatus, ThunkConfig } from 'state/types'
+import { fetchBalance } from 'state/wallet/actions'
 import logError from 'utils/logError'
 import { formatOrderId } from 'utils/string'
 import { setMakeOrderStatus } from './reducer'
@@ -109,9 +111,9 @@ export const claimAllEarnings = createAsyncThunk<
 		transaction: () => sdk.exchange.claimAllEarnings(market),
 		onTxConfirmed: () => {
 			dispatch(fetchOpenOrders())
+			dispatch(fetchBalance())
 		},
 		onTxFailed: () => {
-			dispatch(fetchOpenOrders())
 		},
 	})
 })
@@ -126,10 +128,10 @@ export const claimEarning = createAsyncThunk<
 		onTxConfirmed: () => {
 			dispatch({ type: 'exchange/setClaimEarningStatus', payload: FetchStatus.Success })
 			dispatch(fetchOpenOrders())
+			dispatch(fetchBalance())
 		},
 		onTxFailed: () => {
 			dispatch({ type: 'wallet/setClaimEarningStatus', payload: FetchStatus.Error })
-			dispatch(fetchOpenOrders())
 		},
 	})
 })
@@ -146,12 +148,13 @@ export const cancelOrder = createAsyncThunk<
 				payload: {id: formatOrderId(market, direction, point), status: FetchStatus.Success} 
 			})
 			dispatch(fetchOpenOrders())
+			dispatch(fetchOrderbook())
+			dispatch(fetchBalance())
 		},
 		onTxFailed: () => {
 			dispatch({ type: 'exchange/setCancelOrderStatus', 
 				payload: {id: formatOrderId(market, direction, point), status: FetchStatus.Error} 
 			})
-			dispatch(fetchOpenOrders())
 		},
 	})
 })
@@ -185,9 +188,17 @@ export const placeOrder = createAsyncThunk<
 		},
 		onTxFailed: () => {
 			dispatch(setMakeOrderStatus(FetchStatus.Error))
+			dispatch(fetchOpenOrders())
+			dispatch(fetchDailyVolumes())
+			dispatch(fetchOrderbook())
+			dispatch(fetchBalance())
 		},
 		onTxConfirmed: () => {
 			setTimeout(()=>sdk.prices.updateKline(market), DEFAULT_UPDATE_KLINE_DELAY_TIME_MS)
+			dispatch(fetchOpenOrders())
+			dispatch(fetchDailyVolumes())
+			dispatch(fetchOrderbook())
+			dispatch(fetchBalance())
 		},
 	})
 })

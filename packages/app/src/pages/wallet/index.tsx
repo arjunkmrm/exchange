@@ -8,11 +8,14 @@ import Wallet from 'sections/wallet/Wallet'
 import AppLayout from 'sections/shared/Layout/AppLayout'
 import { PageContent, MainContent, FullHeightContainer } from 'styles/common'
 import PortfolioChart from 'sections/wallet/PortfolioChart'
+import { useFetchWalletData } from 'state/wallet/hooks'
 
 type LeaderComponent = FC & { getLayout: (page: ReactNode) => JSX.Element }
 
 const Leader: LeaderComponent = () => {
 	const { t } = useTranslation()
+
+	useFetchWalletData()
 
 	return (
 		<>

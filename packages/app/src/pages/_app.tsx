@@ -19,7 +19,7 @@ import { chains, wagmiClient } from 'containers/Connector/config'
 import AcknowledgementModal from 'sections/app/AcknowledgementModal'
 import Layout from 'sections/shared/Layout'
 import SystemStatus from 'sections/shared/SystemStatus'
-import { useAppData } from 'state/app/hooks'
+import { useFetchAppData } from 'state/app/hooks'
 import { useAppSelector } from 'state/hooks'
 import { selectCurrentTheme } from 'state/preferences/selectors'
 import store from 'state/store'
@@ -33,7 +33,6 @@ import 'slick-carousel/slick/slick-theme.css'
 import '@reach/dialog/styles.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import '../i18n'
-import { usePollExchangeData } from 'state/exchange/hooks'
 
 type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode
@@ -59,7 +58,7 @@ const InnerApp: FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
 	const [isReady, setReady] = useState(false)
 	const { providerReady } = Connector.useContainer()
 
-	useAppData(providerReady)
+	useFetchAppData(providerReady)
 
 	const getLayout = Component.getLayout || ((page) => page)
 	const currentTheme = useAppSelector(selectCurrentTheme)

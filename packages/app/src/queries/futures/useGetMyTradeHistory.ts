@@ -6,6 +6,7 @@ import sdk from 'state/sdk'
 import { useState } from 'react'
 import { PERIOD_IN_SECONDS } from '@bitly/sdk/constants'
 import { ExchangeOrdersType } from '@bitly/sdk/types'
+import { POLL_INTERVAL_MS } from 'constants/defaults'
 
 const useGetMyTradeHistory = (
 	currencyKey: string
@@ -34,6 +35,7 @@ const useGetMyTradeHistory = (
 			}
 		},
 		{
+			refetchInterval: POLL_INTERVAL_MS,
 			getNextPageParam: (lastPage) => {
 				return lastRelativeTimeSec < -PERIOD_IN_SECONDS.ONE_YEAR ? undefined : lastRelativeTimeSec
 			},

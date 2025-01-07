@@ -7,7 +7,7 @@ import Spacer from 'components/Spacer'
 import Search from 'components/Table/Search'
 import DashboardLayout from 'sections/dashboard/DashboardLayout'
 import FuturesMarketsTable from 'sections/dashboard/FuturesMarketsTable'
-import { usePollExchangeData } from 'state/exchange/hooks'
+import { useFetchExchangeData } from 'state/exchange/hooks'
 
 type MarketsProps = React.FC & { getLayout: (page: ReactNode) => JSX.Element }
 
@@ -16,7 +16,7 @@ const MarketsPage: MarketsProps = () => {
 	const [search, setSearch] = useState('')
 	const onClearSearch = useCallback(() => setSearch(''), [setSearch])
 
-	usePollExchangeData()
+	useFetchExchangeData()
 
 	return (
 		<>

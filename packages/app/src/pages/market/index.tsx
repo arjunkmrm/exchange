@@ -15,7 +15,7 @@ import { PageContent } from 'styles/common'
 import media from 'styles/media'
 import { setCurrentMarketAsset } from 'state/exchange/reducer'
 import { selectCurrentMarketAsset } from 'state/exchange/selectors'
-import { usePollExchangeData, usePollMarketData } from 'state/exchange/hooks'
+import { useFetchMarketData } from 'state/exchange/hooks'
 import { TRADE_PANEL_WIDTH_LG, TRADE_PANEL_WIDTH_MD } from 'sections/market/styles'
 import { selectShowModal } from 'state/app/selectors'
 
@@ -26,11 +26,10 @@ const Market: MarketComponent = () => {
 	const { walletAddress } = Connector.useContainer()
 	const dispatch = useAppDispatch()
 	const { greaterThanWidth } = useWindowSize()
-	usePollExchangeData()
-	usePollMarketData()
 	const routerMarketAsset = router.query.asset
-	const openModal = useAppSelector(selectShowModal)
 	const selectedMarketAsset = useAppSelector(selectCurrentMarketAsset)
+
+	useFetchMarketData()
 
 	useEffect(() => {
 		// dispatch(clearTradeInputs())

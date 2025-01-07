@@ -51,3 +51,5 @@ export const DEFAULT_UPDATE_KLINE_DELAY_TIME_MS = 1000
 export const ORDER_TYPES = ['market', 'limit']
 
 export const ORDERBOOK_WIDTH_INCREASEMENT = 0.1
+
+export const DEFAULT_TIME_SPAN = 7
