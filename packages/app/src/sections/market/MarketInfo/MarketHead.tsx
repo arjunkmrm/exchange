@@ -3,21 +3,23 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { selectCurrentMarketInfo } from 'state/exchange/selectors'
 import { useAppSelector } from 'state/hooks'
+import { selectCurrentMarketPrice } from 'state/prices/selectors'
 import { formatCurrency } from 'utils/prices'
 
 const MarketHead: FC = () => {
 	const { t } = useTranslation()
 	const market = useAppSelector(selectCurrentMarketInfo)
+	const price = useAppSelector(selectCurrentMarketPrice)
 
 	return (
 		<Head>
 			<title>
 				{
-					123
+					price > 0
 					? t('futures.market.page-title-rate', {
 							marketName: market?.displayName,
-							rate: formatCurrency('USD', 123, {
-								currencyKey: 'USD',
+							rate: formatCurrency(market?.displayName ?? '', price, {
+								currencyKey: market?.displayName,
 								suggestDecimals: true,
 							}),
 					  })

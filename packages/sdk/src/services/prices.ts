@@ -1,6 +1,6 @@
 import BitlySDK from '..';
 import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
-import { getOffChainKline } from '../queries/exchange';
+import { getOffChainKline, updateOffChainKline } from '../queries/exchange';
 import { KLINE_SOLUTION } from '../types/common';
 import { ExchangeMarketType } from '../types/exchange';
 import { CandleResult, PairPointType, PairStartOffType, PricesListener, PricesMap } from '../types/prices';
@@ -115,6 +115,10 @@ export default class PricesService {
         }
 		return klines;
     }
+
+	public async updateKline(market: string) {
+		return updateOffChainKline(market);
+	}
 
     // Private functions
 

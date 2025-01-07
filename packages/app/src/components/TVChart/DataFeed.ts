@@ -132,18 +132,16 @@ const DataFeedFactory = (
 		},
 		getBars: function (
 			symbolInfo: LibrarySymbolInfo,
-			_resolution: ResolutionString,
+			resolution: ResolutionString,
 			{ from, to }: PeriodParams,
 			onHistoryCallback: HistoryCallback,
 			onErrorCallback: (error: any) => any
 		) {
 			const market = symbolInfo.name
-
 			try {
 				const nowSec = Number(((new Date()).getTime() / 1000).toFixed())
-				sdk.prices.getKlines([market], _resolution as KLINE_SOLUTION, from - nowSec, to - nowSec).then((barsForMarkets) => {
+				sdk.prices.getKlines([market], resolution as KLINE_SOLUTION, from - nowSec, to - nowSec).then((barsForMarkets) => {
 					const bars = barsForMarkets[0]
-					console.log("ww: debug: bar ori: ", bars)
 					const chartBars = bars.map((b: any) => {
 						return {
 							high: b.high,
@@ -161,8 +159,6 @@ const DataFeedFactory = (
 						}
 					}
 
-					console.log("ww: debug: bars: ", chartBars)
-
 					onHistoryCallback(chartBars, { noData: !chartBars.length })
 				})
 			} catch (err) {
@@ -171,13 +167,14 @@ const DataFeedFactory = (
 		},
 		subscribeBars: (
 			symbolInfo: LibrarySymbolInfo,
-			_resolution: ResolutionString,
+			resolution: ResolutionString,
 			onTick: SubscribeBarsCallback
 		) => {
 			const market = symbolInfo.name;
+			console.log("ww: debug: sub: ", resolution)
 
 			// subscribe to on-chain prices
-			const listener = subscribeOnChainPrices(market as string, _resolution, onTick)
+			const listener = subscribeOnChainPrices(market as string, resolution, onTick)
 			onSubscribe(listener)
 		},
 		unsubscribeBars: () => {},

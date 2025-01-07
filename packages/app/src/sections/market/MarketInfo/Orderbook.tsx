@@ -68,6 +68,21 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 				highlightRowsOnHover
 				columns={[
 					{
+						header: () => <TableHeader>{t('futures.market.history.price-label')}</TableHeader>,
+						accessorKey: TableColumnAccessor.Price,
+						enableSorting: false,
+						cell: (cellProps) => {
+							const negative = !cellProps.row.original.buy
+
+							return (
+								<DirectionalValue negative={negative} >
+									{formatNumber(cellProps.row.original.price, { suggestDecimals: true })} 
+								</DirectionalValue>
+							)
+						},
+						size: 100,
+					},
+					{
 						header: () => <TableHeader>{t('futures.market.history.amount-label')}</TableHeader>,
 						accessorKey: TableColumnAccessor.Amount,
 						enableSorting: false,
@@ -81,21 +96,6 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 										truncateOver: 1e6,
 										maxDecimals: 6,
 									})}
-								</DirectionalValue>
-							)
-						},
-						size: 110,
-					},
-					{
-						header: () => <TableHeader>{t('futures.market.history.price-label')}</TableHeader>,
-						accessorKey: TableColumnAccessor.Price,
-						enableSorting: false,
-						cell: (cellProps) => {
-							const negative = !cellProps.row.original.buy
-
-							return (
-								<DirectionalValue negative={negative} >
-									{formatNumber(cellProps.row.original.price, { suggestDecimals: true })} 
 								</DirectionalValue>
 							)
 						},

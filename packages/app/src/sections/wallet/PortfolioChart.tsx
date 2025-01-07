@@ -124,6 +124,8 @@ const PortfolioChart: FC = () => {
 	const upnl = useAppSelector(selectUnrealizedBalance)
 	const openOrders = useAppSelector(selectOpenOrders)
 
+	console.log("ww: debug: port: ", portfolioData)
+
 	const onClaimAll = useCallback(async () => {
 		for (const [market, info] of Object.entries(openOrders)) {
 			if (info.length > 0) {
@@ -201,15 +203,39 @@ const PortfolioChart: FC = () => {
 				</ChartGrid>
 			</MobileHiddenView>
 			<MobileOnlyView>
-				{!!total && portfolioData.length >= 2 ? (
-					<MobileChartGrid>
-						<ChartOverlay>
-							<PortfolioTitle>Portfolio Value</PortfolioTitle>
-							<PortfolioText currencyKey="USD" price={hoverValue || total} sign="$" />
-							<NumericValue colored value={changeValue.value ?? 0}>
-								{changeValue.text}&nbsp;
+				<MobileChartGridSmall>
+					<ChartOverlay>
+						<PortfolioTitle>
+							{hoverTitle ? hoverTitle : t('dashboard.overview.portfolio-chart.portfolio-value')}
+						</PortfolioTitle>
+						<NumericValue fontSize={20} value={hoverValue || total}>
+							{formatDollars(hoverValue || total, { maxDecimals: 2 })}
+						</NumericValue>
+						<NumericValue colored value={changeValue.value ?? 0}>
+							{changeValue.text}&nbsp;
+						</NumericValue>
+					</ChartOverlay>
+				</MobileChartGridSmall>
+				<br />
+				<MobileChartGridMedium>
+					<ChartOverlay>
+							<PortfolioTitle>{t('dashboard.overview.portfolio-chart.upnl')}</PortfolioTitle>
+							<NumericValue colored value={upnl ?? 0}>
+								{upnl > 0 ? '+' : ''}
+								{formatDollars(upnl, { suggestDecimals: true })}
 							</NumericValue>
-						</ChartOverlay>
+							{
+								upnl > 0 ?
+								<Button variant="flat" size="small" onClick={onClaimAll} >
+									{t('dashboard.overview.portfolio-chart.claim')}
+								</Button> :
+								<></>
+							}
+					</ChartOverlay>
+				</MobileChartGridMedium>
+				<br />
+				<MobileChartGrid>
+					{!!total && portfolioData.length >= 2 ? (
 						<ChartContainer>
 							<TopBar>
 								<TimeframeOverlay>
@@ -218,12 +244,12 @@ const PortfolioChart: FC = () => {
 							</TopBar>
 							<PriceChart setHoverValue={setHoverValue} setHoverTitle={setHoverTitle} />
 						</ChartContainer>
-					</MobileChartGrid>
-				) : (
-					<ChartContainer mobile>
-						<ChartCTA />
-					</ChartContainer>
-				)}
+					) : (
+						<ChartContainer>
+							<ChartCTA />
+						</ChartContainer>
+					)}
+				</MobileChartGrid>
 			</MobileOnlyView>
 		</>
 	)
@@ -287,13 +313,31 @@ const PortfolioText = styled(Currency.Price)`
 	}
 `
 
+const MobileChartGridSmall = styled.div`
+	display: grid;
+	grid-template-rows: 1fr 5fr;
+	width: 100%;
+	border: ${(props) => props.theme.colors.selectedTheme.border};
+	border-radius: 0px;
+	height: 100px;
+`
+
+const MobileChartGridMedium = styled.div`
+	display: grid;
+	grid-template-rows: 1fr 5fr;
+	width: 100%;
+	border: ${(props) => props.theme.colors.selectedTheme.border};
+	border-radius: 0px;
+	height: 150px;
+`
+
 const MobileChartGrid = styled.div`
 	display: grid;
 	grid-template-rows: 1fr 5fr;
 	width: 100%;
 	border: ${(props) => props.theme.colors.selectedTheme.border};
 	border-radius: 0px;
-	height: 360px;
+	height: 320px;
 `
 
 const ChartGrid = styled.div`

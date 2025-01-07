@@ -75,7 +75,7 @@ const MyOpenOrders: FC<MyOpenOrdersProps> = ({ mobile, display }) => {
 							</DirectionalValue>
 						)
 					},
-					size: 50,
+					size: 100,
 				},
 				{
 					header: () => <TableHeader>{t('futures.market.history.price-label')} {!mobile ?? `(${marketInfo?.tokenY.symbol})`}</TableHeader>,
@@ -251,7 +251,7 @@ const TableAlignment = css`
 
 const StyledTable = styled(Table)`
 	border: none;
-	overflow-y: auto;
+	overflow-y: scroll;
 
 	.table-row,
 	.table-body-row {

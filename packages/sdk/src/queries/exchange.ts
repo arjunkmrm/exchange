@@ -34,3 +34,7 @@ export const getOffChainKline = async (
     
     return resp['data'];
 }
+
+export const updateOffChainKline = async (market: string) => {
+    return get(BITLY_API_URL+`/api/update?pair=${market}`);
+}

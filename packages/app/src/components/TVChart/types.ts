@@ -1,5 +1,3 @@
-import Wei from '@synthetixio/wei'
-
 export type ChartPosition = {
 	size: number
 	price: number

@@ -77,8 +77,6 @@ const MarketPriceDetail: React.FC<MarketDetailsProps> = memo(({ mobile }) => {
 const DailyChangeDetail: React.FC<MarketDetailsProps> = memo(({ mobile }) => {
 	const curPrice = useAppSelector(selectCurrentMarketPrice)
 	const pastPrice = useAppSelector(selectCurrentMarketPastPrice)
-	
-	console.log("ww: debug: ", curPrice, pastPrice, (curPrice - pastPrice) / curPrice ?? 0)
 
 	return (
 		<MarketDetail
@@ -134,7 +132,7 @@ const MainContainer = styled.div<{ mobile?: boolean }>`
 			display: flex;
 			flex-direction: column;
 			height: auto;
-			height: ${MARKETS_DETAILS_HEIGHT_DESKTOP * 2}px;
+			height: ${MARKETS_DETAILS_HEIGHT_DESKTOP}px;
 		`}
 `
 

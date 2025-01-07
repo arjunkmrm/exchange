@@ -1,16 +1,30 @@
 import { PERIOD_IN_SECONDS } from '@bitly/sdk/constants'
-import { ExchangeMarketType, ExchangeOrderDetails, MarketsVolumes, OrderbookType, OrderDirection, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
+import { 
+	ExchangeMarketType, 
+	ExchangeOrderDetails, 
+	MarketsVolumes, 
+	OrderbookType, 
+	OrderDirection, 
+	TokenInfoTypeWithAddress 
+} from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
+import { DEFAULT_UPDATE_KLINE_DELAY_TIME_MS } from 'constants/defaults'
 import { monitorTransaction } from 'contexts/RelayerContext'
-import { fetchPricesSeries } from 'state/prices/actions'
 import { selectCurrentMarketPrice } from 'state/prices/selectors'
-
 import { FetchStatus, ThunkConfig } from 'state/types'
 import logError from 'utils/logError'
 import { formatOrderId } from 'utils/string'
 import { setMakeOrderStatus } from './reducer'
-import { selectCurrentMarketAsset, selectCurrentMarketInfo, selectOrderbookWidth, selectOrderDirection, selectOrderPrice, selectOrderSize, selectOrderType, selectSlippage } from './selectors'
+import { 
+	selectCurrentMarketAsset, 
+	selectOrderbookWidth, 
+	selectOrderDirection, 
+	selectOrderPrice, 
+	selectOrderSize, 
+	selectOrderType, 
+	selectSlippage 
+} from './selectors'
 
 export const fetchMarkets = createAsyncThunk<
 	{ markets: ExchangeMarketType[]; networkId: number } | undefined,
@@ -171,6 +185,9 @@ export const placeOrder = createAsyncThunk<
 		},
 		onTxFailed: () => {
 			dispatch(setMakeOrderStatus(FetchStatus.Error))
+		},
+		onTxConfirmed: () => {
+			setTimeout(()=>sdk.prices.updateKline(market), DEFAULT_UPDATE_KLINE_DELAY_TIME_MS)
 		},
 	})
 })
