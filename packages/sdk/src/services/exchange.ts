@@ -249,7 +249,7 @@ export default class ExchangeService {
 		const orders: ExchangeOrdersType = {};
 		for (const market of targetMarkets) {
 			const logs = await getMarketLog(
-				this.sdk, market.marketAddress, fromBlock, toBlock, 'EarningClaimed(address,int24,uint128,address)',
+				this.sdk, market.marketAddress, fromBlock, toBlock, 'EarningClaimed(address,int24,uint128,address,uint256)',
 				[undefined, undefined, undefined, this.sdk.context.walletAddress]
 			);
 			orders[market.marketAddress] = 
@@ -265,7 +265,7 @@ export default class ExchangeService {
 						direction,
 						volume: toRealAmount(l.args['earning'], decimal),
 						price: point2Price(l.args['point']),
-						timestamp: -1,
+						timestamp: l.args['timestamp'],
 						txn: l.transactionHash
 					};
 				});

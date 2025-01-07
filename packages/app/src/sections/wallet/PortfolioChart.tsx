@@ -124,8 +124,6 @@ const PortfolioChart: FC = () => {
 	const upnl = useAppSelector(selectUnrealizedBalance)
 	const openOrders = useAppSelector(selectOpenOrders)
 
-	console.log("ww: debug: port: ", portfolioData)
-
 	const onClaimAll = useCallback(async () => {
 		for (const [market, info] of Object.entries(openOrders)) {
 			if (info.length > 0) {
@@ -216,23 +214,23 @@ const PortfolioChart: FC = () => {
 						</NumericValue>
 					</ChartOverlay>
 				</MobileChartGridSmall>
-				<br />
-				<MobileChartGridMedium>
-					<ChartOverlay>
-							<PortfolioTitle>{t('dashboard.overview.portfolio-chart.upnl')}</PortfolioTitle>
-							<NumericValue colored value={upnl ?? 0}>
-								{upnl > 0 ? '+' : ''}
-								{formatDollars(upnl, { suggestDecimals: true })}
-							</NumericValue>
-							{
-								upnl > 0 ?
+				{ upnl > 0 &&
+					<>
+						<br />
+						<MobileChartGridMedium>
+							<ChartOverlay>
+								<PortfolioTitle>{t('dashboard.overview.portfolio-chart.upnl')}</PortfolioTitle>
+								<NumericValue colored value={upnl ?? 0}>
+									{upnl > 0 ? '+' : ''}
+									{formatDollars(upnl, { suggestDecimals: true })}
+								</NumericValue>
 								<Button variant="flat" size="small" onClick={onClaimAll} >
 									{t('dashboard.overview.portfolio-chart.claim')}
-								</Button> :
-								<></>
-							}
-					</ChartOverlay>
-				</MobileChartGridMedium>
+								</Button> 
+							</ChartOverlay>
+						</MobileChartGridMedium>
+					</>
+				}
 				<br />
 				<MobileChartGrid>
 					{!!total && portfolioData.length >= 2 ? (
@@ -318,7 +316,7 @@ const MobileChartGridSmall = styled.div`
 	grid-template-rows: 1fr 5fr;
 	width: 100%;
 	border: ${(props) => props.theme.colors.selectedTheme.border};
-	border-radius: 0px;
+	border-radius: 8px;
 	height: 100px;
 `
 
@@ -327,7 +325,7 @@ const MobileChartGridMedium = styled.div`
 	grid-template-rows: 1fr 5fr;
 	width: 100%;
 	border: ${(props) => props.theme.colors.selectedTheme.border};
-	border-radius: 0px;
+	border-radius: 8px;
 	height: 150px;
 `
 
@@ -336,7 +334,7 @@ const MobileChartGrid = styled.div`
 	grid-template-rows: 1fr 5fr;
 	width: 100%;
 	border: ${(props) => props.theme.colors.selectedTheme.border};
-	border-radius: 0px;
+	border-radius: 8px;
 	height: 320px;
 `
 

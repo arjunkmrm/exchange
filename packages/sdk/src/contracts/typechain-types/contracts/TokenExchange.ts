@@ -259,7 +259,7 @@ export interface TokenExchangeInterface extends utils.Interface {
 
   events: {
     "CacheCleared(address)": EventFragment;
-    "EarningClaimed(address,int24,uint128,address)": EventFragment;
+    "EarningClaimed(address,int24,uint128,address,uint256)": EventFragment;
     "LimitOrderCanceled(address,int24,uint128,address)": EventFragment;
     "LimitOrderPlaced(address,int24,uint128,uint128,address)": EventFragment;
     "MarketOrderCompleted(address,uint128,uint128)": EventFragment;
@@ -288,9 +288,10 @@ export interface EarningClaimedEventObject {
   point: number;
   earning: BigNumber;
   wallet: string;
+  timestamp: BigNumber;
 }
 export type EarningClaimedEvent = TypedEvent<
-  [string, number, BigNumber, string],
+  [string, number, BigNumber, string, BigNumber],
   EarningClaimedEventObject
 >;
 
@@ -709,17 +710,19 @@ export interface TokenExchange extends BaseContract {
     ): CacheClearedEventFilter;
     CacheCleared(user?: PromiseOrValue<string> | null): CacheClearedEventFilter;
 
-    "EarningClaimed(address,int24,uint128,address)"(
+    "EarningClaimed(address,int24,uint128,address,uint256)"(
       targetToken?: null,
       point?: null,
       earning?: null,
-      wallet?: PromiseOrValue<string> | null
+      wallet?: PromiseOrValue<string> | null,
+      timestamp?: null
     ): EarningClaimedEventFilter;
     EarningClaimed(
       targetToken?: null,
       point?: null,
       earning?: null,
-      wallet?: PromiseOrValue<string> | null
+      wallet?: PromiseOrValue<string> | null,
+      timestamp?: null
     ): EarningClaimedEventFilter;
 
     "LimitOrderCanceled(address,int24,uint128,address)"(

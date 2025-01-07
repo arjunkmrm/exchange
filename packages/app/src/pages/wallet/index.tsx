@@ -31,6 +31,7 @@ const Leader: LeaderComponent = () => {
 				<MobileOnlyView>
 					<MobileMainContent>
                         <PortfolioChart />
+						<br />
 						<Wallet mobile />
 					</MobileMainContent>
 				</MobileOnlyView>
