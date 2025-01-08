@@ -171,7 +171,6 @@ const DataFeedFactory = (
 			onTick: SubscribeBarsCallback
 		) => {
 			const market = symbolInfo.name;
-			console.log("ww: debug: sub: ", resolution)
 
 			// subscribe to on-chain prices
 			const listener = subscribeOnChainPrices(market as string, resolution, onTick)

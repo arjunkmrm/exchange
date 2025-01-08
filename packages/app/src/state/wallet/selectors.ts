@@ -98,7 +98,7 @@ export const selectTotalBalanceHistory = createSelector(
 					} else if (pair === null) {
 						price = 0
 					} else {
-						price = priceSeries[timestampNum][pair as string]
+						price = priceSeries[timestampNum]?.[pair as string] ?? 0
 					}
 					balanceHistory[timestampNum] += balance * price
 				}
@@ -106,11 +106,12 @@ export const selectTotalBalanceHistory = createSelector(
 		}
 
 		// Covert to List
-		const balanceHistoryList: Array<number> = Object.entries(balanceHistory)
-			.sort((a, b)=>Number(a[0])-Number(a[1]))
-			.map(e=>e[1])
+		const balanceHistoryList = Object.entries(balanceHistory)
+			.sort((a, b)=>Number(a[0])-Number(b[0]))
+			.map(e=>({timestamp: Number(e[0])*1000, total: e[1]}))
 
-		balanceHistoryList.push(currentBalance)
+		const now = (new Date()).getTime()
+		balanceHistoryList.push({timestamp: now, total: currentBalance})
 		return balanceHistoryList
 	}
 )

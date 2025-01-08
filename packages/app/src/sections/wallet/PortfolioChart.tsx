@@ -51,7 +51,7 @@ const PriceChart: FC<PriceChartProps> = ({ setHoverValue, setHoverTitle }) => {
 	const lineColor = useMemo(() => {
 		const isNegative =
 			portfolioData.length > 2
-				? portfolioData[portfolioData.length - 1] - portfolioData[0] < 0
+				? portfolioData[portfolioData.length - 1].total - portfolioData[0].total < 0
 				: false
 		return theme.colors.selectedTheme[isNegative ? 'red' : 'green']
 	}, [portfolioData, theme])
@@ -98,9 +98,7 @@ const PriceChart: FC<PriceChartProps> = ({ setHoverValue, setHoverTitle }) => {
 					verticalAlign="top"
 					align="left"
 					formatter={(value) =>
-						value === 'total'
-							? 'Smart Margin'
-							: value
+						value 
 					}
 				/>
 				<Line
@@ -143,8 +141,8 @@ const PortfolioChart: FC = () => {
 			}
 		} else {
 			const value =
-				(hoverValue ?? portfolioData[portfolioData.length - 1]) - portfolioData[0]
-			const changeValue = portfolioData[0] > 0 ? value / portfolioData[0] : 0
+				(hoverValue ?? portfolioData[portfolioData.length - 1].total) - portfolioData[0].total
+			const changeValue = portfolioData[0].total > 0 ? value / portfolioData[0].total : 0
 			const text = `${value >= 0 ? '+' : ''}${formatDollars(value, {
 				suggestDecimals: true,
 			})} (${formatPercent(changeValue)})`
@@ -186,11 +184,11 @@ const PortfolioChart: FC = () => {
 					</GridBox>
 					{!!total && portfolioData.length >= 2 ? (
 						<ChartContainer>
-							<TopBar>
+							{/* <TopBar>
 								<TimeframeOverlay>
 									<Timeframe />
 								</TimeframeOverlay>
-							</TopBar>
+							</TopBar> */}
 							<PriceChart setHoverValue={setHoverValue} setHoverTitle={setHoverTitle} />
 						</ChartContainer>
 					) : (
@@ -235,11 +233,11 @@ const PortfolioChart: FC = () => {
 				<MobileChartGrid>
 					{!!total && portfolioData.length >= 2 ? (
 						<ChartContainer>
-							<TopBar>
+							{/* <TopBar>
 								<TimeframeOverlay>
 									<Timeframe />
 								</TimeframeOverlay>
-							</TopBar>
+							</TopBar> */}
 							<PriceChart setHoverValue={setHoverValue} setHoverTitle={setHoverTitle} />
 						</ChartContainer>
 					) : (
