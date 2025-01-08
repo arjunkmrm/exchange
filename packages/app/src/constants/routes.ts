@@ -32,6 +32,12 @@ export const ROUTES = {
 		Redeem: normalizeRoute('/dashboard', 'redeem', 'tab'),
 		TradingRewards: formatUrl('/dashboard/staking', { tab: 'trading-rewards' }),
 	},
+	Manage: {
+		Home: '/manage/list-token',
+		ListToken: '/manage/list-token',
+		ListPair: '/manage/list-pair',
+		ManageExchange: '/manage/manage-exchange',
+	},
 	Markets: {
 		Home: (asset: string) =>
 			formatUrl('/market', { asset }),

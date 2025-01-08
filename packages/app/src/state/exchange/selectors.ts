@@ -76,3 +76,5 @@ export const selectOrderbookWidth = (state: RootState) => state.exchange.orderbo
 export const selectClaimEarningStatus = (state: RootState) => state.exchange.writeStatuses.claimEarning
 
 export const selectCancelOrderStatus = (state: RootState) => state.exchange.writeStatuses.cancelOrder
+
+export const selectListTokenStatus = (state: RootState) => state.exchange.writeStatuses.listToken

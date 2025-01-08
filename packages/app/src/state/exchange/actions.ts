@@ -5,7 +5,8 @@ import {
 	MarketsVolumes, 
 	OrderbookType, 
 	OrderDirection, 
-	TokenInfoTypeWithAddress 
+	TokenInfoTypeWithAddress,
+	ListTokenProps,
 } from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
@@ -154,6 +155,26 @@ export const cancelOrder = createAsyncThunk<
 		onTxFailed: () => {
 			dispatch({ type: 'exchange/setCancelOrderStatus', 
 				payload: {id: formatOrderId(market, direction, point), status: FetchStatus.Error} 
+			})
+		},
+	})
+})
+
+export const listToken = createAsyncThunk<
+	void,
+	ListTokenProps,
+	ThunkConfig
+>('exchange/cancelOrder', async (info, { dispatch, extra: { sdk } }) => {
+	monitorTransaction({
+		transaction: () => sdk.exchange.listToken(info),
+		onTxConfirmed: () => {
+			dispatch({ type: 'exchange/setListTokenStatus', 
+				payload: FetchStatus.Success
+			})
+		},
+		onTxFailed: () => {
+			dispatch({ type: 'exchange/setListTokenStatus', 
+				payload: FetchStatus.Error 
 			})
 		},
 	})

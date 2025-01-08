@@ -21,6 +21,8 @@ export type ExchangeFetchStatuses = {
 	makeOrder: FetchStatus,
 	claimEarning: Record<string, FetchStatus>,
 	cancelOrder: Record<string, FetchStatus>,
+	listToken: FetchStatus,
+	listPair: FetchStatus,
 }
 
 export type ExchangeState = {

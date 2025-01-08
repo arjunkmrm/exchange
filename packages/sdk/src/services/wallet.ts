@@ -1,15 +1,14 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import BitlySDK from '..';
 import { 
 	AllowanceType,
     BalanceType,
+	TokenInfoType,
 } from '../types/exchange';
 import { 
     BankReadContracts, 
     BankWriteContract, 
     ERC20ReadContracts, 
     ERC20WriteContract, 
-    ExchangeReadContracts 
 } from '../utils/contract';
 import { BANK_ADDRESS_INVALID } from '../common/errors';
 import { ADDRESSES } from '../constants';
@@ -112,6 +111,28 @@ export default class WalletService {
 		} catch (e) {}
 		
 		return balances;
+    }
+
+	public async getTokenInfo(tokens: string[]): Promise<Partial<TokenInfoType>[]> {
+		const infos: Partial<TokenInfoType>[] = [];
+		try {
+			const ret: any[] = await ERC20ReadContracts(
+				this.sdk, 
+				tokens, 
+				['symbol', 'name', 'decimals']
+			);
+
+			const tokenNum = tokens.length;
+			let retIdx = 0;
+			for (let tokenIdx = 0; tokenIdx < tokenNum; tokenIdx++) {
+				const symbol = ret[retIdx++];
+				const name = ret[retIdx++];
+				const decimals = ret[retIdx++];
+				infos.push({ symbol, name, decimals });
+			}
+		} catch (e) {}
+		
+		return infos;
     }
 
     // Private methods

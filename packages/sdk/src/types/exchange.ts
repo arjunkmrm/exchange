@@ -76,3 +76,10 @@ export type ExchangeEarningType = {
 export type ExchangeOrdersType = {
 	[market: string]: ExchangeEarningType[]
 };
+
+export type ListTokenProps = {
+	address: string;
+	description: string;
+	url: string;
+	logo: string;
+};

@@ -15,7 +15,6 @@ export default function InputBalanceLabel({ balance, currencyKey, onSetAmount }:
 	const { t } = useTranslation()
 
 	const key = currencyKey.toLowerCase()
-	const isUsd = key === 'susd' || key === 'usd'
 	return (
 		<BalanceContainer>
 			<BalanceText>{t('futures.market.trade.margin.modal.balance')}:</BalanceText>

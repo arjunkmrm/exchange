@@ -8,12 +8,12 @@ export const setMarketName = createAsyncThunk<
 	string, 
 	ThunkConfig
 >('app/setMarketName', async (marketName, { extra: { sdk } }) => {
-try {
-	await sdk.exchange.setMarketName(marketName)
-	return marketName
-} catch (err) {
-	logError(err)
-	notifyError('Failed to set market name', err)
-	throw err
-}
+	try {
+		await sdk.exchange.setMarketName(marketName)
+		return marketName
+	} catch (err) {
+		logError(err)
+		notifyError('Failed to set market name', err)
+		throw err
+	}
 })

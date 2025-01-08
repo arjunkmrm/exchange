@@ -4,7 +4,7 @@ import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/cons
 import { FetchStatus } from 'state/types'
 import { OrderType } from 'types/common'
 import { formatOrderId } from 'utils/string'
-import { cancelOrder, claimEarning, fetchDailyVolumes, fetchMarkets, fetchOpenOrders, fetchOrderbook, fetchTokenList } from './actions'
+import { cancelOrder, claimEarning, fetchDailyVolumes, fetchMarkets, fetchOpenOrders, fetchOrderbook, fetchTokenList, listToken } from './actions'
 import { ExchangeState } from './types'
 
 export const EXCHANGE_INITIAL_STATE: ExchangeState = {
@@ -24,6 +24,8 @@ export const EXCHANGE_INITIAL_STATE: ExchangeState = {
 		makeOrder: FetchStatus.Idle,
 		claimEarning: {},
 		cancelOrder: {},
+		listToken: FetchStatus.Idle,
+		listPair: FetchStatus.Idle,
 	},
 	orderType: 'limit',
 	orderDirection: OrderDirection.buy,
@@ -73,6 +75,12 @@ const exchangeSlice = createSlice({
 			const id = action.payload.id
 			const status = action.payload.status
 			state.writeStatuses.cancelOrder[id] = status
+		},
+		setListTokenStatus: (state, action: PayloadAction<FetchStatus>) => {
+			state.writeStatuses.listToken = action.payload
+		},
+		setListPairStatus: (state, action: PayloadAction<FetchStatus>) => {
+			state.writeStatuses.listToken = action.payload
 		},
 	},
 
@@ -175,6 +183,12 @@ const exchangeSlice = createSlice({
 		builder.addCase(cancelOrder.rejected, (state, { meta: { arg: { market, direction, point } } }) => {
 			state.writeStatuses.cancelOrder[formatOrderId(market, direction, point)] = FetchStatus.Error
 		})
+		builder.addCase(listToken.pending, (state) => {
+			state.writeStatuses.listToken = FetchStatus.Loading
+		})
+		builder.addCase(listToken.rejected, (state) => {
+			state.writeStatuses.listToken = FetchStatus.Error
+		})
 	},
 })
 
@@ -191,4 +205,6 @@ export const {
 	increaseOrderbookWidth,
 	setClaimEarningStatus,
 	setCancelOrderStatus,
+	setListTokenStatus,
+	setListPairStatus,
 } = exchangeSlice.actions

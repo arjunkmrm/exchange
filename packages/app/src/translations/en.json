@@ -23,7 +23,7 @@
 				"vaults": "vaults",
 				"rewards": "rewards"
 			},
-			"referrals": "referrals",
+			"manage": "Management",
 			"isolated-margin": "Legacy Futures",
 			"cross-margin": "Smart Margin",
 			"leaderboard-alltime": "All Time",
@@ -711,6 +711,25 @@
 				"redeeming": "Pending"
 			},
 			"susd-total": "sUSD Total"
+		}
+	},
+	"manage": {
+		"title": "Manage Assets",
+		"tabs": {
+			"list-token": "List Token",
+			"list-pair": "List Pair",
+			"manage-exchange": "Manage Exchange"
+		},
+		"page-titles": {
+			"list-token": "List Token | Bitly Exchange",
+			"list-pair": "List Pair | Bitly Exchange",
+			"manage-exchange": "Manage Exchange | Bitly Exchange"
+		},
+		"list-token": {
+			"titles": {
+				"basic-info": "Token Info Form",
+				"preview": "Token Preview"
+			}
 		}
 	},
 	"dashboard-markets": {

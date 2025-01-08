@@ -39,57 +39,36 @@ export const HOMEPAGE_MENU_LINKS: MenuLinks = [
 	},
 ]
 
-const DASHBOARD_LINKS = [
+const MANAGE_LINKS = [
 	{
-		link: ROUTES.Dashboard.Home,
-		i18nLabel: 'dashboard.tabs.overview',
+		link: ROUTES.Manage.ListToken,
+		i18nLabel: 'manage.tabs.list-token',
 	},
 	{
-		link: ROUTES.Dashboard.History,
-		i18nLabel: 'dashboard.tabs.history',
+		link: ROUTES.Manage.ListPair,
+		i18nLabel: 'manage.tabs.list-pair',
 	},
 	{
-		link: ROUTES.Dashboard.Markets,
-		i18nLabel: 'dashboard.tabs.markets',
+		link: ROUTES.Manage.ManageExchange,
+		i18nLabel: 'manage.tabs.manage-exchange',
 	},
-	{
-		link: ROUTES.Dashboard.Stake,
-		i18nLabel: 'dashboard.tabs.staking',
-	},
-	// {
-	// 	link: ROUTES.Dashboard.Migrate,
-	// 	i18nLabel: 'dashboard.tabs.migrate',
-	// },
 ]
 
 export const getMenuLinks = (isMobile: boolean): MenuLinks => [
-	// {
-	// 	i18nLabel: 'header.nav.dashboard',
-	// 	link: ROUTES.Dashboard.Home,
-	// 	links: isMobile ? DASHBOARD_LINKS : null,
-	// },
 	{
 		i18nLabel: 'header.nav.markets',
 		link: ROUTES.Dashboard.Markets,
 	},
-    // {
-	// 	i18nLabel: 'header.nav.staking',
-	// 	link: ROUTES.Staking.Home,
-    //     links: null,
-	// },
-	// {
-	// 	i18nLabel: 'header.nav.quick-swap',
-	// 	link: ROUTES.Exchange.Home,
-	// },
 	{
 		i18nLabel: 'header.nav.wallet',
 		link: ROUTES.Wallet.Home,
 		links: null,
 	},
-	// {
-	// 	i18nLabel: 'header.nav.referrals',
-	// 	link: ROUTES.Referrals.Home,
-	// },
+	{
+		i18nLabel: 'header.nav.manage',
+		link: ROUTES.Manage.Home,
+		links: isMobile ? MANAGE_LINKS : null,
+	},
 ]
 
 export const DESKTOP_NAV_LINKS = getMenuLinks(false).filter((m) => !m.hidden)

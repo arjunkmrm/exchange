@@ -15,10 +15,11 @@ import {
     TokenInfoTypeWithAddress, 
 	PointOrderType,
 	OrderbookType,
-	PriceRange
+	PriceRange,
+	ListTokenProps
 } from '../types/exchange';
 import { DEFAULT_REFERRAL_ADDRESS, PERIOD_IN_SECONDS } from '../constants';
-import { ExchangeReadContracts, getMarketLog, PairReadContracts, PairWriteContract } from '../utils/contract';
+import { ExchangeReadContracts, ExchangeWriteContract, getMarketLog, PairReadContracts, PairWriteContract } from '../utils/contract';
 import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
 import { ContractTransaction } from 'ethers';
 
@@ -237,6 +238,15 @@ export default class ExchangeService {
         }
 
         return await PairWriteContract(this.sdk, market, 'claimAllEarnings');
+    }
+
+	public async listToken(props: ListTokenProps): Promise<ContractTransaction> {
+        return await ExchangeWriteContract(this.sdk, 'listToken', [
+			props.address,
+			props.description,
+			props.url,
+			props.logo
+		]);
     }
 
 	public async getFinishedOrders(markets: string[], relativeFromInSec: number, relativeToInSec: number) {
