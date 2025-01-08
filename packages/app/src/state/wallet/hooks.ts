@@ -1,4 +1,5 @@
 import { DEFAULT_TIME_SPAN } from 'constants/defaults'
+import { fetchOpenOrders } from 'state/exchange/actions'
 import { useAppDispatch, useAppSelector, useFetchAction } from 'state/hooks'
 import { fetchPricesSeries } from 'state/prices/actions'
 import { fetchBalance, fetchBalanceSeries } from 'state/wallet/actions'
@@ -22,6 +23,11 @@ export function useFetchWalletData() {
 
 	useFetchAction(fetchBalance, { 
 		dependencies: [network, curMarketName, wallet],
+		disabled: curMarketName === undefined || network === undefined || wallet === null,
+	})
+
+	useFetchAction(fetchOpenOrders, { 
+		dependencies: [network, curMarketName],
 		disabled: curMarketName === undefined || network === undefined || wallet === null,
 	})
 }
