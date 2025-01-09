@@ -6,10 +6,15 @@ import media from 'styles/media'
 import { Body } from 'components/Text'
 import Button from 'components/Button'
 import InfoIconPath from 'assets/svg/app/docs.svg'
+import PreviewIconPath from 'assets/svg/app/account-info.svg'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { listToken } from 'state/exchange/actions'
 import { selectListTokenStatus } from 'state/exchange/selectors'
 import { FetchStatus } from 'state/types'
+import { queryTokenInfo } from 'queries/tokens/tokenQueries'
+import { isValidAddress } from 'utils/string'
+import { TokenInfoType } from '@bitly/sdk/types'
+import { TokenInfo } from 'sections/asset/TokenInfo'
 
 const handleChangeHOC = (func: any) => {
 	return (event: ChangeEvent<HTMLInputElement>) => {
@@ -25,11 +30,20 @@ const TokenInfoForm: FC = () => {
 	const [website, setWebsite] = useState<string>()
 	const [icon, setIcon] = useState<string>()
 	const [loading, setLoading] = useState<boolean>(false)
+	const [basicInfo, setBasicInfo] = useState<Partial<TokenInfoType>>()
 	const listTokenStatus = useAppSelector(selectListTokenStatus)
 
 	const disabled = useMemo(() => {
 		return !address || !description || !website || !icon
 	}, [address, description, website, icon])
+
+	useEffect(() => {
+		try {
+			if (address !== undefined && isValidAddress(address)) {
+				queryTokenInfo(address).then(info=>setBasicInfo(info))
+			}
+		} catch (e) {}
+	}, [address])
 
 	const handleSubmit = useCallback(() => {
 		dispatch(listToken({
@@ -48,7 +62,7 @@ const TokenInfoForm: FC = () => {
 		}
 	}, [listTokenStatus])
 
-	return (
+	return (<>
 		<ChartGrid>
 			<ChartContainer>
 				<ChartOverlay>
@@ -109,7 +123,25 @@ const TokenInfoForm: FC = () => {
 				</ChartOverlay>
 			</ChartContainer>
 		</ChartGrid>
-	)
+		<ChartGrid>
+			<ChartContainer>
+				<ChartOverlay>
+					<SectionTitle>
+						<PreviewIconPath />
+						{t('manage.list-token.titles.preview')}
+					</SectionTitle>
+					<TokenInfo
+						name={basicInfo?.name ?? ''}
+						symbol={basicInfo?.symbol ?? ''}
+						logo={icon}
+						website={website}
+						address={address ?? ''}
+						description={description}
+					/>
+				</ChartOverlay>
+			</ChartContainer>
+		</ChartGrid>
+	</>)
 }
 
 export default TokenInfoForm

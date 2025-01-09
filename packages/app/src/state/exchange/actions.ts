@@ -164,7 +164,7 @@ export const listToken = createAsyncThunk<
 	void,
 	ListTokenProps,
 	ThunkConfig
->('exchange/cancelOrder', async (info, { dispatch, extra: { sdk } }) => {
+>('exchange/listToken', async (info, { dispatch, extra: { sdk } }) => {
 	monitorTransaction({
 		transaction: () => sdk.exchange.listToken(info),
 		onTxConfirmed: () => {

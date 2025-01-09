@@ -15,3 +15,7 @@ export const strPadLeft = (string: string | number, pad: string, length: number)
 export const formatOrderId = (market: string, direction: OrderDirection, point: number) => {
 	return `${market}-${direction}-${point}`
 }
+
+export const isValidAddress = (address: string) => {
+	return /^0x([A-Fa-f0-9]{40})$/.test(address)
+}

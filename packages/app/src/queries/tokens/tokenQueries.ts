@@ -1,8 +1,8 @@
 import sdk from 'state/sdk'
 
-export const queryTokenInfo = (
+export const queryTokenInfo = async (
 	address: string
 ) => {
-	return sdk.wallet.getTokenInfo([address])
+	return (await sdk.wallet.getTokenInfo([address]))[0]
 }
 

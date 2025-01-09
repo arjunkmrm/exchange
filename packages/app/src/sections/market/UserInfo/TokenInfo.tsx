@@ -6,7 +6,6 @@ import { selectNetwork } from 'state/app/selectors'
 
 const TokenInfoTab: React.FC = memo(() => {
 	const pairInfo = useAppSelector(selectCurrentMarketInfo)
-	const networkId = useAppSelector(selectNetwork)
 
 	return (
 		<TokenInfo
@@ -15,7 +14,6 @@ const TokenInfoTab: React.FC = memo(() => {
 			logo={pairInfo?.tokenX.logo ?? ''}
 			address={pairInfo?.marketAddress ?? ''}
 			description = {pairInfo?.tokenX.description ?? ''}
-			networkId={networkId}
 			website = {pairInfo?.tokenX.url ?? ''}
 		/>
 	)

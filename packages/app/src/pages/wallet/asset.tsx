@@ -20,7 +20,6 @@ const StakingPage: StakingComponent = () => {
 	const { t } = useTranslation()
 	const router = useRouter()
 	const tokensInfo = useAppSelector(selectTokens)
-	const networkId = useAppSelector(selectNetwork)
 	
 	const asset = useMemo(() => {
 		if (tokensInfo.length == 0 || !router.query.address) {
@@ -47,7 +46,6 @@ const StakingPage: StakingComponent = () => {
 					logo = {asset?.logo ?? ''}
 					address = {asset?.address ?? ''}
 					description = {asset?.description ?? ''}
-					networkId = {networkId}
 					website = {asset?.url ?? ''}
 				/>
 				<DepositWithdraw 

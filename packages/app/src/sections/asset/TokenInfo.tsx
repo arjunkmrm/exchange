@@ -10,19 +10,21 @@ import { blockExplorer } from 'containers/Connector/Connector'
 import { useTranslation } from 'react-i18next'
 import ArrowUpRightIcon from 'assets/svg/app/arrow-up-right-tg.svg'
 import { ExternalLink } from 'styles/common'
+import { useAppSelector } from 'state/hooks'
+import { selectNetwork } from 'state/app/selectors'
 
 interface TokenInfoProps {
 	name: string
 	symbol: string
-	logo: string
+	logo?: string
 	address: string
 	description?: string
-	networkId: number
 	website?: string
 }
 
-export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address, description, networkId, website }) => {
+export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address, description, website }) => {
 	const { t } = useTranslation()
+	const networkId = useAppSelector(selectNetwork)
 
 	const bridge = useMemo(() => {
 		return TOKEN_BRIDGES[networkId][address]
@@ -57,14 +59,14 @@ export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address
 				{ret.map(e=>StyledLink(e))}
 			</>
 		)
-	}, [explorer, bridge])
+	}, [explorer, bridge, website])
 
 	return (
 		<FlexDivCol>
 			<TitleContainer>
 				<FlexDivCol rowGap="5px">
 					<StyledCurrencyIcon
-						currencyKey={address}
+						currencyKey={symbol}
 						url={logo}
 					/>
 					<StyledHeading variant="h4">{`${name} (${symbol})`}</StyledHeading>
