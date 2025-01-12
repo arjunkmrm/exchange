@@ -4,7 +4,7 @@ import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/cons
 import { FetchStatus } from 'state/types'
 import { OrderType } from 'types/common'
 import { formatOrderId } from 'utils/string'
-import { cancelOrder, claimEarning, fetchDailyVolumes, fetchMarkets, fetchOpenOrders, fetchOrderbook, fetchTokenList, listToken } from './actions'
+import { cancelOrder, claimEarning, fetchDailyVolumes, fetchMarkets, fetchOpenOrders, fetchOrderbook, fetchTokenList, listPair, listToken } from './actions'
 import { ExchangeState } from './types'
 
 export const EXCHANGE_INITIAL_STATE: ExchangeState = {
@@ -188,6 +188,12 @@ const exchangeSlice = createSlice({
 		})
 		builder.addCase(listToken.rejected, (state) => {
 			state.writeStatuses.listToken = FetchStatus.Error
+		})
+		builder.addCase(listPair.pending, (state) => {
+			state.writeStatuses.listPair = FetchStatus.Loading
+		})
+		builder.addCase(listPair.rejected, (state) => {
+			state.writeStatuses.listPair = FetchStatus.Error
 		})
 	},
 })

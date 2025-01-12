@@ -18,6 +18,7 @@ import preferencesReducer from './preferences/reducer'
 import walletReducer from './wallet/reducer'
 import pricesReducer from './prices/reducer'
 import exchangeReducer from './exchange/reducer'
+import manageReducer from './manage/reducer'
 import sdk from './sdk'
 
 const LOG_REDUX = false
@@ -35,6 +36,7 @@ const combinedReducers = combineReducers({
 	wallet: walletReducer,
 	prices: pricesReducer,
 	exchange: exchangeReducer,
+	manage: manageReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, combinedReducers)

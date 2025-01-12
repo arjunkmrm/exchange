@@ -249,6 +249,10 @@ export default class ExchangeService {
 		]);
     }
 
+	public async listPair(base: string, quote: string): Promise<ContractTransaction> {
+        return await ExchangeWriteContract(this.sdk, 'listPair', [base, quote, 10]);
+    }
+
 	public async getFinishedOrders(markets: string[], relativeFromInSec: number, relativeToInSec: number) {
 		const fromBlock = await calcBlockHeight(relativeFromInSec, this.sdk.context.provider);
 		const toBlock = await calcBlockHeight(relativeToInSec, this.sdk.context.provider);

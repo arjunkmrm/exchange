@@ -729,7 +729,20 @@
 			"titles": {
 				"basic-info": "Token Info Form",
 				"preview": "Token Preview"
+			},
+			"button": {
+				"submit": "List Token"
 			}
+		},
+		"list-pair": {
+			"modal": {
+				"base-token": "Select Base Token",
+				"quote-token": "Select Quote Token"
+			},
+			"button": {
+				"submit": "List Pair"
+			},
+			"title": "List Pair to Market"
 		}
 	},
 	"dashboard-markets": {

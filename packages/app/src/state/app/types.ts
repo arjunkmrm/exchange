@@ -1,4 +1,4 @@
-import { Period } from '@bitly/sdk/dist/constants'
+import { Period } from '@bitly/sdk/constants'
 import { TransactionStatus, GasPrice } from '@bitly/sdk/types'
 import { QueryStatus } from 'state/types'
 
@@ -15,6 +15,8 @@ export type ModalType =
 	| 'referrals_mint_boost_nft'
 	| 'transfer_escrow_entries'
 	| 'vest_escrow_entries'
+	| 'base-select' 
+	| 'quote-select'
 	| null
 
 export type FuturesPositionModalType =

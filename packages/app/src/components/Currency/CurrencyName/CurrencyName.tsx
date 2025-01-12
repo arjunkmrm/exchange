@@ -35,11 +35,6 @@ export const CurrencyName: FC<CurrencyNameProps> = memo(
 				{showIcon && (
 					<CurrencyIconContainer>
 						<CurrencyIcon className="icon" {...{ currencyKey, isDeprecated }} {...iconProps} />
-						{marketClosureReason != null ? (
-							<MarketClosureIconContainer>
-								<MarketClosureIcon marketClosureReason={marketClosureReason} size="sm" />
-							</MarketClosureIconContainer>
-						) : null}
 					</CurrencyIconContainer>
 				)}
 				<NameAndSymbol>

@@ -1,20 +1,17 @@
 import { FC, useState, ChangeEvent, useMemo, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import Input from 'components/Input/Input'
 import media from 'styles/media'
 import { Body } from 'components/Text'
-import Button from 'components/Button'
 import InfoIconPath from 'assets/svg/app/docs.svg'
 import PreviewIconPath from 'assets/svg/app/account-info.svg'
-import { useAppDispatch, useAppSelector } from 'state/hooks'
-import { listToken } from 'state/exchange/actions'
-import { selectListTokenStatus } from 'state/exchange/selectors'
-import { FetchStatus } from 'state/types'
+import { useAppDispatch } from 'state/hooks'
 import { queryTokenInfo } from 'queries/tokens/tokenQueries'
 import { isValidAddress } from 'utils/string'
 import { TokenInfoType } from '@bitly/sdk/types'
 import { TokenInfo } from 'sections/asset/TokenInfo'
+import ListTokenButton from './ListTokenButton'
 
 const handleChangeHOC = (func: any) => {
 	return (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,13 +26,7 @@ const TokenInfoForm: FC = () => {
 	const [description, setDescription] = useState<string>()
 	const [website, setWebsite] = useState<string>()
 	const [icon, setIcon] = useState<string>()
-	const [loading, setLoading] = useState<boolean>(false)
 	const [basicInfo, setBasicInfo] = useState<Partial<TokenInfoType>>()
-	const listTokenStatus = useAppSelector(selectListTokenStatus)
-
-	const disabled = useMemo(() => {
-		return !address || !description || !website || !icon
-	}, [address, description, website, icon])
 
 	useEffect(() => {
 		try {
@@ -44,23 +35,6 @@ const TokenInfoForm: FC = () => {
 			}
 		} catch (e) {}
 	}, [address])
-
-	const handleSubmit = useCallback(() => {
-		dispatch(listToken({
-			address: address ?? '', 
-			description: description ?? '',
-			url: website ?? '', 
-			logo: icon ?? '',
-		}))
-	}, [address, description, website, icon])
-
-	useEffect(() => {
-		if (listTokenStatus === FetchStatus.Loading) {
-			setLoading(true)
-		} else {
-			setLoading(false)
-		}
-	}, [listTokenStatus])
 
 	return (<>
 		<ChartGrid>
@@ -110,19 +84,16 @@ const TokenInfoForm: FC = () => {
 							placeholder="https://path/to/pic.ico"
 						/>
 					</InputContainer>
-					<Button
-						fullWidth
-						variant="flat"
-						size="small"
-						disabled={disabled}
-						loading={loading}
-						onClick={handleSubmit}
-					>
-						Submit
-					</Button>
+					<ListTokenButton
+						address={address ?? ''}
+						description={description ?? ''}
+						logo={icon ?? ''}
+						url={website ?? ''}
+					/>
 				</ChartOverlay>
 			</ChartContainer>
 		</ChartGrid>
+		<br /><br />
 		<ChartGrid>
 			<ChartContainer>
 				<ChartOverlay>
