@@ -36,7 +36,7 @@ export const ROUTES = {
 		Home: '/manage/list-token',
 		ListToken: '/manage/list-token',
 		ListPair: '/manage/list-pair',
-		ManageExchange: '/manage/manage-exchange',
+		Custom: '/manage/custom',
 	},
 	Markets: {
 		Home: (asset: string) =>

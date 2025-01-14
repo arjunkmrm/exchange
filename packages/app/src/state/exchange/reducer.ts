@@ -80,7 +80,7 @@ const exchangeSlice = createSlice({
 			state.writeStatuses.listToken = action.payload
 		},
 		setListPairStatus: (state, action: PayloadAction<FetchStatus>) => {
-			state.writeStatuses.listToken = action.payload
+			state.writeStatuses.listPair = action.payload
 		},
 	},
 

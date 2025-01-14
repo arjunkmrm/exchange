@@ -83,3 +83,7 @@ export type ListTokenProps = {
 	url: string;
 	logo: string;
 };
+
+export type customMarketsInfoType = {
+	[marketName: string]: ExchangePairsType
+};

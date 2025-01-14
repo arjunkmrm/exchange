@@ -718,12 +718,12 @@
 		"tabs": {
 			"list-token": "List Token",
 			"list-pair": "List Pair",
-			"manage-exchange": "Manage Exchange"
+			"custom": "Custom"
 		},
 		"page-titles": {
 			"list-token": "List Token | Bitly Exchange",
 			"list-pair": "List Pair | Bitly Exchange",
-			"manage-exchange": "Manage Exchange | Bitly Exchange"
+			"custom": "Custom | Bitly Exchange"
 		},
 		"list-token": {
 			"titles": {
@@ -743,6 +743,13 @@
 				"submit": "List Pair"
 			},
 			"title": "List Pair to Market"
+		},
+		"custom-markets": {
+			"market-list": {
+				"name": "Market Name",
+				"pairs": "Total Pairs",
+				"manage": "Manage"
+			}
 		}
 	},
 	"dashboard-markets": {

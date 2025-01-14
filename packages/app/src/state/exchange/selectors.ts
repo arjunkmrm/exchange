@@ -78,3 +78,5 @@ export const selectClaimEarningStatus = (state: RootState) => state.exchange.wri
 export const selectCancelOrderStatus = (state: RootState) => state.exchange.writeStatuses.cancelOrder
 
 export const selectListTokenStatus = (state: RootState) => state.exchange.writeStatuses.listToken
+
+export const selectListPairStatus = (state: RootState) => state.exchange.writeStatuses.listPair

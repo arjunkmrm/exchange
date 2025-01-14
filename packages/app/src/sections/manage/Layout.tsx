@@ -6,15 +6,15 @@ import styled from 'styled-components'
 import { DesktopOnlyView, MobileOrTabletView } from 'components/Media'
 import NavLink from 'components/Nav/NavLink'
 import { TabList, TabPanel } from 'components/Tab'
-import { EXTERNAL_LINKS } from 'constants/links'
 import ROUTES from 'constants/routes'
 import AppLayout from 'sections/shared/Layout/AppLayout'
 import { LeftSideContent, PageContent } from 'styles/common'
+import { useFetchManageData } from 'state/manage/hooks'
 
 enum Tab {
 	ListToken = 'list-token',
 	ListPair = 'list-pair',
-	ManageExchange = 'manage-exchange',
+	Custom = 'custom',
 }
 
 const Tabs = Object.values(Tab)
@@ -22,6 +22,7 @@ const Tabs = Object.values(Tab)
 const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
 	const { t } = useTranslation()
 	const router = useRouter()
+	useFetchManageData()
 
 	const tabQuery = useMemo(() => {
 		if (router.pathname) {
@@ -49,10 +50,10 @@ const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
 				href: ROUTES.Manage.ListPair,
 			},
 			{
-				name: Tab.ManageExchange,
-				label: t('manage.tabs.manage-exchange'),
-				active: activeTab === Tab.ManageExchange,
-				href: ROUTES.Manage.ManageExchange,
+				name: Tab.Custom,
+				label: t('manage.tabs.custom'),
+				active: activeTab === Tab.Custom,
+				href: ROUTES.Manage.Custom,
 			},
 		],
 		[t, activeTab]

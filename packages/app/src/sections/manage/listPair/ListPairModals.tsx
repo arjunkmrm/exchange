@@ -5,13 +5,13 @@ import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { selectNetwork, selectShowModal } from 'state/app/selectors'
 import { setBaseToken, setQuoteToken } from 'state/manage/reducer'
 import { STABLE_COINS } from '@bitly/sdk/constants'
-import { selectTokens } from 'state/exchange/selectors'
+import { selectAllTokens } from 'state/manage/selectors'
 
 const ListPairModals = memo(() => {
 	const dispatch = useAppDispatch()
 	const openModal = useAppSelector(selectShowModal)
 	const networkId = useAppSelector(selectNetwork)
-	const allTokens = useAppSelector(selectTokens)
+	const allTokens = useAppSelector(selectAllTokens)
 
 	const closeModal = useCallback(() => {
 		dispatch(setOpenModal(null))

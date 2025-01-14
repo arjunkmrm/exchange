@@ -1,9 +1,9 @@
 export const ADDRESSES: Record<string, Record<number, string>> = {
     EXCHANGE: {
-        17069: '0x27c4eBb3a9e2992267f9859B91c78DBbB06e9E18',
+        17069: '0x0DaEd3aa531455C59f22D06754245493749aBa1E',
     },
     BANK: {
-        17069: '0xee4738D420F76Ee5a5d95879BeE915ef0547dbeb',
+        17069: '0xc1bE47c14f6791cBc5Ed3b4014958f6Ed8C5E31d',
     },
     BTLY: {
         17069: '0x5adA211dBFA9E543B137a7a1Ced12FCCdFFEB032',

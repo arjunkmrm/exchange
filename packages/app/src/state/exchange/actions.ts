@@ -185,11 +185,10 @@ export const listPair = createAsyncThunk<
 	{ base: string, quote: string },
 	ThunkConfig
 >('exchange/listPair', async ({ base, quote }, { dispatch, extra: { sdk } }) => {
-	console.log("ww: debug: ", base, quote)
 	monitorTransaction({
 		transaction: () => sdk.exchange.listPair(base, quote),
 		onTxConfirmed: () => {
-			dispatch({ type: 'exchange/setListPairTokenStatus', 
+			dispatch({ type: 'exchange/setListPairStatus', 
 				payload: FetchStatus.Success
 			})
 		},

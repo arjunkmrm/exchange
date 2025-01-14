@@ -16,7 +16,8 @@ import {
 	PointOrderType,
 	OrderbookType,
 	PriceRange,
-	ListTokenProps
+	ListTokenProps,
+	customMarketsInfoType
 } from '../types/exchange';
 import { DEFAULT_REFERRAL_ADDRESS, PERIOD_IN_SECONDS } from '../constants';
 import { ExchangeReadContracts, ExchangeWriteContract, getMarketLog, PairReadContracts, PairWriteContract } from '../utils/contract';
@@ -316,6 +317,55 @@ export default class ExchangeService {
 		}
 
 		return orders;
+	}
+
+	public async createMarket(marketName: string): Promise<ContractTransaction> {
+        return await ExchangeWriteContract(this.sdk, 'createMarket', [marketName]);
+    }
+
+	public async addPairToMarket(marketName: string, pair: string): Promise<ContractTransaction> {
+        return await ExchangeWriteContract(this.sdk, 'addPairToMarket', [marketName, pair]);
+    }
+
+	public async deletePairFromMarket(marketName: string, pair: string): Promise<ContractTransaction> {
+		const pairs: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], [[marketName]]);
+		const index = pairs[0].map(e=>e.pair).indexOf(pair);
+        return await ExchangeWriteContract(this.sdk, 'deletePairFromMarket', [marketName, index]);
+    }
+
+	public async getMarketByOwner(): Promise<customMarketsInfoType> {
+		const markets: string[][] = await ExchangeReadContracts(
+			this.sdk, 
+			['marketsByOwner'], 
+			[[this.sdk.context.walletAddress]]
+		);
+
+		if (markets[0].length === 0) {
+			return {};
+		}
+		const info: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], [markets[0].map(e=>[e])]);
+
+		const customMarkets: customMarketsInfoType = {};
+		for (let i = 0; i < info.length; i++) {
+			const pairs = info[i];
+			const marketName = markets[0][i];
+			customMarkets[marketName] = pairs;
+		}
+
+		return customMarkets;
+	}
+
+	public async getAllTokens() {
+        const tokens: string[][] = await ExchangeReadContracts(this.sdk, ['tokens']);
+		const tokenInfos: TokenInfoType[] = await ExchangeReadContracts(this.sdk, ['tokenInfo'], tokens[0].map(e=>([e])));
+        const tokenInfosWithAddress: TokenInfoTypeWithAddress[] = [];
+		for (let i = 0; i < tokenInfos.length; i++) {
+            const info = tokenInfos[i];
+            const address = tokens[0][i];
+            tokenInfosWithAddress.push({ ...info, address } as TokenInfoTypeWithAddress);
+        }
+
+		return tokenInfosWithAddress;
 	}
 
     // Private methods

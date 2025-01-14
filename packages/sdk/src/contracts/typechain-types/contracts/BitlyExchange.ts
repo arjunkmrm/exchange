@@ -48,6 +48,7 @@ export interface BitlyExchangeInterface extends utils.Interface {
     "deletePairFromMarket(string,uint256)": FunctionFragment;
     "listPair(address,address,int24)": FunctionFragment;
     "listToken(address,string,string,string)": FunctionFragment;
+    "marketsByOwner(address)": FunctionFragment;
     "modifyTokenInfo(address,string,string,string)": FunctionFragment;
     "owner()": FunctionFragment;
     "pairs(string)": FunctionFragment;
@@ -55,6 +56,7 @@ export interface BitlyExchangeInterface extends utils.Interface {
     "takeTokenOwner(address)": FunctionFragment;
     "tokenInfo(address)": FunctionFragment;
     "tokens()": FunctionFragment;
+    "totalMarkets()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
@@ -65,6 +67,7 @@ export interface BitlyExchangeInterface extends utils.Interface {
       | "deletePairFromMarket"
       | "listPair"
       | "listToken"
+      | "marketsByOwner"
       | "modifyTokenInfo"
       | "owner"
       | "pairs"
@@ -72,6 +75,7 @@ export interface BitlyExchangeInterface extends utils.Interface {
       | "takeTokenOwner"
       | "tokenInfo"
       | "tokens"
+      | "totalMarkets"
       | "transferOwnership"
   ): FunctionFragment;
 
@@ -105,6 +109,10 @@ export interface BitlyExchangeInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "marketsByOwner",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "modifyTokenInfo",
     values: [
       PromiseOrValue<string>,
@@ -132,6 +140,10 @@ export interface BitlyExchangeInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "tokens", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "totalMarkets",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
@@ -151,6 +163,10 @@ export interface BitlyExchangeInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "listPair", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "listToken", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "marketsByOwner",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "modifyTokenInfo",
     data: BytesLike
   ): Result;
@@ -166,6 +182,10 @@ export interface BitlyExchangeInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tokenInfo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "tokens", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "totalMarkets",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -267,6 +287,11 @@ export interface BitlyExchange extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    marketsByOwner(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string[]] & { markets: string[] }>;
+
     modifyTokenInfo(
       tokenAddress: PromiseOrValue<string>,
       description: PromiseOrValue<string>,
@@ -322,6 +347,8 @@ export interface BitlyExchange extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string[]] & { listedTokens: string[] }>;
 
+    totalMarkets(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -359,6 +386,11 @@ export interface BitlyExchange extends BaseContract {
     logo: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  marketsByOwner(
+    owner: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
 
   modifyTokenInfo(
     tokenAddress: PromiseOrValue<string>,
@@ -409,6 +441,8 @@ export interface BitlyExchange extends BaseContract {
 
   tokens(overrides?: CallOverrides): Promise<string[]>;
 
+  totalMarkets(overrides?: CallOverrides): Promise<BigNumber>;
+
   transferOwnership(
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -446,6 +480,11 @@ export interface BitlyExchange extends BaseContract {
       logo: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    marketsByOwner(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
 
     modifyTokenInfo(
       tokenAddress: PromiseOrValue<string>,
@@ -493,6 +532,8 @@ export interface BitlyExchange extends BaseContract {
     >;
 
     tokens(overrides?: CallOverrides): Promise<string[]>;
+
+    totalMarkets(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -550,6 +591,11 @@ export interface BitlyExchange extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    marketsByOwner(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     modifyTokenInfo(
       tokenAddress: PromiseOrValue<string>,
       description: PromiseOrValue<string>,
@@ -580,6 +626,8 @@ export interface BitlyExchange extends BaseContract {
     ): Promise<BigNumber>;
 
     tokens(overrides?: CallOverrides): Promise<BigNumber>;
+
+    totalMarkets(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -620,6 +668,11 @@ export interface BitlyExchange extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    marketsByOwner(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     modifyTokenInfo(
       tokenAddress: PromiseOrValue<string>,
       description: PromiseOrValue<string>,
@@ -650,6 +703,8 @@ export interface BitlyExchange extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     tokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    totalMarkets(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,

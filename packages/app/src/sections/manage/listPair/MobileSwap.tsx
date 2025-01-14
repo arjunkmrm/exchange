@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import MobileBaseCurrencyCard from './MobileBaseCurrencyCard'
 import MobileQuoteCurrencyCard from './MobileQuoteCurrencyCard'
-import ListPairButton from './SwapButton'
+import ListPairButton from './ListPairButton'
 
 const MobileSwap: FC = memo(() => (
 	<MobileSwapContainer>

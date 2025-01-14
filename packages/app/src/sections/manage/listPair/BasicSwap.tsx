@@ -6,7 +6,7 @@ import * as Text from 'components/Text'
 import { FullHeightContainer, MainContent } from 'styles/common'
 import BaseCurrencyCard from './BaseCurrencyCard'
 import QuoteCurrencyCard from './QuoteCurrencyCard'
-import ListPairButton from './SwapButton'
+import ListPairButton from './ListPairButton'
 
 const BasicSwap: FC = memo(() => {
 	const { t } = useTranslation()

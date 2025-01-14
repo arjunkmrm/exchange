@@ -49,8 +49,8 @@ const MANAGE_LINKS = [
 		i18nLabel: 'manage.tabs.list-pair',
 	},
 	{
-		link: ROUTES.Manage.ManageExchange,
-		i18nLabel: 'manage.tabs.manage-exchange',
+		link: ROUTES.Manage.Custom,
+		i18nLabel: 'manage.tabs.custom',
 	},
 ]
 

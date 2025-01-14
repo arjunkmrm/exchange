@@ -7,6 +7,8 @@ import CurrencyIcon from 'components/Currency/CurrencyIcon'
 import NumericInput from 'components/Input/NumericInput'
 import { SectionHeader, SectionTitle } from 'sections/market/mobile'
 import { truncateAddress } from 'utils/string'
+import { useAppSelector } from 'state/hooks'
+import { selectAllTokens } from 'state/manage/selectors'
 
 type MobileCurrencyCardProps = {
 	currencyKey?: string
@@ -22,6 +24,11 @@ const MobileCurrencyCard: FC<MobileCurrencyCardProps> = memo(
 		label,
 	}) => {
 		const { t } = useTranslation()
+		const tokenInfos = useAppSelector(selectAllTokens)
+
+		const tokenInfo = useMemo(() => {
+			return tokenInfos.find(e=>e.address===currencyKey)
+		}, [currencyKey, tokenInfos])
 		const hasCurrencySelectCallback = useMemo(() => !!onCurrencySelect, [onCurrencySelect])
 
 		return (
@@ -35,7 +42,7 @@ const MobileCurrencyCard: FC<MobileCurrencyCardProps> = memo(
 						onClick={hasCurrencySelectCallback ? onCurrencySelect : undefined}
 						data-testid="currency-selector"
 					>
-						{!!currencyKey && <CurrencyIcon currencyKey={currencyKey} width={20} height={20} />}
+						{!!currencyKey && <CurrencyIcon url={tokenInfo?.logo} currencyKey={currencyKey} width={20} height={20} />}
 						<div className="label">
 							{currencyKey === '' ? 'Select': truncateAddress(currencyKey ?? '')}
 						</div>

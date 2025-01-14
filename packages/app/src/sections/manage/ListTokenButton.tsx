@@ -31,6 +31,7 @@ const ListTokenButton: FC<ListTokenProps> = (token) => {
 	}, [listTokenStatus])
 
 	const handleSubmit = useCallback(() => {
+		setLoading(true)
 		dispatch(listToken({
 			address: token.address, 
 			description: token.description,
@@ -50,7 +51,7 @@ const ListTokenButton: FC<ListTokenProps> = (token) => {
 			{t('manage.list-token.button.submit')}
 		</Button>
 	) : (
-		<Button onClick={connectWallet} size="medium" fullWidth noOutline>
+		<Button loading={loading} onClick={connectWallet} size="medium" fullWidth noOutline>
 			{t('common.wallet.connect-wallet')}
 		</Button>
 	)
