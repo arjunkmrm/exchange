@@ -343,7 +343,7 @@ export default class ExchangeService {
 		if (markets[0].length === 0) {
 			return {};
 		}
-		const info: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], [markets[0].map(e=>[e])]);
+		const info: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], markets[0].map(e=>[e]));
 
 		const customMarkets: customMarketsInfoType = {};
 		for (let i = 0; i < info.length; i++) {

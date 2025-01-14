@@ -1,5 +1,5 @@
 import { customMarketsInfoType, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
-import { QueryStatus } from 'state/types'
+import { FetchStatus, QueryStatus } from 'state/types'
 
 export type ListPairState = {
 	quoteToken: string
@@ -11,9 +11,14 @@ export type ManageQueryStatuses = {
 	allTokens: QueryStatus
 }
 
+export type ManageWriteStatuses = {
+	createMarket: FetchStatus
+}
+
 export type ManageState = {
 	listPair: ListPairState
 	customMarkets: customMarketsInfoType
 	allTokens: TokenInfoTypeWithAddress[]
 	queryStatuses: ManageQueryStatuses
+	writeStatuses: ManageWriteStatuses
 }

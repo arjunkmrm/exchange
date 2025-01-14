@@ -749,6 +749,10 @@
 				"name": "Market Name",
 				"pairs": "Total Pairs",
 				"manage": "Manage"
+			},
+			"create": "Create Custom Market:",
+			"button": {
+				"submit": "Create Market"
 			}
 		}
 	},

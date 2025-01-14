@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
 import { FetchStatus } from 'state/types'
-import { fetchAllTokens, fetchMarketsByOwner } from './actions'
+import { createMarket, fetchAllTokens, fetchMarketsByOwner } from './actions'
 import { ManageState } from './types'
 
 export const MANAGE_INITIAL_STATE: ManageState = {
@@ -14,7 +14,10 @@ export const MANAGE_INITIAL_STATE: ManageState = {
 	queryStatuses: {
 		customMarkets: DEFAULT_QUERY_STATUS,
 		allTokens: DEFAULT_QUERY_STATUS,
-	}
+	},
+	writeStatuses: {
+		createMarket: FetchStatus.Idle,
+	},
 }
 
 const manageSlice = createSlice({
@@ -26,6 +29,9 @@ const manageSlice = createSlice({
 		},
 		setQuoteToken: (state, action: PayloadAction<string>) => {
 			state.listPair.quoteToken = action.payload
+		},
+		setCreateMarketStatus: (state, action: PayloadAction<FetchStatus>) => {
+			state.writeStatuses.createMarket = action.payload
 		},
 	},
 	extraReducers: (builder) => {
@@ -57,6 +63,14 @@ const manageSlice = createSlice({
 				error: 'Failed to fetch tokens listed in market',
 				status: FetchStatus.Error,
 			}
+		})
+
+		// Write Statuses
+		builder.addCase(createMarket.pending, (state) => {
+			state.writeStatuses.createMarket = FetchStatus.Loading
+		})
+		builder.addCase(createMarket.rejected, (state) => {
+			state.writeStatuses.createMarket = FetchStatus.Error
 		})
 	},
 })
