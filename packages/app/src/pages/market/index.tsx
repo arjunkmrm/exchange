@@ -17,7 +17,6 @@ import { setCurrentMarketAsset } from 'state/exchange/reducer'
 import { selectCurrentMarketAsset } from 'state/exchange/selectors'
 import { useFetchMarketData } from 'state/exchange/hooks'
 import { TRADE_PANEL_WIDTH_LG, TRADE_PANEL_WIDTH_MD } from 'sections/market/styles'
-import { selectShowModal } from 'state/app/selectors'
 
 type MarketComponent = FC & { getLayout: (page: ReactNode) => JSX.Element }
 

@@ -14,7 +14,7 @@ const ListPairModals = memo(() => {
 	const allTokens = useAppSelector(selectAllTokens)
 
 	const closeModal = useCallback(() => {
-		dispatch(setOpenModal(null))
+		dispatch(setOpenModal({type: null}))
 	}, [dispatch])
 
 	const onQuoteCurrencyChange = useCallback((address: string) => {
@@ -35,11 +35,11 @@ const ListPairModals = memo(() => {
 
 	return (
 		<>
-			{openModal === 'quote-select' && (
+			{openModal?.type === 'quote-select' && (
 				<SelectCurrencyModal tokens={quoteTokens} onDismiss={closeModal} onSelect={onQuoteCurrencyChange} />
 			)}
 
-			{openModal === 'base-select' && (
+			{openModal?.type === 'base-select' && (
 				<SelectCurrencyModal tokens={baseTokens} onDismiss={closeModal} onSelect={onBaseCurrencyChange} />
 			)}
 		</>

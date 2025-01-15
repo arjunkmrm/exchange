@@ -84,6 +84,6 @@ export type ListTokenProps = {
 	logo: string;
 };
 
-export type customMarketsInfoType = {
-	[marketName: string]: ExchangePairsType
+export type CustomMarketsInfoType = {
+	[marketName: string]: ExchangeMarketType[]
 };

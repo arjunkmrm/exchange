@@ -10,7 +10,7 @@ const MobileBaseCurrencyCard: FC = memo(() => {
 	const { t } = useTranslation()
 	const quoteCurrencyKey = useAppSelector(selectBaseToken)
 	const dispatch = useAppDispatch()
-	const openBaseModal = useCallback(() => dispatch(setOpenModal('base-select')), [dispatch])
+	const openBaseModal = useCallback(() => dispatch(setOpenModal({type: 'base-select'})), [dispatch])
 
 	return (
 		<MobileCurrencyCard

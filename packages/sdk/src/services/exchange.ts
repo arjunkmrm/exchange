@@ -16,11 +16,9 @@ import {
 	PointOrderType,
 	OrderbookType,
 	PriceRange,
-	ListTokenProps,
-	customMarketsInfoType
 } from '../types/exchange';
-import { DEFAULT_REFERRAL_ADDRESS, PERIOD_IN_SECONDS } from '../constants';
-import { ExchangeReadContracts, ExchangeWriteContract, getMarketLog, PairReadContracts, PairWriteContract } from '../utils/contract';
+import { DEFAULT_REFERRAL_ADDRESS } from '../constants';
+import { ExchangeReadContracts, getMarketLog, internalFetchMarketsAndTokens, PairReadContracts, PairWriteContract } from '../utils/contract';
 import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
 import { ContractTransaction } from 'ethers';
 
@@ -241,19 +239,6 @@ export default class ExchangeService {
         return await PairWriteContract(this.sdk, market, 'claimAllEarnings');
     }
 
-	public async listToken(props: ListTokenProps): Promise<ContractTransaction> {
-        return await ExchangeWriteContract(this.sdk, 'listToken', [
-			props.address,
-			props.description,
-			props.url,
-			props.logo
-		]);
-    }
-
-	public async listPair(base: string, quote: string): Promise<ContractTransaction> {
-        return await ExchangeWriteContract(this.sdk, 'listPair', [base, quote, 10]);
-    }
-
 	public async getFinishedOrders(markets: string[], relativeFromInSec: number, relativeToInSec: number) {
 		const fromBlock = await calcBlockHeight(relativeFromInSec, this.sdk.context.provider);
 		const toBlock = await calcBlockHeight(relativeToInSec, this.sdk.context.provider);
@@ -319,96 +304,10 @@ export default class ExchangeService {
 		return orders;
 	}
 
-	public async createMarket(marketName: string): Promise<ContractTransaction> {
-        return await ExchangeWriteContract(this.sdk, 'createMarket', [marketName]);
-    }
-
-	public async addPairToMarket(marketName: string, pair: string): Promise<ContractTransaction> {
-        return await ExchangeWriteContract(this.sdk, 'addPairToMarket', [marketName, pair]);
-    }
-
-	public async deletePairFromMarket(marketName: string, pair: string): Promise<ContractTransaction> {
-		const pairs: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], [[marketName]]);
-		const index = pairs[0].map(e=>e.pair).indexOf(pair);
-        return await ExchangeWriteContract(this.sdk, 'deletePairFromMarket', [marketName, index]);
-    }
-
-	public async getMarketByOwner(): Promise<customMarketsInfoType> {
-		const markets: string[][] = await ExchangeReadContracts(
-			this.sdk, 
-			['marketsByOwner'], 
-			[[this.sdk.context.walletAddress]]
-		);
-
-		if (markets[0].length === 0) {
-			return {};
-		}
-		const info: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], markets[0].map(e=>[e]));
-
-		const customMarkets: customMarketsInfoType = {};
-		for (let i = 0; i < info.length; i++) {
-			const pairs = info[i];
-			const marketName = markets[0][i];
-			customMarkets[marketName] = pairs;
-		}
-
-		return customMarkets;
-	}
-
-	public async getAllTokens() {
-        const tokens: string[][] = await ExchangeReadContracts(this.sdk, ['tokens']);
-		const tokenInfos: TokenInfoType[] = await ExchangeReadContracts(this.sdk, ['tokenInfo'], tokens[0].map(e=>([e])));
-        const tokenInfosWithAddress: TokenInfoTypeWithAddress[] = [];
-		for (let i = 0; i < tokenInfos.length; i++) {
-            const info = tokenInfos[i];
-            const address = tokens[0][i];
-            tokenInfosWithAddress.push({ ...info, address } as TokenInfoTypeWithAddress);
-        }
-
-		return tokenInfosWithAddress;
-	}
-
     // Private methods
 
     private async _fetchMarketsAndTokens(marketName: string = "") {
-        const pairs: ExchangePairsType[] = await ExchangeReadContracts(this.sdk, ['pairs'], [[marketName]]);
-
-        if (!pairs) {
-            return [];
-        }
-
-        const tokensSet = new Set<string>();
-        for (const pair of pairs[0]) {
-            tokensSet.add(pair.tokenX);
-            tokensSet.add(pair.tokenY);
-        }
-
-        const tokenInfos: TokenInfoType[] = await ExchangeReadContracts(this.sdk, ['tokenInfo'], Array.from(tokensSet).map(e=>([e])));
-        const tokens: TokenInfoTypeWithAddress[] = [];
-        const tokensObj: Record<string, TokenInfoType> = {};
-        const tokensList = Array.from(tokensSet);
-        for (let i = 0; i < tokenInfos.length; i++) {
-            const info = tokenInfos[i];
-            const address = tokensList[i];
-            tokensObj[address] = info;
-            tokens.push({ ...info, address } as TokenInfoTypeWithAddress);
-        }
-
-        const markets: ExchangeMarketType[] = [];
-
-        for (let i = 0; i < pairs[0].length; i++) {
-            const pair = pairs[0][i];
-
-            const tokenXInfo = { ...tokensObj[pair.tokenX], address: pair.tokenX } as TokenInfoTypeWithAddress;
-            const tokenYInfo = { ...tokensObj[pair.tokenY], address: pair.tokenY } as TokenInfoTypeWithAddress;
-            markets.push({
-                marketAddress: pair.pair,
-                displayName: `${tokenXInfo.symbol}/${tokenYInfo.symbol}`,
-                tokenX: tokenXInfo,
-                tokenY: tokenYInfo,
-            });
-        }
-
+        const {markets, tokens} = await internalFetchMarketsAndTokens(this.sdk, marketName)
         this.markets = markets;
         this.tokens = tokens;
     }

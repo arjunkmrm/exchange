@@ -13,7 +13,7 @@ import CurrencyCard from './CurrencyCard'
 const BaseCurrencyCard: FC = memo(() => {
 	const { t } = useTranslation()
 	const dispatch = useAppDispatch()
-	const openQuoteModal = useCallback(() => dispatch(setOpenModal('quote-select')), [dispatch])
+	const openQuoteModal = useCallback(() => dispatch(setOpenModal({type: 'quote-select'})), [dispatch])
 	const quoteToken = useAppSelector(selectQuoteToken)
 
 	return (

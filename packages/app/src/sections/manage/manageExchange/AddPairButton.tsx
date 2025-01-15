@@ -5,51 +5,48 @@ import { useTranslation } from 'react-i18next'
 import Button from 'components/Button'
 import Connector from 'containers/Connector'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
-import { listToken } from 'state/exchange/actions'
-import { ListTokenProps } from '@bitly/sdk/types'
-import { selectListTokenStatus } from 'state/exchange/selectors'
 import { FetchStatus } from 'state/types'
+import { selectAddPairToMarketStatus } from 'state/manage/selectors'
+import { addPairToMarket } from 'state/manage/actions'
 
-const ListTokenButton: FC<ListTokenProps> = (token) => {
+const AddPairButton: FC<{marketName?: string; address?: string}> = ({marketName, address}) => {
 	const { t } = useTranslation()
 	const dispatch = useAppDispatch()
 	const { isWalletConnected } = Connector.useContainer()
 	const { openConnectModal: connectWallet } = useConnectModal()
-	const listTokenStatus = useAppSelector(selectListTokenStatus)
+	const addPairStatus = useAppSelector(selectAddPairToMarketStatus)
 	const [loading, setLoading] = useState<boolean>(false)
 
 	const disabled = useMemo(() => {
-		return !token.address || !token.description || !token.url || !token.logo
-	}, [token])
+		return !address || !marketName
+	}, [address, marketName])
 
 	useEffect(() => {
-		if (listTokenStatus === FetchStatus.Loading) {
+		if (addPairStatus === FetchStatus.Loading) {
 			setLoading(true)
 		} else {
 			setLoading(false)
 		}
-	}, [listTokenStatus])
+	}, [addPairStatus])
 
 	const handleSubmit = useCallback(() => {
 		setLoading(true)
-		dispatch(listToken({
-			address: token.address, 
-			description: token.description,
-			url: token.url, 
-			logo: token.logo,
+		dispatch(addPairToMarket({
+			marketName: marketName ?? '', 
+			address: address ?? '',
 		}))
-	}, [token])
+	}, [address, marketName, dispatch])
 
 	return isWalletConnected ? (
 		<Button
 			disabled={disabled}
 			onClick={handleSubmit}
-			size="medium"
+			size="small"
 			loading={loading}
 			data-testid="submit-order"
 			fullWidth
 		>
-			{t('manage.list-token.button.submit')}
+			{t('modals.manage-custom-market.submit')}
 		</Button>
 	) : (
 		<Button loading={loading} onClick={connectWallet} size="medium" fullWidth noOutline>
@@ -58,4 +55,4 @@ const ListTokenButton: FC<ListTokenProps> = (token) => {
 	)
 }
 
-export default ListTokenButton
+export default AddPairButton

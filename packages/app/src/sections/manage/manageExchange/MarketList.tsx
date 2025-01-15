@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import Input from 'components/Input/Input'
@@ -43,13 +43,22 @@ const MarketList: FC<MarketListProps> = ({ mobile }) => {
 		return Object.entries(customMarkets).map(([name, pair])=>({name, pairs: pair.length}))
 	}, [customMarkets])
 
+	const setOpenInfoModal = useCallback((marketName: string) => {
+		dispatch(setOpenModal({
+			type: 'custom-market-info',
+			params: {
+				marketName
+			},
+		}))
+	}, [dispatch])
+
 	return (
 		<>
 			<StyledTable
 				data={data}
 				isLoading={loading}
 				highlightRowsOnHover
-				columnsDeps = {[dispatch, t]}
+				columnsDeps = {[dispatch, t, setOpenModal, data]}
 				columns={[
 					{
 						header: () => <TableHeader>{t('manage.custom-markets.market-list.name')}</TableHeader>,
@@ -82,9 +91,10 @@ const MarketList: FC<MarketListProps> = ({ mobile }) => {
 						accessorKey: TableColumnAccessor.Manage,
 						enableSorting: false,
 						cell: (cellProps) => {
+							const marketName = cellProps.row.original.name
 							return (
 								<Pill
-									// onClick={()=>dispatch(setOpenModal())}
+									onClick={()=>setOpenInfoModal(marketName)}
 								>
 									{t('manage.custom-markets.market-list.manage')}
 								</Pill>

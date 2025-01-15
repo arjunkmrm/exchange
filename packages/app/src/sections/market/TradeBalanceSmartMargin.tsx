@@ -33,7 +33,7 @@ const BridgeAndWithdrawButton: FC<BridgeAndWithdrawButtonProps> = ({ modalType }
 			height={11}
 			onClick={(e) => {
 				e.stopPropagation()
-				dispatch(setOpenModal(modalType))
+				dispatch(setOpenModal({type: modalType}))
 			}}
 		/>
 	)
@@ -45,9 +45,6 @@ const TradeBalance = memo(() => {
 	const [expanded, toggleExpanded] = useReducer((e) => !e, false)
 
 	const { deviceType } = useWindowSize()
-	// const accountMargin = useAppSelector(selectTotalAvailableMargin)
-	// const ethBal = useAppSelector(selectKeeperEthBalance)
-	const openModal = useAppSelector(selectShowModal)
 	const { isWalletConnected } = Connector.useContainer()
 	const { openConnectModal } = useConnectModal()
 
@@ -64,7 +61,7 @@ const TradeBalance = memo(() => {
 	}, [])
 
 	const dismissModal = useCallback(() => {
-		dispatch(setOpenModal(null))
+		dispatch(setOpenModal({type: null}))
 	}, [dispatch])
 
 	return (
@@ -108,7 +105,7 @@ const TradeBalance = memo(() => {
 								variant="yellow"
 								size="xsmall"
 								textTransform="none"
-								onClick={() => dispatch(setOpenModal('futures_deposit_withdraw_smart_margin'))}
+								onClick={() => dispatch(setOpenModal({type: 'futures_deposit_withdraw_smart_margin'}))}
 							>
 								{t('header.balance.get-susd')}
 							</Button>
@@ -153,7 +150,7 @@ const TradeBalance = memo(() => {
 								variant="yellow"
 								size="xsmall"
 								textTransform="none"
-								onClick={() => dispatch(setOpenModal('futures_deposit_withdraw_smart_margin'))}
+								onClick={() => dispatch(setOpenModal({type: 'futures_deposit_withdraw_smart_margin'}))}
 							>
 								{t('futures.market.trade.trade-balance.manage-button')}
 							</Button>

@@ -1422,6 +1422,11 @@
 		"subtitle": "We apologise for any inconvenience caused, it will be back shortly."
 	},
 	"modals": {
+		"manage-custom-market": {
+			"title": "Manage {{marketName}}",
+			"search": "Search Pair",
+			"submit": "Add Pair"
+		},
 		"select-currency": {
 			"title": "select tokens",
 			"header": {

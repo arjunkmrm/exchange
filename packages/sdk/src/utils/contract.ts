@@ -15,7 +15,7 @@ import {
     getTokenContractMulticall, 
     PairFuncNames 
 } from "../contracts";
-import { MarketEventSignature } from "../types";
+import { ExchangeMarketType, ExchangePairsType, MarketEventSignature, TokenInfoType, TokenInfoTypeWithAddress } from "../types";
 import { MultiCallArgs, SingleCallArgs } from "../types/common";
 
 export async function ERC20ReadContracts(
@@ -164,4 +164,46 @@ export async function getMarketLog(sdk: BitlySDK, market: string, fromBlock: Blo
 	});
 
 	return parsedLogs;
+}
+
+export async function internalFetchMarketsAndTokens(sdk: BitlySDK, marketName: string = "") {
+	const pairs: ExchangePairsType[] = await ExchangeReadContracts(sdk, ['pairs'], [[marketName]]);
+
+	if (!pairs) {
+		return {markets:[], tokens: []};
+	}
+
+	const tokensSet = new Set<string>();
+	for (const pair of pairs[0]) {
+		tokensSet.add(pair.tokenX);
+		tokensSet.add(pair.tokenY);
+	}
+
+	const tokenInfos: TokenInfoType[] = await ExchangeReadContracts(sdk, ['tokenInfo'], Array.from(tokensSet).map(e=>([e])));
+	const tokens: TokenInfoTypeWithAddress[] = [];
+	const tokensObj: Record<string, TokenInfoType> = {};
+	const tokensList = Array.from(tokensSet);
+	for (let i = 0; i < tokenInfos.length; i++) {
+		const info = tokenInfos[i];
+		const address = tokensList[i];
+		tokensObj[address] = info;
+		tokens.push({ ...info, address } as TokenInfoTypeWithAddress);
+	}
+
+	const markets: ExchangeMarketType[] = [];
+
+	for (let i = 0; i < pairs[0].length; i++) {
+		const pair = pairs[0][i];
+
+		const tokenXInfo = { ...tokensObj[pair.tokenX], address: pair.tokenX } as TokenInfoTypeWithAddress;
+		const tokenYInfo = { ...tokensObj[pair.tokenY], address: pair.tokenY } as TokenInfoTypeWithAddress;
+		markets.push({
+			marketAddress: pair.pair,
+			displayName: `${tokenXInfo.symbol}/${tokenYInfo.symbol}`,
+			tokenX: tokenXInfo,
+			tokenY: tokenYInfo,
+		});
+	}
+
+	return {markets, tokens};
 }

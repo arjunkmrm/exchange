@@ -2,7 +2,6 @@ import { DEFAULT_NETWORK_ID, ORDERS_WARNING_DISABLED } from 'constants/defaults'
 import { RootState } from 'state/store'
 
 export const selectShowModal = (state: RootState) => state.app.showModal
-export const selectShowPositionModal = (state: RootState) => state.app.showPositionModal
 
 export const selectGasSpeed = (state: RootState) => state.app.gasSpeed
 

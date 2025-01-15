@@ -10,7 +10,7 @@ const MobileQuoteCurrencyCard: FC = memo(() => {
 	const { t } = useTranslation()
 	const quoteCurrencyKey = useAppSelector(selectQuoteToken)
 	const dispatch = useAppDispatch()
-	const openQuoteModal = useCallback(() => dispatch(setOpenModal('quote-select')), [dispatch])
+	const openQuoteModal = useCallback(() => dispatch(setOpenModal({type: 'quote-select'})), [dispatch])
 
 	return (
 		<MobileCurrencyCard

@@ -2,7 +2,6 @@ import { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import styled from 'styled-components'
-
 import Input from 'components/Input/Input'
 import { FlexDivCentered } from 'components/layout/flex'
 import { RowsHeader, CenteredModal } from 'components/layout/modals'

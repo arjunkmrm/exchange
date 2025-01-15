@@ -4,15 +4,16 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Button from 'components/Button'
-import { ERROR_MESSAGES } from 'components/ErrorNotifier'
-import Error from 'components/ErrorView'
 import Connector from 'containers/Connector'
-import { previewErrorI18n } from 'queries/futures/constants'
-import { setOpenModal, setTradePanelDrawerOpen } from 'state/app/reducer'
+import { setTradePanelDrawerOpen } from 'state/app/reducer'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
-import { FetchStatus } from 'state/types'
-import { selectMakeOrderFinished, selectOrderDirection, selectOrderPrice, selectOrderSize, selectOrderType } from 'state/exchange/selectors'
-import { OrderDirection } from '@bitly/sdk/dist/types'
+import { 
+	selectMakeOrderFinished, 
+	selectOrderDirection, 
+	selectOrderPrice, 
+	selectOrderSize, 
+	selectOrderType 
+} from 'state/exchange/selectors'
 import { placeOrder } from 'state/exchange/actions'
 
 const ManagePosition: React.FC = () => {

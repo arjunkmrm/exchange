@@ -166,7 +166,7 @@ export const listToken = createAsyncThunk<
 	ThunkConfig
 >('exchange/listToken', async (info, { dispatch, extra: { sdk } }) => {
 	monitorTransaction({
-		transaction: () => sdk.exchange.listToken(info),
+		transaction: () => sdk.manage.listToken(info),
 		onTxConfirmed: () => {
 			dispatch({ type: 'exchange/setListTokenStatus', 
 				payload: FetchStatus.Success
@@ -186,7 +186,7 @@ export const listPair = createAsyncThunk<
 	ThunkConfig
 >('exchange/listPair', async ({ base, quote }, { dispatch, extra: { sdk } }) => {
 	monitorTransaction({
-		transaction: () => sdk.exchange.listPair(base, quote),
+		transaction: () => sdk.manage.listPair(base, quote),
 		onTxConfirmed: () => {
 			dispatch({ type: 'exchange/setListPairStatus', 
 				payload: FetchStatus.Success

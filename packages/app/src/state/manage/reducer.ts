@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
 import { FetchStatus } from 'state/types'
-import { createMarket, fetchAllTokens, fetchMarketsByOwner } from './actions'
+import { addPairToMarket, createMarket, fetchAllTokens, fetchMarketsByOwner } from './actions'
 import { ManageState } from './types'
 
 export const MANAGE_INITIAL_STATE: ManageState = {
@@ -17,6 +17,7 @@ export const MANAGE_INITIAL_STATE: ManageState = {
 	},
 	writeStatuses: {
 		createMarket: FetchStatus.Idle,
+		addPairToMarket: FetchStatus.Idle,
 	},
 }
 
@@ -32,6 +33,9 @@ const manageSlice = createSlice({
 		},
 		setCreateMarketStatus: (state, action: PayloadAction<FetchStatus>) => {
 			state.writeStatuses.createMarket = action.payload
+		},
+		setAddPairToMarketStatus: (state, action: PayloadAction<FetchStatus>) => {
+			state.writeStatuses.addPairToMarket = action.payload
 		},
 	},
 	extraReducers: (builder) => {
@@ -72,12 +76,19 @@ const manageSlice = createSlice({
 		builder.addCase(createMarket.rejected, (state) => {
 			state.writeStatuses.createMarket = FetchStatus.Error
 		})
+		builder.addCase(addPairToMarket.pending, (state) => {
+			state.writeStatuses.addPairToMarket = FetchStatus.Loading
+		})
+		builder.addCase(addPairToMarket.rejected, (state) => {
+			state.writeStatuses.addPairToMarket = FetchStatus.Error
+		})
 	},
 })
 
 export const { 
 	setBaseToken,
 	setQuoteToken,
+	setAddPairToMarketStatus,
 } = manageSlice.actions
 
 export default manageSlice.reducer

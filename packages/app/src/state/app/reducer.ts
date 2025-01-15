@@ -35,20 +35,8 @@ const appSlice = createSlice({
 	name: 'app',
 	initialState: APP_INITIAL_STATE,
 	reducers: {
-		setOpenModal: (state, action: PayloadAction<ModalType>) => {
-			if (action.payload) {
-				state.showPositionModal = null
-			}
+		setOpenModal: (state, action: PayloadAction<{ type: ModalType, params?: Record<string, any>}>) => {
 			state.showModal = action.payload
-		},
-		setShowPositionModal: (
-			state,
-			action: PayloadAction<{ type: FuturesPositionModalType; marketKey: string } | null>
-		) => {
-			if (action.payload) {
-				state.showModal = null
-			}
-			state.showPositionModal = action.payload
 		},
 		setAcknowledgedOrdersWarning: (state, action: PayloadAction<boolean>) => {
 			state.acknowledgedOrdersWarning = action.payload
@@ -86,7 +74,6 @@ const appSlice = createSlice({
 
 export const {
 	setOpenModal,
-	setShowPositionModal,
 	setAcknowledgedOrdersWarning,
 	setShowBanner,
 	setSelectedPortfolioTimeframe,

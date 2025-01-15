@@ -17,6 +17,7 @@ export type ModalType =
 	| 'vest_escrow_entries'
 	| 'base-select' 
 	| 'quote-select'
+	| 'custom-market-info'
 	| null
 
 export type FuturesPositionModalType =
@@ -41,8 +42,7 @@ export type AppQueryStatuses = {
 
 
 export type AppState = {
-	showModal?: ModalType
-	showPositionModal?: { type: FuturesPositionModalType; marketKey: string } | null
+	showModal?: { type: ModalType; params?: Record<string, any> }
 	gasSpeed: GasSpeed
 	gasPrice: GasPrice<string>
 	synthetixOnMaintenance: boolean
