@@ -8,6 +8,7 @@ import { Body } from 'components/Text'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { FetchStatus } from 'state/types'
 import Pill from 'components/Pill'
+import { TableCell } from 'components/Table/TableBodyRow'
 import Tooltip from 'components/Tooltip/Tooltip'
 import { selectCustomMarkets, selectCustomMarketsStatus } from 'state/manage/selectors'
 import { setOpenModal } from 'state/app/reducer'
@@ -53,8 +54,10 @@ const MarketList: FC<MarketListProps> = ({ mobile }) => {
 	}, [dispatch])
 
 	return (
-		<>
+		<ContentContainer>
 			<StyledTable
+				// @ts-ignore
+				compact={mobile}
 				data={data}
 				isLoading={loading}
 				highlightRowsOnHover
@@ -105,7 +108,7 @@ const MarketList: FC<MarketListProps> = ({ mobile }) => {
 				]}
 			/>
 			<CreateMarket />
-		</>
+		</ContentContainer>
 	)
 }
 
@@ -175,20 +178,9 @@ const StyledInput = styled(Input)<{ border: boolean }>`
 	`}
 `
 
-const InputContainer = styled.div<{ border: boolean }>`
-	width: 100%;
-	overflow-x: auto;
-	position: relative;
-	display: flex;
-	align-items: center;
-	padding-left: 18px;
-	margin-bottom: 15px;
-	background: ${(props) =>
-		props.border
-			? props.theme.colors.selectedTheme.input.background
-			: props.theme.colors.selectedTheme.newTheme.containers.primary.background};
-	border-radius: 8px;
-	border: ${(props) => (props.border ? props.theme.colors.selectedTheme.input.border : 'none')};
+const ContentContainer = styled.div`
+	margin: 15px;
+	height: 75%;
 `
 
 const InputTitle = styled(Body)`
@@ -196,18 +188,23 @@ const InputTitle = styled(Body)`
 	font-size: 12px;
 `
 
-const StyledTable = styled(Table)`
-	border: none;
-	overflow-y: scroll;
+const StyledTable = styled(Table)<{ compact: boolean | undefined; height?: number }>`
+	margin-top: ${({ compact }) => (compact ? '0' : '15px')};
+	height: ${({ height }) => (height ? height + 'px' : 'auto')};
+	max-height: 665px;
 
-	.table-row,
-	.table-body-row {
-		${TableAlignment}
-		padding: 0;
+	${TableCell} {
+		padding-top: 8px;
+		padding-bottom: 8px;
 	}
-	.table-body-cell {
-		height: 30px;
-	}
+
+	${media.lessThan('lg')`
+		max-height: 600px;
+	`}
+
+	${media.lessThan('md')`
+		margin-bottom: 150px;
+	`}
 ` as typeof Table
 
 const PriceValue = styled(Body).attrs({ mono: true })`

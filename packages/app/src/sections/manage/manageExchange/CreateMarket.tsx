@@ -54,6 +54,7 @@ const InputContainer = styled.div<{ border: boolean }>`
 	display: flex;
 	align-items: center;
 	padding-left: 18px;
+	margin-top: 15px;
 	margin-bottom: 15px;
 	background: ${(props) =>
 		props.border

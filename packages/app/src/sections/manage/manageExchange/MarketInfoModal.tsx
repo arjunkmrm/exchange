@@ -92,7 +92,7 @@ export const MarketInfoModal: FC<MarketInfoModalProps> = ({
 								address: selectedPairInfo?.marketAddress
 							}}
 						/>}
-						
+
 						{!selectedPairInfo && 
 							<StyledContent>
 								Select Pair
@@ -105,13 +105,15 @@ export const MarketInfoModal: FC<MarketInfoModalProps> = ({
 					</LeftContainer>
 				</ContentContainer>
 				{!open && 
-					<AddPairButton
-						marketName={marketName}
-						address={pair}
-					/>
+					<ContentContainer>
+						<AddPairButton
+							marketName={marketName}
+							address={pair}
+						/>
+					</ContentContainer>
 				}
 				{open && <>
-					<SearchContainer>
+					<ContentContainer>
 						<AssetSearchInput
 							placeholder={t('modals.manage-custom-market.search')}
 							onChange={(e) => {
@@ -120,7 +122,7 @@ export const MarketInfoModal: FC<MarketInfoModalProps> = ({
 							value={assetSearch}
 							autoFocus
 						/>
-					</SearchContainer>
+					</ContentContainer>
 					<InfiniteScroll
 						dataLength={filteredPairs.length}
 						next={() => {
@@ -165,6 +167,7 @@ export const MarketInfoModal: FC<MarketInfoModalProps> = ({
 const Container = styled.div`
 	height: 100%;
 	overflow-y: scroll;
+	margin: 15px;
 `
 
 const StyledCenteredModal = styled(CenteredModal)`
@@ -178,9 +181,9 @@ const StyledCenteredModal = styled(CenteredModal)`
 	}
 `
 
-const SearchContainer = styled.div`
-	margin: 0 16px 12px 16px;
-`
+// const ContentContainer = styled.div`
+// 	margin: 0 16px 12px 16px;
+// `
 
 const AssetSearchInput = styled(Input).attrs({ type: 'search' })`
 	font-size: 16px;
@@ -236,18 +239,7 @@ export const ContentContainer = styled(FlexDivCentered)<{ mobile?: boolean }>`
 		flex: 1;
 		margin-left: 12px;
 	}
-	width: ${(props) => (props.mobile ? '100%' : TRADE_PANEL_WIDTH_MD + 'px')};
-	${media.greaterThan('xxl')`
-		width: ${TRADE_PANEL_WIDTH_LG + 0.5}px;
-	`}
-
-	${media.lessThan('xxl')`
-		width: ${TRADE_PANEL_WIDTH_MD + 0.5}px;
-	`}
-
-	${media.lessThan('md')`
-		width: 100%;
-	`}
+	width: 100%;
 
 	${(props) =>
 		props.mobile &&
@@ -284,8 +276,7 @@ const StyledContent = styled(Body)`
 	margin-bottom: 4px;
 `
 const HorizonBar = styled.hr`
-	margin-left: 15px;
-	margin-right: 15px;
+	margin: 15px;
 	border-width: 1px;
 	border-color: gray;
 `
