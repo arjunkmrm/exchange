@@ -16,7 +16,7 @@ export function useFetchAppData(ready: boolean, marketName: string = '') {
 
 	useEffect(()=> {
 		dispatch(setMarketName(marketName))
-	}, [])
+	}, [marketName])
 
 	useFetchAction(fetchTokenList, { 
 		dependencies: [network, curMarketName],

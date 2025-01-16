@@ -33,6 +33,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import '@reach/dialog/styles.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import '../i18n'
+import { useRouter } from 'next/router'
 
 type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode
@@ -57,19 +58,29 @@ Sentry.init({
 const InnerApp: FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
 	const [isReady, setReady] = useState(false)
 	const { providerReady } = Connector.useContainer()
-
-	useFetchAppData(providerReady)
-
-	const getLayout = Component.getLayout || ((page) => page)
+	const router = useRouter()
 	const currentTheme = useAppSelector(selectCurrentTheme)
-
-	const theme = useMemo(() => themes[currentTheme], [currentTheme])
+	const [marketName, setMarketName] = useState<string>("")
+	
+	useFetchAppData(providerReady, marketName)
+	
 	// @ts-ignore palette options
 	const muiTheme = useMemo(() => createTheme(getDesignTokens(currentTheme)), [currentTheme])
+
+	const theme = useMemo(() => themes[currentTheme], [currentTheme])
+
+	const getLayout = Component.getLayout || ((page) => page)
 
 	useEffect(() => {
 		setReady(true)
 	}, [])
+
+	useEffect(() => {
+		const market = router.query.marketName
+		if (market !== undefined) {
+			setMarketName(market as string)
+		}
+	}, [router.query.marketName])
 
 	return isReady ? (
 		<RainbowKitProvider
