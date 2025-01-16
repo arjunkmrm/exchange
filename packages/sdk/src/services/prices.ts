@@ -58,7 +58,6 @@ export default class PricesService {
 			[[]]
 		);
 		const targetBlockHeight = await calcBlockHeight(relativeTimeInSec, this.sdk.context.provider);
-
 		const marketInvovledList= [];
 		for (let i = 0; i < markets.length; i++) {
 			const market = markets[i];

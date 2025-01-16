@@ -29,7 +29,7 @@ export const calcBlockHeight = async(relativeTime: number, provider: ethers.prov
     const blockNumber = await provider.getBlockNumber();
     const networkId = (await (provider.getNetwork())).chainId;
     const rate = RATES_ENDPOINTS[networkId];
-    const targetBlockNumber = blockNumber + relativeTime / rate;
+    const targetBlockNumber = Math.floor(blockNumber + relativeTime / rate);
     return targetBlockNumber >= 1 ? targetBlockNumber : 1;
 };
 
