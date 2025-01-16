@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
 import { FetchStatus } from 'state/types'
-import { addPairToMarket, createMarket, fetchAllTokens, fetchMarketsByOwner } from './actions'
+import { addPairToMarket, createMarket, fetchAllMarkets, fetchAllTokens, fetchMarketsByOwner } from './actions'
 import { ManageState } from './types'
 
 export const MANAGE_INITIAL_STATE: ManageState = {
@@ -11,9 +11,11 @@ export const MANAGE_INITIAL_STATE: ManageState = {
 	},
 	customMarkets: {},
 	allTokens: [],
+	allMarkets: [],
 	queryStatuses: {
 		customMarkets: DEFAULT_QUERY_STATUS,
 		allTokens: DEFAULT_QUERY_STATUS,
+		allMarkets: DEFAULT_QUERY_STATUS,
 	},
 	writeStatuses: {
 		createMarket: FetchStatus.Idle,
@@ -65,6 +67,21 @@ const manageSlice = createSlice({
 		builder.addCase(fetchAllTokens.rejected, (manageState) => {
 			manageState.queryStatuses.allTokens = {
 				error: 'Failed to fetch tokens listed in market',
+				status: FetchStatus.Error,
+			}
+		})
+
+		// Fetch All Markets
+		builder.addCase(fetchAllMarkets.pending, (manageState) => {
+			manageState.queryStatuses.allMarkets = LOADING_STATUS
+		})
+		builder.addCase(fetchAllMarkets.fulfilled, (manageState, action) => {
+			manageState.allMarkets = action.payload
+			manageState.queryStatuses.allMarkets = SUCCESS_STATUS
+		})
+		builder.addCase(fetchAllMarkets.rejected, (manageState) => {
+			manageState.queryStatuses.allMarkets = {
+				error: 'Failed to fetch pairs listed in market',
 				status: FetchStatus.Error,
 			}
 		})

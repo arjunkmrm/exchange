@@ -67,6 +67,11 @@ export default class ManageService {
 		return customMarkets;
 	}
 
+	public async getAllMarkets() {
+		const {markets} = await internalFetchMarketsAndTokens(this.sdk)
+		return markets;
+	}
+
 	public async getAllTokens() {
         const tokens: string[][] = await ExchangeReadContracts(this.sdk, ['tokens']);
 		const tokenInfos: TokenInfoType[] = await ExchangeReadContracts(this.sdk, ['tokenInfo'], tokens[0].map(e=>([e])));

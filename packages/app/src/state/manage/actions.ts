@@ -1,4 +1,4 @@
-import { CustomMarketsInfoType, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
+import { CustomMarketsInfoType, ExchangeMarketType, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
 import { monitorTransaction } from 'contexts/RelayerContext'
@@ -26,6 +26,19 @@ export const fetchAllTokens = createAsyncThunk<
 		return await sdk.manage.getAllTokens()
 	} catch (err) {
 		notifyError('Failed to fetch tokens listed in market', err)
+		throw err
+	}
+})
+
+export const fetchAllMarkets = createAsyncThunk<
+	ExchangeMarketType[],
+	void,
+	ThunkConfig
+>('manage/fetchAllMarkets', async (_, { extra: { sdk } }) => {
+	try {
+		return await sdk.manage.getAllMarkets()
+	} catch (err) {
+		notifyError('Failed to fetch pairs listed in market', err)
 		throw err
 	}
 })

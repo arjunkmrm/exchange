@@ -9,15 +9,13 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import Loader from 'components/Loader'
 import { CATEGORY_MAP } from 'constants/currency'
 import { useAppSelector } from 'state/hooks'
-import { selectMarkets } from 'state/exchange/selectors'
 import { StyledCaretDownIcon } from 'components/Select'
 import PairRow from './PairRow'
-import { MARKETS_DETAILS_HEIGHT_DESKTOP, TRADE_PANEL_WIDTH_LG, TRADE_PANEL_WIDTH_MD } from 'sections/market/styles'
-import media from 'styles/media'
+import { MARKETS_DETAILS_HEIGHT_DESKTOP } from 'sections/market/styles'
 import { MARKET_SELECTOR_HEIGHT_MOBILE } from 'constants/defaults'
 import { Body } from 'components/Text'
 import AddPairButton from './AddPairButton'
-import { selectCustomMarkets } from 'state/manage/selectors'
+import { selectAllMarkets, selectCustomMarkets } from 'state/manage/selectors'
 
 const PAGE_LENGTH = 50
 
@@ -36,7 +34,7 @@ export const MarketInfoModal: FC<MarketInfoModalProps> = ({
 }) => {
 	const { t } = useTranslation()
 	const [assetSearch, setAssetSearch] = useState('')
-	const pairs = useAppSelector(selectMarkets)
+	const pairs = useAppSelector(selectAllMarkets)
 	const [pair, setPair] = useState<string>()
 	const [open, setOpen] = useState(false)
 	const [page, setPage] = useState(1)

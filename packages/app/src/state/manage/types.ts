@@ -1,4 +1,4 @@
-import { CustomMarketsInfoType, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
+import { CustomMarketsInfoType, ExchangeMarketType, TokenInfoTypeWithAddress } from '@bitly/sdk/types'
 import { FetchStatus, QueryStatus } from 'state/types'
 
 export type ListPairState = {
@@ -9,6 +9,7 @@ export type ListPairState = {
 export type ManageQueryStatuses = {
 	customMarkets: QueryStatus
 	allTokens: QueryStatus
+	allMarkets: QueryStatus
 }
 
 export type ManageWriteStatuses = {
@@ -20,6 +21,7 @@ export type ManageState = {
 	listPair: ListPairState
 	customMarkets: CustomMarketsInfoType
 	allTokens: TokenInfoTypeWithAddress[]
+	allMarkets: ExchangeMarketType[]
 	queryStatuses: ManageQueryStatuses
 	writeStatuses: ManageWriteStatuses
 }

@@ -10,6 +10,8 @@ export const selectCustomMarketsStatus = (state: RootState) => state.manage.quer
 
 export const selectAllTokens = (state: RootState) => state.manage.allTokens
 
+export const selectAllMarkets = (state: RootState) => state.manage.allMarkets
+
 export const selectAllTokensStatus = (state: RootState) => state.manage.queryStatuses.allTokens
 
 export const selectCreateMarketStatus = (state: RootState) => state.manage.writeStatuses.createMarket

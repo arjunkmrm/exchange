@@ -1,6 +1,6 @@
 import { useAppSelector, useFetchAction } from 'state/hooks'
 import { selectNetwork, selectWallet } from '../app/selectors'
-import { fetchAllTokens, fetchMarketsByOwner } from './actions'
+import { fetchAllMarkets, fetchAllTokens, fetchMarketsByOwner } from './actions'
 
 export function useFetchManageData() {
 	const wallet = useAppSelector(selectWallet)
@@ -12,6 +12,11 @@ export function useFetchManageData() {
 	})
 
 	useFetchAction(fetchAllTokens, { 
+		dependencies: [network],
+		disabled: network === undefined,
+	})
+
+	useFetchAction(fetchAllMarkets, { 
 		dependencies: [network],
 		disabled: network === undefined,
 	})
