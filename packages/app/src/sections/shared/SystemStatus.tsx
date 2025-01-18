@@ -9,7 +9,7 @@ import GithubIcon from 'assets/svg/social/github.svg'
 import TwitterIcon from 'assets/svg/social/twitter.svg'
 import { FlexDivColCentered } from 'components/layout/flex'
 import { GridDivCenteredCol } from 'components/layout/grid'
-import { EXTERNAL_LINKS, PROD_HOSTNAME } from 'constants/links'
+import { EXTERNAL_LINKS, PROD_URL } from 'constants/links'
 import { HEADER_HEIGHT } from 'constants/ui'
 import Logo from 'sections/shared/Layout/Logo'
 import { useAppSelector } from 'state/hooks'
@@ -45,7 +45,7 @@ const SystemStatus: FC<SystemStatusProps> = memo(({ children }) => {
 
 	const appOnMaintenance =
 		typeof window !== 'undefined' &&
-		window.location.hostname === PROD_HOSTNAME &&
+		window.location.hostname === PROD_URL &&
 		synthetixOnMaintenance
 
 	return appOnMaintenance ? (

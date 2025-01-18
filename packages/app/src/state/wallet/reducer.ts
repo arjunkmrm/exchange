@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { DEFAULT_QUERY_STATUS, LOADING_STATUS, SUCCESS_STATUS } from 'state/constants'
 import { FetchStatus } from 'state/types'
-import { approve, bundleFetchCurrentWalletData, deposit, fetchAllowance, fetchBalance, fetchBalanceSeries, withdraw } from './actions'
+import { approve, bundleFetchCurrentWalletData, deposit, fetchAllowance, fetchBalance, fetchBalanceSeries, setNetwork, withdraw } from './actions'
 
 import { WalletState } from './types'
 
@@ -30,9 +30,6 @@ const walletSlice = createSlice({
 	reducers: {
 		setWalletAddress: (state, action) => {
 			state.walletAddress = action.payload
-		},
-		setNetwork: (state, action) => {
-			state.networkId = action.payload
 		},
 		disconnect: (state) => {
 			state.walletAddress = undefined
@@ -101,6 +98,11 @@ const walletSlice = createSlice({
 			}
 		})
 
+		// Set Network Id
+		builder.addCase(setNetwork.fulfilled, (walletState, action) => {
+			walletState.networkId = action.payload
+		})
+
 		// Write Statuses
 		builder.addCase(deposit.pending, (state) => {
 			state.writeStatuses.deposit = FetchStatus.Loading
@@ -123,6 +125,6 @@ const walletSlice = createSlice({
 	},
 })
 
-export const { setWalletAddress, setNetwork } = walletSlice.actions
+export const { setWalletAddress } = walletSlice.actions
 
 export default walletSlice.reducer

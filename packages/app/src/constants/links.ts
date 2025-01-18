@@ -1,7 +1,6 @@
 import { CurrencyKey } from './currency'
 
-export const PROD_HOSTNAME = 'kwenta.eth.limo'
-export const PROD_REFFERAL_URL = 'kwenta.eth.limo/market'
+export const PROD_URL = 'https://token.bitly.exchange'
 
 export const EXTERNAL_LINKS = {
 	Trading: {

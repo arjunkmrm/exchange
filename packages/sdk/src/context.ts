@@ -35,7 +35,6 @@ export default class Context implements IContext {
 
 	constructor(context: IContext) {
 		this.context = { ...DEFAULT_CONTEXT, ...context }
-
 		this.multicallProvider = new EthCallProvider(context.networkId, context.provider);
         this.contracts = getContractsByNetwork(context.networkId, context.provider);
         this.multicallContracts = getMulticallContractsByNetwork(context.networkId);
@@ -72,8 +71,6 @@ export default class Context implements IContext {
 	public async setProvider(provider: ethers.providers.Provider) {
 		this.context.provider = provider
 		const networkId = (await provider.getNetwork()).chainId;
-		this.multicallProvider = new EthCallProvider(networkId, provider)
-
 		this.setNetworkId(networkId);
 
 		return networkId
@@ -81,6 +78,7 @@ export default class Context implements IContext {
 
 	public setNetworkId(networkId: number) {
 		this.context.networkId = networkId
+		this.multicallProvider = new EthCallProvider(networkId, this.provider)
 		this.contracts = getContractsByNetwork(networkId, this.provider)
 		this.multicallContracts = getMulticallContractsByNetwork(networkId)
 		this.events.emit('network_changed', { networkId: networkId })

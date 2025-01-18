@@ -11,6 +11,7 @@ import { truncateTimestamp } from 'utils/date'
 import { PERIOD_IN_SECONDS } from '@bitly/sdk/constants'
 import { monitorTransaction } from 'contexts/RelayerContext'
 import logError from 'utils/logError'
+import { DEFAULT_NETWORK_ID } from 'constants/defaults'
 
 export const resetWalletAddress = createAsyncThunk<void, string | undefined, ThunkConfig>(
 	'wallet/resetWalletAddress',
@@ -32,6 +33,24 @@ export const setSigner = createAsyncThunk<void, ethers.Signer | null | undefined
 		}
 	}
 )
+
+export const setNetwork = createAsyncThunk<
+	number, 
+	number | undefined,
+	ThunkConfig
+>('wallet/setNetwork', async (networkId, { dispatch, extra: { sdk } }) => {
+	try {
+		if (networkId === undefined) {
+			networkId = DEFAULT_NETWORK_ID
+		}
+		sdk.context.setNetworkId(networkId)
+		return networkId
+	} catch (err) {
+		logError(err)
+		notifyError('Failed to fetch balances', err)
+		throw err
+	}
+})
 
 export const fetchBalance = createAsyncThunk<
 	{balancesInWallet: BalancesType; balancesInBank: BalancesType},

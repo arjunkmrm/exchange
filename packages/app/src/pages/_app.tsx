@@ -34,6 +34,7 @@ import '@reach/dialog/styles.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import '../i18n'
 import { useRouter } from 'next/router'
+import { DEFAULT_NETWORK_ID } from 'constants/defaults'
 
 type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode
@@ -57,7 +58,7 @@ Sentry.init({
 
 const InnerApp: FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
 	const [isReady, setReady] = useState(false)
-	const { providerReady } = Connector.useContainer()
+	const { providerReady, switchNetwork } = Connector.useContainer()
 	const router = useRouter()
 	const currentTheme = useAppSelector(selectCurrentTheme)
 	const [marketName, setMarketName] = useState<string>("")
@@ -82,8 +83,16 @@ const InnerApp: FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
 		}
 	}, [router.query.marketName])
 
+	useEffect(() => {
+		const networkId = router.query.networkId
+		if (networkId !== undefined) {
+			switchNetwork(Number(networkId))
+		}
+	}, [router.query.networkId, providerReady])
+
 	return isReady ? (
 		<RainbowKitProvider
+			initialChain={DEFAULT_NETWORK_ID}
 			chains={chains}
 			theme={currentTheme === 'dark' ? darkTheme() : lightTheme()}
 		>

@@ -748,7 +748,8 @@
 			"market-list": {
 				"name": "Market Name",
 				"pairs": "Total Pairs",
-				"manage": "Manage"
+				"manage": "Manage",
+				"open": "Open"
 			},
 			"create": "Create Custom Market:",
 			"button": {

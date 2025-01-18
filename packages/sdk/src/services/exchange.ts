@@ -36,7 +36,6 @@ export default class ExchangeService {
 		if (this.marketName === marketName) {
             return;
         }
-
 		await this._fetchMarketsAndTokens(marketName);
         this.marketName = marketName;
 	}

@@ -13,6 +13,8 @@ import Tooltip from 'components/Tooltip/Tooltip'
 import { selectCustomMarkets, selectCustomMarketsStatus } from 'state/manage/selectors'
 import { setOpenModal } from 'state/app/reducer'
 import CreateMarket from './CreateMarket'
+import { selectNetwork } from 'state/app/selectors'
+import { PROD_URL } from 'constants/links'
 
 type MarketListProps = {
 	mobile?: boolean
@@ -21,7 +23,8 @@ type MarketListProps = {
 enum TableColumnAccessor {
 	MarketName = 'name',
 	Pairs = 'pairs',
-	Manage = 'manage'
+	Manage = 'manage',
+	Open = 'open',
 }
 
 const MarketList: FC<MarketListProps> = ({ mobile }) => {
@@ -30,6 +33,7 @@ const MarketList: FC<MarketListProps> = ({ mobile }) => {
 	const dispatch = useAppDispatch()
 	const customMarketStatus = useAppSelector(selectCustomMarketsStatus)
 	const customMarkets = useAppSelector(selectCustomMarkets)
+	const networkId = useAppSelector(selectNetwork)
 
 	useEffect(() => {
 		if (loading && (
@@ -61,7 +65,7 @@ const MarketList: FC<MarketListProps> = ({ mobile }) => {
 				data={data}
 				isLoading={loading}
 				highlightRowsOnHover
-				columnsDeps = {[dispatch, t, setOpenModal, data]}
+				columnsDeps = {[dispatch, t, setOpenModal, data, networkId]}
 				columns={[
 					{
 						header: () => <TableHeader>{t('manage.custom-markets.market-list.name')}</TableHeader>,
@@ -100,6 +104,25 @@ const MarketList: FC<MarketListProps> = ({ mobile }) => {
 									onClick={()=>setOpenInfoModal(marketName)}
 								>
 									{t('manage.custom-markets.market-list.manage')}
+								</Pill>
+							)
+						},
+						size: 100,
+					},
+					{
+						header: () => <TableHeader>{t('manage.custom-markets.market-list.open')}</TableHeader>,
+						accessorKey: TableColumnAccessor.Open,
+						enableSorting: false,
+						cell: (cellProps) => {
+							const marketName = cellProps.row.original.name
+							const goto = (network: number, name: string) => {
+								window.open(`${PROD_URL}?networkId=${network}&marketName=${name}`)
+							}
+							return (
+								<Pill
+									onClick={()=>goto(networkId, marketName)}
+								>
+									{t('manage.custom-markets.market-list.open')}
 								</Pill>
 							)
 						},

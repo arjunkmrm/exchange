@@ -90,8 +90,8 @@ export type ChainsType = {
 }
 
 export const chain: ChainsType = {
-	// redstone: redstoneWithIcon,
 	garnet: garnetWithIcon,
+	redstone: redstoneWithIcon,
 }
 
 const { chains, provider } = configureChains(Object.values(chain), [
