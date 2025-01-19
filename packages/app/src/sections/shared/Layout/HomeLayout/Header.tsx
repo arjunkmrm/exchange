@@ -31,20 +31,10 @@ const Header = memo(() => {
 				label: t('homepage.nav.markets'),
 				onClick: () => router.push(ROUTES.Dashboard.Markets),
 			},
-			// {
-			// 	id: 'stats',
-			// 	label: t('homepage.nav.stats'),
-			// 	onClick: () => router.push(ROUTES.Stats.Home),
-			// },
-			// {
-			// 	id: 'governance',
-			// 	label: t('homepage.nav.governance.title'),
-			// 	icon: <CaretDownGrayIcon />,
-			// },
 			{
-				id: 'socials',
-				label: t('homepage.nav.socials.title'),
-				icon: <CaretDownGrayIcon />,
+				id: 'wallet',
+				label: t('homepage.nav.wallet-page'),
+				onClick: () => router.push(ROUTES.Wallet.Home),
 			},
 			{
 				id: 'website',
@@ -52,12 +42,12 @@ const Header = memo(() => {
 				icon: <ArrowUpRightIcon />,
 				onClick: () => window.open(EXTERNAL_LINKS.Website.Home, '_blank'),
 			},
-			{
-				id: 'learn-more',
-				label: t('homepage.nav.learn-more'),
-				icon: <ArrowUpRightIcon />,
-				onClick: () => window.open(EXTERNAL_LINKS.Docs.DocsRoot, '_blank'),
-			},
+			// {
+			// 	id: 'learn-more',
+			// 	label: t('homepage.nav.learn-more'),
+			// 	icon: <ArrowUpRightIcon />,
+			// 	onClick: () => window.open(EXTERNAL_LINKS.Docs.DocsRoot, '_blank'),
+			// },
 		],
 		[t]
 	)
@@ -104,21 +94,6 @@ const Header = memo(() => {
 									{label}
 									{icon}
 								</FlexDivRowCentered>
-								{/* <StyledMenu className="governance">
-									{GOVERNANCE.map(({ id, label, onClick }) => (
-										<StyledMenuItem key={id} onClick={onClick}>
-											{label}
-										</StyledMenuItem>
-									))}
-								</StyledMenu>
-								<StyledMenu className="socials">
-									{SOCIALS.map(({ id, label, onClick, icon }) => (
-										<StyledMenuItem key={id} onClick={onClick}>
-											{icon}
-											{label}
-										</StyledMenuItem>
-									))}
-								</StyledMenu> */}
 							</StyledTextButton>
 						))}
 					</Links>

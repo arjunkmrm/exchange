@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
@@ -8,6 +8,8 @@ import CurrencyIcon from 'components/Currency/CurrencyIcon'
 import { FlexDivColCentered, FlexDivRow } from 'components/layout/flex'
 import { CapitalizedText, numericValueCSS } from 'styles/common'
 import { truncateAddress } from 'utils/string'
+import { useAppSelector } from 'state/hooks'
+import { selectAllTokens } from 'state/manage/selectors'
 
 type CurrencyCardSelectorProps = {
 	tokenName: string
@@ -24,6 +26,11 @@ const CurrencyCardSelector: FC<CurrencyCardSelectorProps> = memo(
 		currencyKey,
 	}) => {
 		const { t } = useTranslation()
+		const tokens = useAppSelector(selectAllTokens)
+
+		const selectedToken = useMemo(() => {
+			return tokens.find(e=>e.address===currencyKey)
+		}, [tokens, currencyKey])
 
 		return (
 			<SelectorContainer>
@@ -35,7 +42,7 @@ const CurrencyCardSelector: FC<CurrencyCardSelectorProps> = memo(
 					data-testid="currency-selector"
 				>
 					<TokenLabel>
-						{!!currencyKey && <CurrencyIcon currencyKey={currencyKey} width={25} height={25} />}
+						{!!currencyKey && <CurrencyIcon url={selectedToken?.logo} currencyKey={currencyKey} width={25} height={25} />}
 						{currencyKey ? truncateAddress(currencyKey) : (
 							<CapitalizedText>
 								{t('exchange.currency-card.currency-selector.select-token')}

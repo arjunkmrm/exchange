@@ -12,7 +12,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { notifyError } from 'components/ErrorNotifier'
 import { DEFAULT_UPDATE_KLINE_DELAY_TIME_MS } from 'constants/defaults'
 import { monitorTransaction } from 'contexts/RelayerContext'
-import { fetchAllMarkets } from 'state/manage/actions'
+import { fetchAllMarkets, fetchAllTokens } from 'state/manage/actions'
 import { updatePrices } from 'state/prices/actions'
 import { selectCurrentMarketPrice } from 'state/prices/selectors'
 import { FetchStatus, ThunkConfig } from 'state/types'
@@ -172,6 +172,7 @@ export const listToken = createAsyncThunk<
 			dispatch({ type: 'exchange/setListTokenStatus', 
 				payload: FetchStatus.Success
 			})
+			dispatch(fetchAllTokens())
 		},
 		onTxFailed: () => {
 			dispatch({ type: 'exchange/setListTokenStatus', 
