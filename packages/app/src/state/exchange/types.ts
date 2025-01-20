@@ -37,6 +37,7 @@ export type ExchangeState = {
 	orderDirection: OrderDirection,
 	orderPrice: string,
 	orderSize: string,
+	orderTotal: string,
 	slippage: number,
 	orderbookWidth: number,
 	orderbooks: Record<string, OrderbookType>,

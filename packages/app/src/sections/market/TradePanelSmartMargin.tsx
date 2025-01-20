@@ -1,6 +1,7 @@
-import { FC, memo, useCallback, useState, useEffect } from 'react'
+import { FC, memo, useCallback } from 'react'
 import styled, { css } from 'styled-components'
-
+import InfoBlock from './InfoBlock'
+import PercentSelector from './PercentSelector'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { selectPricesConnectionError } from 'state/prices/selectors'
 import Error from 'components/ErrorView'
@@ -12,7 +13,8 @@ import { setOrderDirection, setOrderType } from 'state/exchange/reducer'
 import CloseOnlyPrompt from './CloseOnlyPrompt'
 import PositionButtons from './PositionButtons'
 import OrderTypeSelector from './OrderTypeSelector'
-import MarginInput from './MarginInput'
+import AmountInput from './AmountInput'
+import TotalInput from './TotalInput'
 import TradePanelPriceInput from './TradePanelPriceInput'
 import ManagePosition from './ManagePosition'
 import SlippageSelector from './SlippageSelector'
@@ -62,16 +64,42 @@ const TradePanelSmartMargin: FC<Props> = memo(({ mobile, closeDrawer }) => {
 						)}
 						<OrderTypeSelector orderType={orderType} setOrderTypeAction={setOrderType} />
 
-						<MarginInput />
 						{orderType !== 'market' && (
 							<>
-								<TradePanelPriceInput />
 								<Spacer height={16} />
+								<TradePanelPriceInput />
 							</>
 						)}
-						{orderType === 'market' && 
-							<SlippageSelector />
+
+						{
+							(orderType !== 'market' || orderDirection !== OrderDirection.buy) &&
+							<>
+								<Spacer height={16} />
+								<AmountInput />
+							</>
 						}
+
+						{
+							(orderType !== 'market' || orderDirection !== OrderDirection.sell) &&
+							<>
+								<Spacer height={16} />
+								<TotalInput />
+							</>
+						}
+
+						<Spacer height={16} />
+						<PercentSelector />
+						
+						{orderType === 'market' && 
+							<>
+								<Spacer height={16} />
+								<SlippageSelector />
+							</>
+						}
+
+						<Spacer height={16} />
+						<InfoBlock />
+
 						<Spacer height={16} />
 						<ManagePosition /> 
 					</MainPanelContent>

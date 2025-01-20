@@ -26,6 +26,7 @@ import {
 	selectOrderDirection, 
 	selectOrderPrice, 
 	selectOrderSize, 
+	selectOrderTotal, 
 	selectOrderType, 
 	selectSlippage 
 } from './selectors'
@@ -210,6 +211,7 @@ export const placeOrder = createAsyncThunk<
 >('exchange/placeOrder', async (_, { getState, dispatch, extra: { sdk } }) => {
 	const direction = selectOrderDirection(getState())
 	const amount = Number(selectOrderSize(getState()))
+	const total = Number(selectOrderTotal(getState()))
 	const price = Number(selectOrderPrice(getState()))
 	const type = selectOrderType(getState())
 	const slippage = selectSlippage(getState())
@@ -218,10 +220,11 @@ export const placeOrder = createAsyncThunk<
 
 	const makeOrder = async () => {
 		dispatch(setMakeOrderStatus(FetchStatus.Loading))
+		const volume = direction === OrderDirection.buy ? total : amount
 		if (type === 'limit') {
-			return await sdk.exchange.placeLimitOrder(market, direction, price, amount)
+			return await sdk.exchange.placeLimitOrder(market, direction, price, volume)
 		} else {
-			return await sdk.exchange.placeMarketOrder(market, direction, amount, curPrice, Math.floor(slippage*10000))
+			return await sdk.exchange.placeMarketOrder(market, direction, volume, curPrice, Math.floor(slippage*10000))
 		}
 	}
 

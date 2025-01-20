@@ -67,6 +67,8 @@ export const selectOrderPrice = (state: RootState) => state.exchange.orderPrice
 
 export const selectOrderSize = (state: RootState) => state.exchange.orderSize
 
+export const selectOrderTotal = (state: RootState) => state.exchange.orderTotal
+
 export const selectSlippage = (state: RootState) => state.exchange.slippage
 
 export const selectMakeOrderFinished = (state: RootState) => state.exchange.writeStatuses.makeOrder !== FetchStatus.Loading

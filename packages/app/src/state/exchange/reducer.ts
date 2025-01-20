@@ -31,6 +31,7 @@ export const EXCHANGE_INITIAL_STATE: ExchangeState = {
 	orderDirection: OrderDirection.buy,
 	orderPrice: '0.00',
 	orderSize: '0.00',
+	orderTotal: '0.00',
 	slippage: 0.01,
 	orderbookWidth: 0.1,
 	orderbooks: {},
@@ -56,6 +57,9 @@ const exchangeSlice = createSlice({
 		},
 		setOrderSize: (state, action: PayloadAction<string>) => {
 			state.orderSize = action.payload
+		},
+		setOrderTotal: (state, action: PayloadAction<string>) => {
+			state.orderTotal = action.payload
 		},
 		setSlippage: (state, action: PayloadAction<number>) => {
 			state.slippage = action.payload
@@ -206,6 +210,7 @@ export const {
 	setOrderDirection,
 	setOrderPrice,
 	setOrderSize,
+	setOrderTotal,
 	setSlippage,
 	setMakeOrderStatus,
 	increaseOrderbookWidth,

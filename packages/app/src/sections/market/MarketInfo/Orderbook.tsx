@@ -30,9 +30,9 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 	const dispatch = useAppDispatch()
 	const [loading, setLoading] = useState(true)
 	const orderbook = useAppSelector(selectOrderbook)
-	const marketInfo = useAppSelector(selectCurrentMarketInfo)
 	const width = useAppSelector(selectOrderbookWidth)
 	const orderbookQueryStatus = useAppSelector(selectOrderbookQueryStatus)
+	const marketInfo = useAppSelector(selectCurrentMarketInfo)
 
 	useEffect(() => {
 		if (loading && (
@@ -66,9 +66,14 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 				data={data}
 				isLoading={loading}
 				highlightRowsOnHover
+				columnsDeps={[marketInfo]}
 				columns={[
 					{
-						header: () => <TableHeader>{t('futures.market.history.price-label')}</TableHeader>,
+						header: () => 
+							<TableHeader>
+								{t('futures.market.history.price-label')}
+								(${marketInfo?.tokenY.symbol})
+							</TableHeader>,
 						accessorKey: TableColumnAccessor.Price,
 						enableSorting: false,
 						cell: (cellProps) => {
@@ -83,15 +88,23 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 						size: 100,
 					},
 					{
-						header: () => <TableHeader>{t('futures.market.history.amount-label')}</TableHeader>,
+						header: () => 
+							<TableHeader>
+								{t('futures.market.history.amount-label')}
+								(${marketInfo?.tokenX.symbol})
+							</TableHeader>,
 						accessorKey: TableColumnAccessor.Amount,
 						enableSorting: false,
 						cell: (cellProps) => {
-							const negative = !cellProps.row.original.buy
+							const isBuy = cellProps.row.original.buy
+							const negative = !isBuy
+							const amount = cellProps.getValue()
+							const price = cellProps.row.original.price
+							const amountShow = isBuy ? amount / price : amount
 
 							return (
 								<DirectionalValue negative={negative} >
-									{formatNumber(Math.abs(cellProps.getValue()), {
+									{formatNumber(Math.abs(amountShow), {
 										suggestDecimals: true,
 										truncateOver: 1e6,
 										maxDecimals: 6,

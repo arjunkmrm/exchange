@@ -33,7 +33,7 @@ export default function OrderPriceInput({
 			<InputHeaderRow
 				label={
 					<StyledInputTitle>
-						{orderType} Price{' '}
+						Price{' '}
 						{minMaxLabelString && (
 							<>
 								&nbsp; —<span>&nbsp; {minMaxLabelString}</span>
