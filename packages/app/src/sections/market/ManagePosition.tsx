@@ -12,9 +12,11 @@ import {
 	selectOrderDirection, 
 	selectOrderPrice, 
 	selectOrderSize, 
+	selectOrderTotal, 
 	selectOrderType 
 } from 'state/exchange/selectors'
 import { placeOrder } from 'state/exchange/actions'
+import { OrderDirection } from '@bitly/sdk/types'
 
 const ManagePosition: React.FC = () => {
 	const { t } = useTranslation()
@@ -27,21 +29,23 @@ const ManagePosition: React.FC = () => {
 	const orderType = useAppSelector(selectOrderType)
 	const orderPrice = Number(useAppSelector(selectOrderPrice))
 	const orderSize = Number(useAppSelector(selectOrderSize))
+	const orderTotal = Number(useAppSelector(selectOrderTotal))
 	const isFinished = useAppSelector(selectMakeOrderFinished)
 
 	const submitButtonDisabled = useMemo(() => {
 		let disabled = false
+		const volume = orderDirection === OrderDirection.buy ? orderTotal : orderSize
 		if (orderType == 'market') {
-			if (orderSize == 0) {
+			if (volume == 0) {
 				disabled = true
 			}
 		} else {
-			if (orderSize == 0 || orderPrice == 0) {
+			if (volume == 0 || orderPrice == 0) {
 				disabled = true
 			}
 		}
 		return disabled
-	}, [orderType, orderSize, orderPrice])
+	}, [orderType, orderSize, orderPrice, orderTotal])
 
 	const onSubmit = useCallback(() => {
 		dispatch(placeOrder())

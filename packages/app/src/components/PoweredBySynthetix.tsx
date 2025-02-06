@@ -13,7 +13,7 @@ const PoweredBySynthetix = () => {
 	return (
 		<Container>
 			<Text>{t('common.powered-by')}</Text>
-			<ExternalLink href={EXTERNAL_LINKS.Synthetix.Home}>
+			<ExternalLink href={EXTERNAL_LINKS.Website.Home}>
 				<TextLogo height="10.5px" />
 			</ExternalLink>
 		</Container>

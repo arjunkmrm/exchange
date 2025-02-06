@@ -6,7 +6,7 @@ import TwitterLogo from 'assets/svg/marketing/twitter-icon.svg'
 import EmailLogo from 'assets/svg/social/email.svg'
 import MirrorLogo from 'assets/svg/social/mirror.svg'
 import { FlexDivCentered } from 'components/layout/flex'
-import { Body } from 'components/Text'
+import PoweredBySynthetix from 'components/PoweredBySynthetix'
 import { EXTERNAL_LINKS } from 'constants/links'
 import ROUTES from 'constants/routes'
 import { GridContainer } from 'sections/homepage/section'
@@ -61,32 +61,6 @@ const Footer = memo(() => {
 				},
 			],
 		},
-		// {
-		// 	key: 'more',
-		// 	title: t('homepage.footer.community.title'),
-		// 	links: [
-		// 		{
-		// 			key: 'governance',
-		// 			title: t('homepage.footer.community.governance'),
-		// 			link: EXTERNAL_LINKS.Docs.Governance,
-		// 		},
-		// 		{
-		// 			key: 'dev-dao',
-		// 			title: t('homepage.footer.community.dev-dao'),
-		// 			link: EXTERNAL_LINKS.Docs.DevDao,
-		// 		},
-		// 		{
-		// 			key: 'marketing-dao',
-		// 			title: t('homepage.footer.community.marketing-dao'),
-		// 			link: EXTERNAL_LINKS.Docs.MarketingDao,
-		// 		},
-		// 		{
-		// 			key: 'kips',
-		// 			title: t('homepage.footer.community.kips'),
-		// 			link: EXTERNAL_LINKS.Governance.Kips,
-		// 		},
-		// 	],
-		// },
 	]
 	return (
 		<ThemeProvider theme={themes.dark}>
@@ -102,7 +76,7 @@ const Footer = memo(() => {
 						</ExternalLink>
 					</SocialIcons>
 				</LogoFooter>
-				<MultiListContainer>
+				{/* <MultiListContainer>
 					{DOC_LINKS.map(({ key, title, links }) => (
 						<ListContainer key={key}>
 							<ListTitle>{title}</ListTitle>
@@ -113,7 +87,7 @@ const Footer = memo(() => {
 							))}
 						</ListContainer>
 					))}
-				</MultiListContainer>
+				</MultiListContainer> */}
 				<PowerContainer>
 					{/* <PoweredBySynthetix /> */}
 					<CopyRight>{t('homepage.footer.copyright')}</CopyRight>

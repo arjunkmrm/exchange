@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-
+import PoweredBySynthetix from 'components/PoweredBySynthetix'
 import MarketOrderPreview from 'assets/png/marketing/market-order-preview.png'
 import { FlexDivColCentered } from 'components/layout/flex'
 import { GridDiv } from 'components/layout/grid'
