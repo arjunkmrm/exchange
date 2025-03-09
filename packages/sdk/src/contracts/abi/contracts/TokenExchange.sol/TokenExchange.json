@@ -1,37 +1,6 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "bank",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "tX",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "tY",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "internalType": "uint128",
-        "name": "tinyAmountThresh",
-        "type": "uint128"
-      },
-      {
-        "internalType": "int24",
-        "name": "margin",
-        "type": "int24"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -83,6 +52,19 @@
       }
     ],
     "name": "EarningClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
     "type": "event"
   },
   {
@@ -344,6 +326,44 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "bank",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "tX",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "tY",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint128",
+        "name": "tinyAmountThresh",
+        "type": "uint128"
+      },
+      {
+        "internalType": "int24",
+        "name": "margin",
+        "type": "int24"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "originToken",
         "type": "address"
       },
@@ -356,16 +376,6 @@
         "internalType": "uint128",
         "name": "amount",
         "type": "uint128"
-      },
-      {
-        "internalType": "address",
-        "name": "holder",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "referral",
-        "type": "address"
       }
     ],
     "name": "limitOrder",
@@ -432,14 +442,9 @@
         "type": "uint16"
       },
       {
-        "internalType": "address",
-        "name": "holder",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "referral",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "feeTaker",
+        "type": "address[]"
       }
     ],
     "name": "marketOrder",

@@ -1,7 +1,7 @@
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const GENERAL_INSTANCE = class {};
 
-export const DEFAULT_NETWORK_ID = 17069;
+export const DEFAULT_NETWORK_ID = 84532;
 
 export const DEFAULT_DECIMAL = 18;
 

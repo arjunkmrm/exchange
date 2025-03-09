@@ -1,15 +1,33 @@
-export const ADDRESSES: Record<string, Record<number, string>> = {
-    EXCHANGE: {
-        17069: '0x37AE4c257FDBE1f474333A9938952369db06fd0F',
-    },
-    BANK: {
-        17069: '0xcc55f68da71246cb3A304a58e71d6C44e68aF8fD',
-    },
-    BTLY: {
-        17069: '0x5adA211dBFA9E543B137a7a1Ced12FCCdFFEB032',
-    }
+export const ADDRESSES: Record<string, Record<string, string>> = {
+	"PAIR_LOGIC": {
+		"690": "0x71C905e7278143e5c9c92849494F6E61639A6DF8",
+		"84532": "0xBa58E9a7A7033c054e323b63eEde9787A7253AF5"
+	},
+	"PROXY_ADMIN": {
+		"690": "0x904bFA432B1Babd33f6BCD1d4251Ad25F08e7637",
+		"84532": "0xeE6B44B6d2F5181A4774b5B8F0F88D54Ff1A5637"
+	},
+	"BANK": {
+		"690": "0xF8B9aa3654FDe1c07b4b0A46c9fc76D44d759b1B",
+		"84532": "0xf0B3f56F80c020E12e454c4F2Dbac3e06f3CFA32"
+	},
+	"EXCHANGE": {
+		"690": "0x482362e412cC8cc1e1367c24D60C3102e654a825",
+		"84532": "0xCcF0429Ac4944068a3926Ad5b25f030B5cb73461"
+	},
+	"BTLY": {
+		"84532": "0x6fc71BD90f75c54f4aC2678ed56579299e930ead"
+	},
+	"USDC": {
+		"84532": "0x4fe853163A95AC410D388234B87E387352d26B08"
+	}
+}
+
+export const STABLE_COINS: Record<string, Array<string>> = {
+	"84532": ['0x4fe853163A95AC410D388234B87E387352d26B08']
 };
 
-export const STABLE_COINS: Record<number, Array<string>> = {
-	17069: ['0x199E550f7218042c7FF5368878ead820DF78b14C']
-};
+
+export const RATES_ENDPOINTS: Record<string, number> = {
+	"84532": 2,
+}

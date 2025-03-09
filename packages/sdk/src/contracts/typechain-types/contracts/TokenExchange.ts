@@ -70,9 +70,9 @@ export interface TokenExchangeInterface extends utils.Interface {
     "claimEarning(address,int24)": FunctionFragment;
     "clearZeroLimOrders(address,uint256)": FunctionFragment;
     "curPoint()": FunctionFragment;
-    "limitOrder(address,int24,uint128,address,address)": FunctionFragment;
+    "limitOrder(address,int24,uint128)": FunctionFragment;
     "limitOrders(address)": FunctionFragment;
-    "marketOrder(address,uint128,int24,uint16,address,address)": FunctionFragment;
+    "marketOrder(address,uint128,int24,uint16,address[])": FunctionFragment;
     "owner()": FunctionFragment;
     "pairInfo()": FunctionFragment;
     "pointMargin()": FunctionFragment;
@@ -142,9 +142,7 @@ export interface TokenExchangeInterface extends utils.Interface {
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
+      PromiseOrValue<BigNumberish>
     ]
   ): string;
   encodeFunctionData(
@@ -158,8 +156,7 @@ export interface TokenExchangeInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
+      PromiseOrValue<string>[]
     ]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -431,8 +428,6 @@ export interface TokenExchange extends BaseContract {
       originToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -450,8 +445,7 @@ export interface TokenExchange extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       startPoint: PromiseOrValue<BigNumberish>,
       slipLimit: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
+      feeTaker: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -540,8 +534,6 @@ export interface TokenExchange extends BaseContract {
     originToken: PromiseOrValue<string>,
     point: PromiseOrValue<BigNumberish>,
     amount: PromiseOrValue<BigNumberish>,
-    holder: PromiseOrValue<string>,
-    referral: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -555,8 +547,7 @@ export interface TokenExchange extends BaseContract {
     amount: PromiseOrValue<BigNumberish>,
     startPoint: PromiseOrValue<BigNumberish>,
     slipLimit: PromiseOrValue<BigNumberish>,
-    holder: PromiseOrValue<string>,
-    referral: PromiseOrValue<string>,
+    feeTaker: PromiseOrValue<string>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -641,8 +632,6 @@ export interface TokenExchange extends BaseContract {
       originToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -656,8 +645,7 @@ export interface TokenExchange extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       startPoint: PromiseOrValue<BigNumberish>,
       slipLimit: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
+      feeTaker: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -828,8 +816,6 @@ export interface TokenExchange extends BaseContract {
       originToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -843,8 +829,7 @@ export interface TokenExchange extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       startPoint: PromiseOrValue<BigNumberish>,
       slipLimit: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
+      feeTaker: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -921,8 +906,6 @@ export interface TokenExchange extends BaseContract {
       originToken: PromiseOrValue<string>,
       point: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -936,8 +919,7 @@ export interface TokenExchange extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       startPoint: PromiseOrValue<BigNumberish>,
       slipLimit: PromiseOrValue<BigNumberish>,
-      holder: PromiseOrValue<string>,
-      referral: PromiseOrValue<string>,
+      feeTaker: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

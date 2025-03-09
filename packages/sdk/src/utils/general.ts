@@ -1,16 +1,12 @@
 import * as ethers from "ethers";
 import BigNumber from 'bignumber.js';
-import { DEFAULT_DECIMAL } from "../constants";
+import { DEFAULT_DECIMAL, RATES_ENDPOINTS } from "../constants";
 import { CONTRACT_POINT_BASE_NUMBER } from "../constants/prices";
 
 BigNumber.config({ DECIMAL_PLACES: 10, EXPONENTIAL_AT: 50 });
 
 export function notNill<Value>(value: Value | null | undefined): value is Value {
 	return !!value
-}
-
-export const RATES_ENDPOINTS: Record<number, number> = {
-	17069: 2,
 }
 
 export const point2Price = (point: number) => {
@@ -28,7 +24,7 @@ export const calcBlockHeight = async(relativeTime: number, provider: ethers.prov
     }
     const blockNumber = await provider.getBlockNumber();
     const networkId = (await (provider.getNetwork())).chainId;
-    const rate = RATES_ENDPOINTS[networkId];
+    const rate = RATES_ENDPOINTS[networkId.toString()];
     const targetBlockNumber = Math.floor(blockNumber + relativeTime / rate);
     return targetBlockNumber >= 1 ? targetBlockNumber : 1;
 };

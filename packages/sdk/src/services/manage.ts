@@ -25,7 +25,8 @@ export default class ManageService {
 			props.address,
 			props.description,
 			props.url,
-			props.logo
+			props.logo,
+			props.address,
 		]);
     }
 

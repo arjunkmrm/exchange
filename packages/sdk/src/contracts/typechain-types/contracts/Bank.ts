@@ -30,13 +30,12 @@ import type {
 export interface BankInterface extends utils.Interface {
   functions: {
     "authorize(address)": FunctionFragment;
+    "authorized(address)": FunctionFragment;
     "balances(address,address)": FunctionFragment;
-    "changeCommission(uint128,uint128,uint128)": FunctionFragment;
+    "changeCommission(uint256,uint128[])": FunctionFragment;
+    "commission(uint256)": FunctionFragment;
     "deposit(address,uint128)": FunctionFragment;
-    "holderPercent()": FunctionFragment;
     "owner()": FunctionFragment;
-    "ownerPercent()": FunctionFragment;
-    "referralPercent()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "transferToken(address,address,address,uint128)": FunctionFragment;
@@ -47,13 +46,12 @@ export interface BankInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "authorize"
+      | "authorized"
       | "balances"
       | "changeCommission"
+      | "commission"
       | "deposit"
-      | "holderPercent"
       | "owner"
-      | "ownerPercent"
-      | "referralPercent"
       | "renounceOwnership"
       | "transferOwnership"
       | "transferToken"
@@ -66,34 +64,26 @@ export interface BankInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "authorized",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "balances",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "changeCommission",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "commission",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "deposit",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "holderPercent",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "ownerPercent",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "referralPercent",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
@@ -121,25 +111,15 @@ export interface BankInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "authorize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "authorized", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "changeCommission",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "commission", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "holderPercent",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "ownerPercent",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "referralPercent",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
@@ -209,6 +189,11 @@ export interface Bank extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    authorized(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     balances(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -216,11 +201,15 @@ export interface Bank extends BaseContract {
     ): Promise<[BigNumber]>;
 
     changeCommission(
-      holderPct: PromiseOrValue<BigNumberish>,
-      ownerPct: PromiseOrValue<BigNumberish>,
-      referralPct: PromiseOrValue<BigNumberish>,
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      commissionList: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    commission(
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]] & { commissionList: BigNumber[] }>;
 
     deposit(
       token: PromiseOrValue<string>,
@@ -228,13 +217,7 @@ export interface Bank extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    holderPercent(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     owner(overrides?: CallOverrides): Promise<[string]>;
-
-    ownerPercent(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    referralPercent(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -270,6 +253,11 @@ export interface Bank extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  authorized(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   balances(
     arg0: PromiseOrValue<string>,
     arg1: PromiseOrValue<string>,
@@ -277,11 +265,15 @@ export interface Bank extends BaseContract {
   ): Promise<BigNumber>;
 
   changeCommission(
-    holderPct: PromiseOrValue<BigNumberish>,
-    ownerPct: PromiseOrValue<BigNumberish>,
-    referralPct: PromiseOrValue<BigNumberish>,
+    strategyIndex: PromiseOrValue<BigNumberish>,
+    commissionList: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  commission(
+    strategyIndex: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
 
   deposit(
     token: PromiseOrValue<string>,
@@ -289,13 +281,7 @@ export interface Bank extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  holderPercent(overrides?: CallOverrides): Promise<BigNumber>;
-
   owner(overrides?: CallOverrides): Promise<string>;
-
-  ownerPercent(overrides?: CallOverrides): Promise<BigNumber>;
-
-  referralPercent(overrides?: CallOverrides): Promise<BigNumber>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -331,6 +317,11 @@ export interface Bank extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    authorized(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     balances(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -338,11 +329,15 @@ export interface Bank extends BaseContract {
     ): Promise<BigNumber>;
 
     changeCommission(
-      holderPct: PromiseOrValue<BigNumberish>,
-      ownerPct: PromiseOrValue<BigNumberish>,
-      referralPct: PromiseOrValue<BigNumberish>,
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      commissionList: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    commission(
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
 
     deposit(
       token: PromiseOrValue<string>,
@@ -350,13 +345,7 @@ export interface Bank extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    holderPercent(overrides?: CallOverrides): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<string>;
-
-    ownerPercent(overrides?: CallOverrides): Promise<BigNumber>;
-
-    referralPercent(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -402,6 +391,11 @@ export interface Bank extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    authorized(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     balances(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -409,10 +403,14 @@ export interface Bank extends BaseContract {
     ): Promise<BigNumber>;
 
     changeCommission(
-      holderPct: PromiseOrValue<BigNumberish>,
-      ownerPct: PromiseOrValue<BigNumberish>,
-      referralPct: PromiseOrValue<BigNumberish>,
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      commissionList: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    commission(
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     deposit(
@@ -421,13 +419,7 @@ export interface Bank extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    holderPercent(overrides?: CallOverrides): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    ownerPercent(overrides?: CallOverrides): Promise<BigNumber>;
-
-    referralPercent(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -464,6 +456,11 @@ export interface Bank extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    authorized(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     balances(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -471,10 +468,14 @@ export interface Bank extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     changeCommission(
-      holderPct: PromiseOrValue<BigNumberish>,
-      ownerPct: PromiseOrValue<BigNumberish>,
-      referralPct: PromiseOrValue<BigNumberish>,
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      commissionList: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    commission(
+      strategyIndex: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     deposit(
@@ -483,13 +484,7 @@ export interface Bank extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    holderPercent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    ownerPercent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    referralPercent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }

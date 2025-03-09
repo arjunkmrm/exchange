@@ -36,7 +36,7 @@ export default class WalletService {
     }
 
     public async approve(token: string, amount: number): Promise<ContractTransaction> {
-        const spender = ADDRESSES.BANK[this.sdk.context.networkId];
+        const spender = ADDRESSES.BANK[(this.sdk.context.networkId).toString()];
         if (!spender) {
             throw new Error(BANK_ADDRESS_INVALID);
         }
@@ -75,7 +75,7 @@ export default class WalletService {
 				this.sdk, 
 				tokens, 
 				['allowance'], 
-				[[this.sdk.context.walletAddress, ADDRESSES['BANK'][this.sdk.context.networkId]]],
+				[[this.sdk.context.walletAddress, ADDRESSES['BANK'][(this.sdk.context.networkId).toString()]]],
 				{blockTag: await calcBlockHeight(relativeTimeInSec, this.sdk.context.provider)}
 			);
 

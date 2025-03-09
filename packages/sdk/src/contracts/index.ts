@@ -27,7 +27,7 @@ type ContractFactory = {
 
 export type AllContractsMap = Record<
     ContractName,
-    { addresses: Partial<Record<number, string>>; Factory: ContractFactory }
+    { addresses: Partial<Record<string, string>>; Factory: ContractFactory }
 >
 
 export const getPairContractMulticall = (marketAddress: string) =>
@@ -49,28 +49,28 @@ export const getContractsByNetwork = (
     provider: ethers.providers.Provider
 ) => {
     return {
-        Exchange: (ADDRESSES.EXCHANGE[networkId]
-            ? BitlyExchange__factory.connect(ADDRESSES.EXCHANGE[networkId], provider)
+        Exchange: (ADDRESSES.EXCHANGE[networkId.toString()]
+            ? BitlyExchange__factory.connect(ADDRESSES.EXCHANGE[networkId.toString()], provider)
             : undefined) as BitlyExchange | undefined,
-        BitlyBank: (ADDRESSES.BTLY[networkId]
-            ? Bank__factory.connect(ADDRESSES.BANK[networkId], provider)
+        BitlyBank: (ADDRESSES.BTLY[networkId.toString()]
+            ? Bank__factory.connect(ADDRESSES.BANK[networkId.toString()], provider)
             : undefined) as Bank | undefined,
-        BTLYToken: (ADDRESSES.BTLY[networkId]
-            ? BTLY__factory.connect(ADDRESSES.BTLY[networkId], provider)
+        BTLYToken: (ADDRESSES.BTLY[networkId.toString()]
+            ? BTLY__factory.connect(ADDRESSES.BTLY[networkId.toString()], provider)
             : undefined) as BTLY | undefined,
     };
 }
 
 export const getMulticallContractsByNetwork = (networkId: number) => {
     return {
-        Exchange: ADDRESSES.EXCHANGE[networkId]
-            ? new EthCallContract(ADDRESSES.EXCHANGE[networkId], BitlyExchangeABI)
+        Exchange: ADDRESSES.EXCHANGE[networkId.toString()]
+            ? new EthCallContract(ADDRESSES.EXCHANGE[networkId.toString()], BitlyExchangeABI)
             : undefined,
-        BitlyBank: ADDRESSES.BANK[networkId]
-            ? new EthCallContract(ADDRESSES.BANK[networkId], BankABI)
+        BitlyBank: ADDRESSES.BANK[networkId.toString()]
+            ? new EthCallContract(ADDRESSES.BANK[networkId.toString()], BankABI)
             : undefined,
-        BTLYToken: ADDRESSES.BTLY[networkId]
-            ? new EthCallContract(ADDRESSES.BTLY[networkId], BTLYABI)
+        BTLYToken: ADDRESSES.BTLY[networkId.toString()]
+            ? new EthCallContract(ADDRESSES.BTLY[networkId.toString()], BTLYABI)
             : undefined,
     }
 }

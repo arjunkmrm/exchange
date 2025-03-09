@@ -19,7 +19,7 @@ import { publicProvider } from 'wagmi/providers/public'
 
 import BinanceIcon from 'assets/png/rainbowkit/binance.png'
 import RedstoneIcon from 'assets/png/chains/redstone.png'
-import GarnetIcon from 'assets/png/chains/garnet.png'
+import SepoliaIcon from 'assets/png/chains/sepolia.png'
 import Frame from 'components/Rainbowkit/Frame'
 import Tally from 'components/Rainbowkit/Tally'
 import { BLAST_NETWORK_LOOKUP, STALL_TIMEOUT } from 'constants/network'
@@ -57,32 +57,33 @@ const redstoneWithIcon: Chain = {
 	iconUrl: async () => RedstoneIcon,
 }
 
-const garnetWithIcon: Chain = {
+const sepoliaWithIcon: Chain = {
 	...mainnet,
-	id: 17069,
-	name: 'Garnet Holesky',
-	network: 'garnet',
+	id: 84532,
+	name: 'Base Sepolia',
+	network: 'base-sepolia',
 	rpcUrls: {
 		default: {
-			http: ['https://rpc.garnetchain.com'],
-			webSocket: ['wss://rpc.garnetchain.com'],
+			http: ['https://base-sepolia.drpc.org'],
+			webSocket: ['wss://base-sepolia.drpc.org'],
 		},
 		public: {
-			http: ['https://rpc.garnetchain.com'],
-			webSocket: ['wss://rpc.garnetchain.com'],
+			http: ['https://base-sepolia.drpc.org'],
+			webSocket: ['wss://base-sepolia.drpc.org'],
 		}
 	},
 	blockExplorers: {
 		default: {
-			name: 'Redstone Explorer',
-			url: 'https://explorer.garnetchain.com',
+			name: 'Base-Sepolia Explorer',
+			url: 'https://sepolia.basescan.org/',
 		},
 		etherscan: {
-			name: 'Redstone Explorer',
-			url: 'https://explorer.garnetchain.com',
+			name: 'Base-Sepolia Explorer',
+			url: 'https://sepolia.basescan.org/',
 		}
 	},
-	iconUrl: async () => GarnetIcon,
+	testnet: true,
+	iconUrl: async () => SepoliaIcon,
 };
 
 export type ChainsType = {
@@ -90,7 +91,7 @@ export type ChainsType = {
 }
 
 export const chain: ChainsType = {
-	garnet: garnetWithIcon,
+	sepolia: sepoliaWithIcon,
 	redstone: redstoneWithIcon,
 }
 

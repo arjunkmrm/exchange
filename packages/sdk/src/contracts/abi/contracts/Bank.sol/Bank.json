@@ -8,6 +8,19 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -42,6 +55,25 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "name": "authorized",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
         "internalType": "address",
@@ -63,24 +95,38 @@
   {
     "inputs": [
       {
-        "internalType": "uint128",
-        "name": "holderPct",
-        "type": "uint128"
+        "internalType": "uint256",
+        "name": "strategyIndex",
+        "type": "uint256"
       },
       {
-        "internalType": "uint128",
-        "name": "ownerPct",
-        "type": "uint128"
-      },
-      {
-        "internalType": "uint128",
-        "name": "referralPct",
-        "type": "uint128"
+        "internalType": "uint128[]",
+        "name": "commissionList",
+        "type": "uint128[]"
       }
     ],
     "name": "changeCommission",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "strategyIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "commission",
+    "outputs": [
+      {
+        "internalType": "uint128[]",
+        "name": "commissionList",
+        "type": "uint128[]"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -103,15 +149,9 @@
   },
   {
     "inputs": [],
-    "name": "holderPercent",
-    "outputs": [
-      {
-        "internalType": "uint128",
-        "name": "",
-        "type": "uint128"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -122,32 +162,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "ownerPercent",
-    "outputs": [
-      {
-        "internalType": "uint128",
-        "name": "",
-        "type": "uint128"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "referralPercent",
-    "outputs": [
-      {
-        "internalType": "uint128",
-        "name": "",
-        "type": "uint128"
       }
     ],
     "stateMutability": "view",

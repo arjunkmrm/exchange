@@ -150,7 +150,7 @@ const commify = (num: string): string =>
     num.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 export const getPairBasedOnStableCoin = (token: string, tokenInfo: TokenInfoTypeWithAddress, networkId: number) => {
-	const stableCoins = STABLE_COINS[networkId]
+	const stableCoins = STABLE_COINS[networkId.toString()]
 	if (stableCoins.length == 0) {
 		return null;
 	}
