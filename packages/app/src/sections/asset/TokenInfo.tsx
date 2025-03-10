@@ -5,13 +5,13 @@ import Button from 'components/Button'
 import { FlexDivCol, FlexDivRowCentered } from 'components/layout/flex'
 import { Body, Heading } from 'components/Text'
 import Currency from 'components/Currency'
-import { TOKEN_BRIDGES } from 'constants/address'
 import { blockExplorer } from 'containers/Connector/Connector'
 import { useTranslation } from 'react-i18next'
 import ArrowUpRightIcon from 'assets/svg/app/arrow-up-right-tg.svg'
 import { ExternalLink } from 'styles/common'
 import { useAppSelector } from 'state/hooks'
 import { selectNetwork } from 'state/app/selectors'
+import { TOKEN_BRIDGES } from '@bitly/sdk/constants'
 
 interface TokenInfoProps {
 	name: string
