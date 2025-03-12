@@ -18,6 +18,7 @@ export type ModalType =
 	| 'base-select' 
 	| 'quote-select'
 	| 'custom-market-info'
+	| 'select-blockchain'
 	| null
 
 export type FuturesPositionModalType =

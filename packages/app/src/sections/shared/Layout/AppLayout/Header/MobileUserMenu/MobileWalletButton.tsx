@@ -9,6 +9,7 @@ import Connector from 'containers/Connector'
 import ConnectionDot from '../ConnectionDot'
 
 import MobileWalletActions from './MobileWalletActions'
+import WalletButtons from '../WalletButtons'
 
 type MobileConnectButtonProps = {
 	toggleModal(): void
@@ -63,11 +64,12 @@ type MobileWalletButtonProps = {
 const MobileWalletButton: React.FC<MobileWalletButtonProps> = ({ toggleModal }) => {
 	const { network, isWalletConnected } = Connector.useContainer()
 
-	if (!isWalletConnected) {
-		return <MobileConnectButton toggleModal={toggleModal} />
-	} else {
-		return <MobileWalletActions />
-	}
+	// if (!isWalletConnected) {
+	// 	return <MobileConnectButton toggleModal={toggleModal} />
+	// } else {
+	// 	return <MobileWalletActions />
+	// }
+	return <WalletButtons />
 }
 
 const ConnectButton = styled(Button)`

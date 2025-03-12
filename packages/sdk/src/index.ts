@@ -26,7 +26,6 @@ export default class BitlySDK {
 	}
 
 	public async setProvider(provider: ethers.providers.Provider) {
-		console.log("ww: setProvider: ", provider)
 		const networkId = await this.context.setProvider(provider)
 		if (this.exchange) {
 			const marketName = this.exchange.getMarketName()

@@ -40,12 +40,10 @@ export const setNetwork = createAsyncThunk<
 	ThunkConfig
 >('wallet/setNetwork', async (networkId, { dispatch, extra: { sdk } }) => {
 	try {
-		console.log("ww: setNetwork: ", networkId)
 		if (networkId === undefined) {
 			networkId = DEFAULT_NETWORK_ID
 		}
 		// await sdk.setNetworkId(networkId)
-		console.log("ww: setNetwork end: ", networkId)
 		return networkId
 	} catch (err) {
 		logError(err)

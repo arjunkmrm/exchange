@@ -1,20 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { useAccount, useNetwork, useSigner, useProvider, useSwitchNetwork } from 'wagmi'
-import { useAppDispatch } from 'state/hooks'
+import { useAppDispatch, useAppSelector } from 'state/hooks'
 import sdk from 'state/sdk'
 import { setNetwork, setSigner } from 'state/wallet/actions'
 import { generateExplorerFunctions } from './blockExplorer'
 import { DEFAULT_NETWORK_ID } from 'constants/defaults'
 import { set } from 'lodash'
 import useLocalStorage from 'hooks/useLocalStorage'
+import { selectNetwork } from 'state/app/selectors'
 
 export let blockExplorer = generateExplorerFunctions(DEFAULT_NETWORK_ID)
 
 const useConnector = () => {
 	const dispatch = useAppDispatch()
 	const { chain: network } = useNetwork()
-	console.log("ww: useNetwork: network: ", network?.id)
 	const { address, isConnected: isWalletConnected } = useAccount({
 		onDisconnect: () => dispatch(setSigner(null)),
 	})
@@ -34,7 +34,6 @@ const useConnector = () => {
 	}, [])
 
 	const handleNetworkChange = useCallback(async (networkId: number) => {
-		console.log("ww: handleNetworkChange: ", networkId)
 		storeNetworkId(networkId)
 		blockExplorer = generateExplorerFunctions(networkId)
 		await dispatch(setNetwork(networkId))
@@ -64,7 +63,6 @@ const useConnector = () => {
 	// Entry for munual network switching from rainbow wallet
 	useEffect(() => {
 		const task = async () => {
-			console.log("ww: useConnector: useEffect: provider: ", provider?.network?.chainId);
 			if (!!provider) {
 				setProviderReady(false);
 				const networkId = await sdk.setProvider(provider)
@@ -84,7 +82,6 @@ const useConnector = () => {
 
 	// Entry for switching from url param
 	const switchNetwork = useCallback((networkId: number) => {
-		console.log("ww: user set switchNetwork: ", networkId)
 		if (isWalletConnected && switchNetworkInternal) {
 			switchNetworkInternal(networkId)
 		} else {
@@ -94,13 +91,18 @@ const useConnector = () => {
 		storeNetworkId(networkId)
 	}, [isWalletConnected, switchNetworkInternal])
 
+	const activeNetworkId = useAppSelector(selectNetwork)
+	const activeNetworkInfo = useMemo(() => {
+		return provider?.chains?.find(chain => chain.id === activeNetworkId)
+	}, [activeNetworkId, provider.chains])
+
 	return {
-		activeChain: network,
+		activeChain: activeNetworkInfo,
 		isWalletConnected,
 		walletAddress,
 		provider,
 		signer,
-		network,
+		network: activeNetworkInfo,
 		providerReady,
 		switchNetwork,
 	}

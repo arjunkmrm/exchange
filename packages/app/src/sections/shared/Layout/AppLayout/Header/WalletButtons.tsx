@@ -47,6 +47,7 @@ const WalletButtons: React.FC = () => {
 				<ConnectionDot />
 				{t('common.wallet.connect-wallet')}
 			</Button>
+			<NetworksSwitcher />
 		</>
 	)
 

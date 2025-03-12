@@ -1429,6 +1429,9 @@
 			"search": "Search Pair",
 			"submit": "Add Pair"
 		},
+		"select-blockchain": {
+			"title": "select blockchain"
+		},
 		"select-currency": {
 			"title": "select tokens",
 			"header": {

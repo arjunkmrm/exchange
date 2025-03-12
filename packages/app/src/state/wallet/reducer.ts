@@ -99,7 +99,6 @@ const walletSlice = createSlice({
 
 		// Set Network Id
 		builder.addCase(setNetwork.fulfilled, (walletState, action) => {
-			console.log('ww: setNetwork_fulfilled:', action.payload)
 			walletState.networkId = action.payload
 		})
 
