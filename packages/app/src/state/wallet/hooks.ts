@@ -12,22 +12,22 @@ export function useFetchWalletData() {
 	const curMarketName = useAppSelector(selectMarketName)
 
 	useFetchAction(()=>fetchPricesSeries(DEFAULT_TIME_SPAN), { 
-		dependencies: [network, curMarketName],
-		disabled: curMarketName === undefined || network === undefined || wallet === null,
+		dependencies: [network, curMarketName, wallet],
+		disabled: curMarketName === undefined || network === undefined || !wallet,
 	})
 
 	useFetchAction(()=>fetchBalanceSeries(DEFAULT_TIME_SPAN), { 
-		dependencies: [network, curMarketName],
-		disabled: curMarketName === undefined || network === undefined || wallet === null,
+		dependencies: [network, curMarketName, wallet],
+		disabled: curMarketName === undefined || network === undefined || !wallet,
 	})
 
 	useFetchAction(fetchBalance, { 
 		dependencies: [network, curMarketName, wallet],
-		disabled: curMarketName === undefined || network === undefined || wallet === null,
+		disabled: curMarketName === undefined || network === undefined || !wallet,
 	})
 
 	useFetchAction(fetchOpenOrders, { 
-		dependencies: [network, curMarketName],
-		disabled: curMarketName === undefined || network === undefined || wallet === null,
+		dependencies: [network, curMarketName, wallet],
+		disabled: curMarketName === undefined || network === undefined || !wallet,
 	})
 }

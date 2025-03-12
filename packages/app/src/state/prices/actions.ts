@@ -42,8 +42,9 @@ export const fetchPricesSeries = createAsyncThunk<
 	ThunkConfig
 >('prices/fetchPricesSeries', async (timeSpanInDay, { extra: { sdk } }) => {
 	try {
+		console.log("ww: fetchPricesSeries1: ", timeSpanInDay)
 		const markets = sdk.exchange.getMarketsInfo([])
-
+		console.log("ww: fetchPricesSeries2: ", markets)
 		const pricesSeries: Record<number, PricesMap> = {}
 
 		const nowSec: number = Math.floor((new Date()).getTime() / 1000)

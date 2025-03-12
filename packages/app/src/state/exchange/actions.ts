@@ -94,8 +94,11 @@ export const fetchOpenOrders = createAsyncThunk<
 	ThunkConfig
 >('exchange/fetchOpenOrders', async (_, { extra: { sdk } }) => {
 	try {
+		console.log('ww: fetchOpenOrders1: ', sdk.context.networkId)
 		const markets = sdk.exchange.getMarketsInfo([])
+		console.log('ww: fetchOpenOrders2: ', markets)
 		const openOrders = await sdk.exchange.getLimitOrders(markets.map(e=>e.marketAddress))
+		console.log('ww: fetchOpenOrders3: ', openOrders)
 		const networkId = sdk.context.networkId
 		return { openOrders, networkId }
 	} catch (err) {

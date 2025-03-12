@@ -33,7 +33,6 @@ const walletSlice = createSlice({
 		},
 		disconnect: (state) => {
 			state.walletAddress = undefined
-			state.networkId = undefined
 		},
 		setDepositStatus: (state, action) => {
 			state.writeStatuses.deposit = action.payload
@@ -100,6 +99,7 @@ const walletSlice = createSlice({
 
 		// Set Network Id
 		builder.addCase(setNetwork.fulfilled, (walletState, action) => {
+			console.log('ww: setNetwork_fulfilled:', action.payload)
 			walletState.networkId = action.payload
 		})
 

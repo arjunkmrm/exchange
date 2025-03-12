@@ -32,4 +32,12 @@ export default class BitlySDK {
 	public setSigner(signer: ethers.Signer) {
 		return this.context.setSigner(signer)
 	}
+
+	public async setNetworkId(networkId: number) {
+		this.context.setNetworkId(networkId)
+		if (this.exchange) {
+			const marketName = this.exchange.getMarketName()
+			await this.exchange.setMarketName(marketName, true)
+		}
+	}
 }

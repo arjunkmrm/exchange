@@ -27,7 +27,7 @@ export const TokenInfo: FC<TokenInfoProps> = memo(({ name, symbol, logo, address
 	const networkId = useAppSelector(selectNetwork)
 
 	const bridge = useMemo(() => {
-		return TOKEN_BRIDGES[networkId][address]
+		return TOKEN_BRIDGES?.[networkId]?.[address]
 	}, [address, networkId])
 
 	const explorer = useMemo(() => {

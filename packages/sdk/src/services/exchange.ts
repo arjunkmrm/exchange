@@ -32,8 +32,8 @@ export default class ExchangeService {
         this.sdk = sdk
     }
 
-	public async setMarketName(marketName: string = ''): Promise<void> {
-		if (this.marketName === marketName) {
+	public async setMarketName(marketName: string = '', forceUpdate: boolean = false): Promise<void> {
+		if (this.marketName === marketName && forceUpdate === false) {
             return;
         }
 		await this._fetchMarketsAndTokens(marketName);
