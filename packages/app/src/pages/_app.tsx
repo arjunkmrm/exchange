@@ -88,7 +88,7 @@ const InnerApp: FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
 		if (networkId !== undefined) {
 			switchNetwork(Number(networkId))
 		}
-	}, [router.query.networkId, providerReady])
+	}, [router.query.networkId])
 
 	return isReady ? (
 		<RainbowKitProvider
