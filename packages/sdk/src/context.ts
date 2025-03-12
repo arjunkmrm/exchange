@@ -77,6 +77,7 @@ export default class Context implements IContext {
 	}
 
 	public setNetworkId(networkId: number) {
+		console.log("ww: setNetworkId: ", networkId)
 		this.context.networkId = networkId
 		this.multicallProvider = new EthCallProvider(networkId, this.provider)
 		this.contracts = getContractsByNetwork(networkId, this.provider)

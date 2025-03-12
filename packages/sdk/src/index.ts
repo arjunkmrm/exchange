@@ -25,19 +25,17 @@ export default class BitlySDK {
 		this.wallet = new WalletService(this)
 	}
 
-	public setProvider(provider: ethers.providers.Provider) {
-		return this.context.setProvider(provider)
-	}
-
-	public setSigner(signer: ethers.Signer) {
-		return this.context.setSigner(signer)
-	}
-
-	public async setNetworkId(networkId: number) {
-		this.context.setNetworkId(networkId)
+	public async setProvider(provider: ethers.providers.Provider) {
+		console.log("ww: setProvider: ", provider)
+		const networkId = await this.context.setProvider(provider)
 		if (this.exchange) {
 			const marketName = this.exchange.getMarketName()
 			await this.exchange.setMarketName(marketName, true)
 		}
+		return networkId
+	}
+
+	public setSigner(signer: ethers.Signer) {
+		return this.context.setSigner(signer)
 	}
 }

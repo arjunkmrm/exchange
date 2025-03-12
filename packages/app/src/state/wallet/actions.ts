@@ -44,7 +44,7 @@ export const setNetwork = createAsyncThunk<
 		if (networkId === undefined) {
 			networkId = DEFAULT_NETWORK_ID
 		}
-		await sdk.setNetworkId(networkId)
+		// await sdk.setNetworkId(networkId)
 		console.log("ww: setNetwork end: ", networkId)
 		return networkId
 	} catch (err) {

@@ -17,12 +17,11 @@ const useConnector = () => {
 	const { address, isConnected: isWalletConnected } = useAccount({
 		onDisconnect: () => dispatch(setSigner(null)),
 	})
+	const [userSetNetworkId, setUserSetNetworkId] = useState<number>()
 	const [providerReady, setProviderReady] = useState(false)
 	const { switchNetwork: switchNetworkInternal } = useSwitchNetwork()
-	const provider = useProvider()
+	const provider = useProvider({chainId: userSetNetworkId})
 	const { data: signer } = useSigner()
-
-	const [userSetNetworkId, setUserSetNetworkId] = useState<number>()
 
 	const walletAddress = useMemo(() => address ?? null, [address])
 
@@ -39,7 +38,7 @@ const useConnector = () => {
 
 	// Entry for munual network switching from rainbow wallet
 	useEffect(() => {
-		console.log("ww: useConnector: useEffect: provider: ", provider)
+		console.log("ww: useConnector: useEffect: provider: ", provider?.network?.chainId)
 		setProviderReady(false)
 		if (!!provider) {
 			sdk.setProvider(
@@ -53,28 +52,8 @@ const useConnector = () => {
 	}, [provider, handleNetworkChange])
 
 	useEffect(() => {
-		console.log("ww: useConnector: useEffect: signer: ", signer)
 		dispatch(setSigner(signer))
 	}, [signer, dispatch])
-
-	useEffect(() => {
-		try {
-			console.log("ww: userSetNetworkId: ", userSetNetworkId, isWalletConnected, switchNetworkInternal === undefined)
-			if (userSetNetworkId === undefined) {
-				return
-			}
-			if (isWalletConnected) {
-				if (switchNetworkInternal === undefined) {
-					return console.error("switchNetwork not ready!")
-				}
-				switchNetworkInternal(userSetNetworkId)
-			} else {
-				handleNetworkChange(userSetNetworkId)
-			}
-		} catch (e) {
-			console.error("switch network error: ", e)
-		}
-	}, [switchNetworkInternal, handleNetworkChange, userSetNetworkId])
 
 	// Entry for switching from url param
 	const switchNetwork = useCallback((networkId: number) => {
