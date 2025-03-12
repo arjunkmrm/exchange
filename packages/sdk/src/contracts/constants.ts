@@ -32,6 +32,7 @@ export const STABLE_COINS: Record<string, Array<string>> = {
 
 export const RATES_ENDPOINTS: Record<string, number> = {
 	"84532": 2,
+	"690": 2,
 }
 
 export const TOKEN_BRIDGES: Record<number, Record<string, string>> = {
