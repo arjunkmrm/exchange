@@ -40,3 +40,9 @@ export const TOKEN_BRIDGES: Record<number, Record<string, string>> = {
 		"0x4fe853163A95AC410D388234B87E387352d26B08": "https://faucet.bitly.exchange"
 	}
 }
+
+// Number.MAX_SAFE_INTEGER means no limit
+export const BATCH_BLOCK_SIZE: Record<string, number> = {
+	"84532": 10000,
+	"690": Number.MAX_SAFE_INTEGER,
+}

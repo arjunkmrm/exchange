@@ -5,6 +5,7 @@ import { UNDEFINED_CONTRACT_ADDRESS_IN_CONSTANT } from "../common/errors";
 import { DEFAULT_MULTICALL_BATCH_SIZE } from "../constants/transactions";
 import { 
     BankFuncNames, 
+    BATCH_BLOCK_SIZE, 
     BTLYFuncNames, 
     ERC20FuncNames, 
     ExchangeFuncNames, 
@@ -17,6 +18,7 @@ import {
 } from "../contracts";
 import { ExchangeMarketType, ExchangePairsType, MarketEventSignature, TokenInfoType, TokenInfoTypeWithAddress } from "../types";
 import { MultiCallArgs, SingleCallArgs } from "../types/common";
+import { ethers } from "ethers";
 
 export async function ERC20ReadContracts(
     sdk: BitlySDK, addresses: string[], funcNames: ERC20FuncNames[], args: MultiCallArgs = [[]], 
@@ -149,11 +151,26 @@ export async function getMarketLog(sdk: BitlySDK, market: string, fromBlock: Blo
 	args: any[] = []
 ) {
 	const filters = getPairContract(market, sdk.context.provider).filters[event](...args);
-	const logs = await sdk.context.provider.getLogs({
-		...filters,
-		fromBlock,
-		toBlock
-	});
+	
+	let logs: ethers.providers.Log[] = [];
+	let currentFrom = Number(fromBlock);
+	const targetTo = Number(toBlock);
+	const networkId = sdk.context.networkId;
+
+	while (currentFrom <= targetTo) {
+		const currentTo = Math.min(currentFrom + BATCH_BLOCK_SIZE[networkId.toString()], targetTo);
+		try {
+			const batchLogs = await sdk.context.provider.getLogs({
+				...filters,
+				fromBlock: currentFrom,
+				toBlock: currentTo
+			});
+			logs = logs.concat(batchLogs);
+		} catch (e) {
+			throw new Error(`Failed to get logs from ${currentFrom} to ${currentTo}: ${e}`);
+		}
+		currentFrom = currentTo + 1;
+	}
 
 	const iface = getPairContractInterface();
 	const parsedLogs = logs.map(log=>{

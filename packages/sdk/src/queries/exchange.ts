@@ -19,9 +19,9 @@ export const getOffChainKline = async (
     const [step, unit] = resolution;
 	const fromBlock = await calcBlockHeight(relativeFromInSec, sdk.context.provider);
     const toBlock = await calcBlockHeight(relativeToInSec, sdk.context.provider);
-
+	const network = (await sdk.context.provider.getNetwork()).name;
     const bars = await get(
-        BITLY_API_URL+`/api/getChart?pair=${market}&from=${fromBlock}&to=${toBlock}&resolution=${unit}&step=${step}`
+        BITLY_API_URL+`/api/getChart?pair=${market}&from=${fromBlock}&to=${toBlock}&resolution=${unit}&step=${step}&network=${network}`
     );
 
     if (bars.status !== 200) {
@@ -35,6 +35,7 @@ export const getOffChainKline = async (
     return resp['data'];
 }
 
-export const updateOffChainKline = async (market: string) => {
-    return get(BITLY_API_URL+`/api/update?pair=${market}`);
+export const updateOffChainKline = async (sdk: BitlySDK, market: string) => {
+	const chainName = (await sdk.context.provider.getNetwork()).name;
+    return get(BITLY_API_URL+`/api/update?pair=${market}&chain=${chainName}`);
 }

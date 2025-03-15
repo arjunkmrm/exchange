@@ -116,7 +116,7 @@ export default class PricesService {
     }
 
 	public async updateKline(market: string) {
-		return updateOffChainKline(market);
+		return updateOffChainKline(this.sdk, market);
 	}
 
     // Private functions
