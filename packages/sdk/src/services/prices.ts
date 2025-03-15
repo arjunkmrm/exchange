@@ -147,6 +147,7 @@ export default class PricesService {
         if (endPrice == 0) {
             return [];
         }
+		console.log("ww: kline: ", fromBlock, toBlock)
         const logs = await getMarketLog(this.sdk, market.marketAddress, fromBlock, toBlock, 'Swapped(address,int24,uint128,uint256)');
 
         const increase = (curTime: Date) => {

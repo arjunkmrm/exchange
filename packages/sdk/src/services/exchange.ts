@@ -173,10 +173,8 @@ export default class ExchangeService {
         const originToken = direction == OrderDirection.buy ? targetMarket?.tokenY : targetMarket?.tokenX;
         const point = price2Point(price);
         const amount = toPlainAmount(volume, originToken?.decimals);
-        const holder = DEFAULT_REFERRAL_ADDRESS;
-        const referral = DEFAULT_REFERRAL_ADDRESS;
 
-        return await PairWriteContract(this.sdk, market, 'limitOrder', [originToken?.address, point, amount, holder, referral]);
+        return await PairWriteContract(this.sdk, market, 'limitOrder', [originToken?.address, point, amount]);
     }
 
     public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
@@ -194,7 +192,7 @@ export default class ExchangeService {
         const referral = DEFAULT_REFERRAL_ADDRESS;
 		
         return await PairWriteContract(
-            this.sdk, market, 'marketOrder', [originToken.address, amount, startPoint, slippage, holder, referral]
+            this.sdk, market, 'marketOrder', [originToken.address, amount, startPoint, slippage, [holder, referral]]
         );
     }
 
