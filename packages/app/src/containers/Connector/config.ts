@@ -20,9 +20,39 @@ import { publicProvider } from 'wagmi/providers/public'
 import BinanceIcon from 'assets/png/rainbowkit/binance.png'
 import RedstoneIcon from 'assets/png/chains/redstone.png'
 import SepoliaIcon from 'assets/png/chains/sepolia.png'
+import BaseIcon from 'assets/png/chains/base.png'
 import Frame from 'components/Rainbowkit/Frame'
 import Tally from 'components/Rainbowkit/Tally'
 import { BLAST_NETWORK_LOOKUP, STALL_TIMEOUT } from 'constants/network'
+import { base } from '@rainbow-me/rainbowkit/dist/css/reset.css'
+
+const baseWithIcon: Chain = {
+	...mainnet,
+	id: 8453,
+	name: 'Base Chain',
+	network: 'base',
+	rpcUrls: {
+		default: {
+			http: ['https://base.blockpi.network/v1/rpc/public'],
+			webSocket: ['wss://base-rpc.publicnode.com'],
+		},
+		public: {
+			http: ['https://base.blockpi.network/v1/rpc/public'],
+			webSocket: ['wss://base-rpc.publicnode.com'],
+		}
+	},
+	blockExplorers: {
+		default: {
+			name: 'Base Explorer',
+			url: 'https://basescan.org/',
+		},
+		etherscan: {
+			name: 'Base Explorer',
+			url: 'https://basescan.org/',
+		}
+	},
+	iconUrl: async () => BaseIcon,
+}
 
 const bscWithIcon: Chain = {
 	...bsc,
@@ -93,6 +123,7 @@ export type ChainsType = {
 export const chain: ChainsType = {
 	sepolia: sepoliaWithIcon,
 	redstone: redstoneWithIcon,
+	base: baseWithIcon,
 }
 
 const { chains, provider } = configureChains(Object.values(chain), [

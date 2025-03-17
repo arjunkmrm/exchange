@@ -1,22 +1,25 @@
 export const ADDRESSES: Record<string, Record<string, string>> = {
 	"PAIR_LOGIC": {
 		"690": "0x00C6eBF987F71554b3Cf98f059C2a9dbD0f912B9",
+		"8453": "0xB11D115a883c4c315F43C2fc9C904fd391D77e26",
 		"84532": "0x89E66Fb94c3a99d48f79A0122AE63B9d9adA4bBB"
 	},
 	"PROXY_ADMIN": {
 		"690": "0x4AB1cB3b30EFd142da8363a1e45E5A5A0e8Ffb8e",
+		"8453": "0x6D863e7FB647E77f519a313FF332C6F9759279ff",
 		"84532": "0x3C488692Ac7e0Ebc98Dd4cA87153487E7cfae9cD"
 	},
 	"BANK": {
 		"690": "0x8881B06F0dB7Bf26A75082843E71946925ce0F14",
+		"8453": "0xf0B3f56F80c020E12e454c4F2Dbac3e06f3CFA32",
 		"84532": "0x448BD72Ed3DC9C3f979Df1B9Ac0d5a2554e4740D"
 	},
 	"EXCHANGE": {
 		"690": "0x26784ab5cC2ABAB15A3f2338F8d34Fc45986F740",
+		"8453": "0xb8Be0A00687f49E00557aA687FF12d6eFc7F619c",
 		"84532": "0x91c6688F1a4e670B393aF616e9b1C37E63Ec30ed"
 	},
 	"BTLY": {
-		"690": "0x972ab030334e8acAF6171a8329E82289679606eA",
 		"84532": "0xF1CF8c98Cd12A21f1ebD2373C88DB182d63C6d71"
 	},
 	"USDC": {
@@ -27,22 +30,33 @@ export const ADDRESSES: Record<string, Record<string, string>> = {
 export const STABLE_COINS: Record<string, Array<string>> = {
 	"84532": ['0x4fe853163A95AC410D388234B87E387352d26B08'],
 	"690": ['0xD5d59fC063e7548b6015A36fEb10B875924A19be'],
+	"8453": [
+		'0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', 
+		'0x820c137fa70c8691f0e44dc420a5e53c168921dc',
+		'0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
+	]
 };
 
 
 export const RATES_ENDPOINTS: Record<string, number> = {
 	"84532": 2,
 	"690": 2,
+	"8453": 2,
 }
 
 export const TOKEN_BRIDGES: Record<number, Record<string, string>> = {
 	84532: {
 		"0x4fe853163A95AC410D388234B87E387352d26B08": "https://faucet.bitly.exchange"
-	}
+	},
+	690: {
+		"0x4200000000000000000000000000000000000006": "https://relay.link/bridge/redstone?toCurrency=0x4200000000000000000000000000000000000006&fromChainId=1&fromCurrency=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+		"0xD5d59fC063e7548b6015A36fEb10B875924A19be": "https://relay.link/bridge/redstone?toCurrency=0xd5d59fc063e7548b6015a36feb10b875924a19be&fromChainId=1&fromCurrency=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+	},
 }
 
 // Number.MAX_SAFE_INTEGER means no limit
 export const BATCH_BLOCK_SIZE: Record<string, number> = {
 	"84532": 10000,
 	"690": Number.MAX_SAFE_INTEGER,
+	"8453": Number.MAX_SAFE_INTEGER,
 }
