@@ -26,11 +26,11 @@ const ListPairModals = memo(() => {
 	}, [dispatch])
 
 	const quoteTokens = useMemo(() => {
-		return allTokens.filter(e=>STABLE_COINS?.[networkId.toString()]?.includes(e.address))
+		return allTokens.filter(e=>STABLE_COINS?.[networkId.toString()]?.map(e=>e.toLowerCase()).includes(e.address.toLowerCase()))
 	}, [networkId, allTokens])
 
 	const baseTokens = useMemo(() => {
-		return allTokens.filter(e=>!STABLE_COINS?.[networkId.toString()]?.includes(e.address))
+		return allTokens.filter(e=>!STABLE_COINS?.[networkId.toString()].map(e=>e.toLowerCase()).includes(e.address.toLowerCase()))
 	}, [networkId, allTokens])
 
 	return (

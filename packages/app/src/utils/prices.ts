@@ -160,7 +160,7 @@ export const getPairBasedOnStableCoin = (token: string, tokenInfo: TokenInfoType
 			return undefined;
 		}
 		for (const pairInfo of tokenInfo.pairs) {
-			if (pairInfo.tokenY == stableCoin) {
+			if (pairInfo.tokenY.toLowerCase() == stableCoin.toLowerCase()) {
 				return pairInfo.pair;
 			}
 		}
