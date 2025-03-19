@@ -33,8 +33,8 @@ const baseWithIcon: Chain = {
 	network: 'base',
 	rpcUrls: {
 		default: {
-			http: ['https://base.blockpi.network/v1/rpc/public'],
-			webSocket: ['wss://base-rpc.publicnode.com'],
+			http: [`https://base-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_PROJECT_ID}`],
+			webSocket: [`wss://base-mainnet.infura.io/ws/v3/${process.env.NEXT_PUBLIC_INFURA_PROJECT_ID}`],
 		},
 		public: {
 			http: ['https://base.blockpi.network/v1/rpc/public'],
