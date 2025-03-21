@@ -21,10 +21,10 @@ import BinanceIcon from 'assets/png/rainbowkit/binance.png'
 import RedstoneIcon from 'assets/png/chains/redstone.png'
 import SepoliaIcon from 'assets/png/chains/sepolia.png'
 import BaseIcon from 'assets/png/chains/base.png'
+import PolygonIcon from 'assets/png/chains/polygon.png'
 import Frame from 'components/Rainbowkit/Frame'
 import Tally from 'components/Rainbowkit/Tally'
 import { BLAST_NETWORK_LOOKUP, STALL_TIMEOUT } from 'constants/network'
-import { base } from '@rainbow-me/rainbowkit/dist/css/reset.css'
 
 const baseWithIcon: Chain = {
 	...mainnet,
@@ -52,6 +52,39 @@ const baseWithIcon: Chain = {
 		}
 	},
 	iconUrl: async () => BaseIcon,
+}
+
+const polygonWithIcon: Chain = {
+	...mainnet,
+	id: 137,
+	name: 'Polygon PoS Chain',
+	network: 'polygon',
+	nativeCurrency: {
+		decimals: 18,
+		name: 'POL',
+		symbol: 'POL',
+	},
+	rpcUrls: {
+		default: {
+			http: [`https://polygon-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_PROJECT_ID}`],
+			webSocket: [`wss://polygon-mainnet.infura.io/ws/v3/${process.env.NEXT_PUBLIC_INFURA_PROJECT_ID}`],
+		},
+		public: {
+			http: ['https://polygon.llamarpc.com'],
+			webSocket: ['wss://polygon-bor-rpc.publicnode.com'],
+		}
+	},
+	blockExplorers: {
+		default: {
+			name: 'PolygonScan',
+			url: 'https://polygonscan.com/',
+		},
+		etherscan: {
+			name: 'PolygonScan',
+			url: 'https://polygonscan.com/',
+		}
+	},
+	iconUrl: async () => PolygonIcon,
 }
 
 const bscWithIcon: Chain = {
@@ -124,6 +157,7 @@ export const chain: ChainsType = {
 	sepolia: sepoliaWithIcon,
 	redstone: redstoneWithIcon,
 	base: baseWithIcon,
+	polygon: polygonWithIcon,
 }
 
 const { chains, provider } = configureChains(Object.values(chain), [
