@@ -3,7 +3,7 @@ import { ServerResponse } from 'http';
 import { z } from "zod";
 import { Wallet } from "ethers";
 import BitlySDK from '@bitly/sdk';
-import { DEFAULT_NETWORK_ID } from '@bitly/sdk/constants';
+// import { DEFAULT_NETWORK_ID } from '@bitly/sdk/constants';
 import { providers } from 'ethers';
 
 const DEFAULT_PROVIDER = new providers.JsonRpcProvider(
@@ -44,7 +44,7 @@ const server = new FastMCP({
 		const privateKey = request.headers["ether-private-key"];
 
 		const sdk = new BitlySDK({
-			networkId: DEFAULT_NETWORK_ID,
+			networkId: 84532,
 			provider: DEFAULT_PROVIDER,
 		})
 
