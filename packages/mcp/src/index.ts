@@ -33,7 +33,297 @@ const TOOLS = [
 			return JSON.stringify(balance);
 		},
 	},
-
+	{
+		name: "get_trade_pairs_info",
+		description: "Get trade pairs info.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairIds: z.array(z.string()),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		}) => {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.getMarketsInfo(args.pairIds);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		name: "get_tokens_info",
+		description: "Get tokens info.",
+		parameters: z.object({
+			networkId: z.number(),
+			tokensAddress: z.array(z.string()),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.getTokensInfo(args.tokensAddress);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		name: "get_trade_volumes",
+		description: "Get trade volumes.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairIds: z.array(z.string()),
+			relativeTimeInSec: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.getVolumes(args.pairIds, args.relativeTimeInSec);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		name: "get_orderbook",
+		description: "Get orderbook.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairId: z.string(),
+			priceRange: z.object({
+				low: z.number(),
+				high: z.number(),
+			}),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.getOrderbook(args.pairId, args.priceRange);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		name: "get_my_open_orders",
+		description: "Get my open orders.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairIds: z.array(z.string()),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.getLimitOrders(args.pairIds);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number)
+		name: "place_limit_order",
+		description: "Place limit order.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairId: z.string(),
+			direction: z.enum(["BUY", "SELL"]),
+			price: z.number(),
+			volume: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.placeLimitOrder(args.pairId, args.direction, args.price, args.volume);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
+        // slippage: number): Promise<ContractTransaction>
+		name: "place_market_order",
+		description: "Place market order.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairId: z.string(),
+			direction: z.enum(["BUY", "SELL"]),
+			volume: z.number(),
+			curPrice: z.number(),
+			slippage: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.placeMarketOrder(args.pairId, args.direction, args.volume, args.curPrice, args.slippage);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async cancelLimitOrder(market: string, direction: OrderDirection, point: number)
+		name: "cancel_limit_order",
+		description: "Cancel limit order.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairId: z.string(),
+			direction: z.enum(["BUY", "SELL"]),
+			point: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.cancelLimitOrder(args.pairId, args.direction, args.point);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async cancelAllLimitOrder(market: string): Promise<ContractTransaction>
+		name: "cancel_all_limit_order",
+		description: "Cancel all limit order.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairId: z.string(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.cancelAllLimitOrder(args.pairId);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async claimEarning(market: string, direction: OrderDirection, point: number): Promise<ContractTransaction>
+		name: "claim_earning",
+		description: "Claim earning.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairId: z.string(),
+			direction: z.enum(["BUY", "SELL"]),
+			point: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.claimEarning(args.pairId, args.direction, args.point);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async claimAllEarnings(market: string): Promise<ContractTransaction>
+		name: "claim_all_earnings",
+		description: "Claim all earnings.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairId: z.string(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.claimAllEarnings(args.pairId);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async getFinishedOrders(markets: string[], relativeFromInSec: number, relativeToInSec: number)
+		name: "get_finished_orders",
+		description: "Get finished orders.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairIds: z.array(z.string()),
+			relativeFromInSec: z.number(),
+			relativeToInSec: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.getFinishedOrders(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async getMarketOrderHistory(markets: string[], relativeFromInSec: number, relativeToInSec: number)
+		name: "get_market_order_history",
+		description: "Get all finished history from market.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairIds: z.array(z.string()),
+			relativeFromInSec: z.number(),
+			relativeToInSec: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		})	=> {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.exchange.getMarketOrderHistory(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async getPrices(markets: string[], relativeTimeInSec: number): Promise<PricesMap> {
+		name: "get_prices",
+		description: "Get prices.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairIds: z.array(z.string()),
+			relativeTimeInSec: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		}) => {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.prices.getPrices(args.pairIds, args.relativeTimeInSec);
+			return JSON.stringify(info);
+		}
+	},
+	{
+		// public async getKlines(markets: string[], resolution: KLINE_SOLUTION, relativeFromInSec: number,
+        // relativeToInSec: number): 
+		name: "get_klines",
+		description: "Get klines.",
+		parameters: z.object({
+			networkId: z.number(),
+			pairIds: z.array(z.string()),
+			resolution: z.enum(["60", "240", "1D"]),
+			relativeFromInSec: z.number(),
+			relativeToInSec: z.number(),
+		}),
+		execute: async (args: any, context: {
+			session: {
+				sdk: BitlySDK;
+			} | undefined
+		}) => {
+			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await context.session?.sdk.prices.getKlines(args.pairIds, args.resolution, args.relativeFromInSec, args.relativeToInSec);
+			return JSON.stringify(info);
+		}
+	},
 ]
 
 
@@ -65,7 +355,7 @@ const server = new FastMCP({
 });
 
 for (const tool of TOOLS) {
-	server.addTool(tool);
+	server.addTool(tool as any);
 }
 
 server.start({

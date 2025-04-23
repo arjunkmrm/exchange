@@ -12,10 +12,11 @@
     "prestart": "pnpm build"
   },
   "dependencies": {
+    "@bitly/sdk": "workspace:*",
+    "ai": "^4.3.9",
+    "ethers": "^5.7.2",
     "fastmcp": "latest",
-    "zod": "latest",
-	"ethers": "^5.7.2",
-	"@bitly/sdk": "workspace:*"
+    "zod": "latest"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
