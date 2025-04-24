@@ -15,6 +15,24 @@ const PROVIDERS: Record<number, providers.JsonRpcProvider> = {
 	84532: DEFAULT_PROVIDER,
 };
 
+
+const createSDK = async (privateKey: string) => {
+	const sdk = new BitlySDK({
+		networkId: 84532,
+		provider: DEFAULT_PROVIDER,
+	})
+
+	try {
+		await sdk.setSigner(new Wallet(privateKey));
+	} catch (error) {
+		const res = new ServerResponse({} as any);
+		res.statusCode = 401;
+		res.statusMessage = "Unauthorized";
+		throw res;
+	}
+	return sdk;
+}
+
 const TOOLS = [
 	{
 		name: "get_balance",
@@ -25,11 +43,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
 		}) => {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const balance = await context.session?.sdk.wallet.balancesInBank([args.tokenAddress]);
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const balance = await sdk.wallet.balancesInBank([args.tokenAddress]);
 			return JSON.stringify(balance);
 		},
 	},
@@ -42,11 +61,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
 		}) => {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.getMarketsInfo(args.pairIds);
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.getMarketsInfo(args.pairIds);
 			return JSON.stringify(info);
 		}
 	},
@@ -59,11 +79,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.getTokensInfo(args.tokensAddress);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.getTokensInfo(args.tokensAddress);
 			return JSON.stringify(info);
 		}
 	},
@@ -77,11 +98,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.getVolumes(args.pairIds, args.relativeTimeInSec);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.getVolumes(args.pairIds, args.relativeTimeInSec);
 			return JSON.stringify(info);
 		}
 	},
@@ -98,11 +120,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.getOrderbook(args.pairId, args.priceRange);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.getOrderbook(args.pairId, args.priceRange);
 			return JSON.stringify(info);
 		}
 	},
@@ -115,11 +138,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.getLimitOrders(args.pairIds);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.getLimitOrders(args.pairIds);
 			return JSON.stringify(info);
 		}
 	},
@@ -136,17 +160,18 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.placeLimitOrder(args.pairId, args.direction, args.price, args.volume);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.placeLimitOrder(args.pairId, args.direction, args.price, args.volume);
 			return JSON.stringify(info);
 		}
 	},
 	{
 		// public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
-        // slippage: number): Promise<ContractTransaction>
+		// slippage: number): Promise<ContractTransaction>
 		name: "place_market_order",
 		description: "Place market order.",
 		parameters: z.object({
@@ -159,11 +184,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.placeMarketOrder(args.pairId, args.direction, args.volume, args.curPrice, args.slippage);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.placeMarketOrder(args.pairId, args.direction, args.volume, args.curPrice, args.slippage);
 			return JSON.stringify(info);
 		}
 	},
@@ -179,11 +205,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.cancelLimitOrder(args.pairId, args.direction, args.point);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.cancelLimitOrder(args.pairId, args.direction, args.point);
 			return JSON.stringify(info);
 		}
 	},
@@ -197,11 +224,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.cancelAllLimitOrder(args.pairId);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.cancelAllLimitOrder(args.pairId);
 			return JSON.stringify(info);
 		}
 	},
@@ -217,11 +245,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.claimEarning(args.pairId, args.direction, args.point);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.claimEarning(args.pairId, args.direction, args.point);
 			return JSON.stringify(info);
 		}
 	},
@@ -235,11 +264,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.claimAllEarnings(args.pairId);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.claimAllEarnings(args.pairId);
 			return JSON.stringify(info);
 		}
 	},
@@ -255,11 +285,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.getFinishedOrders(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.getFinishedOrders(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
 		}
 	},
@@ -275,11 +306,12 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
-		})	=> {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.exchange.getMarketOrderHistory(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
+		}) => {
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.exchange.getMarketOrderHistory(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
 		}
 	},
@@ -294,17 +326,18 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
 		}) => {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.prices.getPrices(args.pairIds, args.relativeTimeInSec);
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.prices.getPrices(args.pairIds, args.relativeTimeInSec);
 			return JSON.stringify(info);
 		}
 	},
 	{
 		// public async getKlines(markets: string[], resolution: KLINE_SOLUTION, relativeFromInSec: number,
-        // relativeToInSec: number): 
+		// relativeToInSec: number): 
 		name: "get_klines",
 		description: "Get klines.",
 		parameters: z.object({
@@ -316,40 +349,26 @@ const TOOLS = [
 		}),
 		execute: async (args: any, context: {
 			session: {
-				sdk: BitlySDK;
+				privateKey: string;
 			} | undefined
 		}) => {
-			await context.session?.sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await context.session?.sdk.prices.getKlines(args.pairIds, args.resolution, args.relativeFromInSec, args.relativeToInSec);
+			const sdk = await createSDK(context.session?.privateKey as string);
+			await sdk.setProvider(PROVIDERS[args.networkId]);
+			const info = await sdk.prices.getKlines(args.pairIds, args.resolution, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
 		}
 	},
 ]
-
 
 const server = new FastMCP({
 	name: "Bitly MCP Server",
 	version: "0.1.0",
 	authenticate: async (request) => {
 		const privateKey = request.headers["ether-private-key"];
-
-		const sdk = new BitlySDK({
-			networkId: 84532,
-			provider: DEFAULT_PROVIDER,
-		})
-
-		try {
-			await sdk.setSigner(new Wallet(privateKey as string));
-		} catch (error) {
-			const res = new ServerResponse({} as any);
-			res.statusCode = 401;
-			res.statusMessage = "Unauthorized";
-			throw res;
-		}
-
+		console.log("privateKey", privateKey);
 		// Whatever you return here will be accessible in the `context.session` object.
 		return {
-			sdk,
+			privateKey,
 		}
 	},
 });
@@ -359,9 +378,5 @@ for (const tool of TOOLS) {
 }
 
 server.start({
-	transportType: "sse",
-	sse: {
-		endpoint: "/sse",
-		port: 8080,
-	},
+	transportType: "stdio",
 });
