@@ -16,14 +16,14 @@ const PROVIDERS: Record<number, providers.JsonRpcProvider> = {
 };
 
 
-const createSDK = async (privateKey: string) => {
+const createSDK = async () => {
 	const sdk = new BitlySDK({
 		networkId: 84532,
 		provider: DEFAULT_PROVIDER,
 	})
 
 	try {
-		await sdk.setSigner(new Wallet(privateKey));
+		await sdk.setSigner(new Wallet(process.env.WALLET_PRIVATE_KEY as string));
 	} catch (error) {
 		const res = new ServerResponse({} as any);
 		res.statusCode = 401;
@@ -41,12 +41,8 @@ const TOOLS = [
 			networkId: z.number(),
 			tokenAddress: z.string(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const balance = await sdk.wallet.balancesInBank([args.tokenAddress]);
 			return JSON.stringify(balance);
@@ -59,12 +55,8 @@ const TOOLS = [
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getMarketsInfo(args.pairIds);
 			return JSON.stringify(info);
@@ -77,12 +69,8 @@ const TOOLS = [
 			networkId: z.number(),
 			tokensAddress: z.array(z.string()),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getTokensInfo(args.tokensAddress);
 			return JSON.stringify(info);
@@ -96,12 +84,8 @@ const TOOLS = [
 			pairIds: z.array(z.string()),
 			relativeTimeInSec: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getVolumes(args.pairIds, args.relativeTimeInSec);
 			return JSON.stringify(info);
@@ -118,12 +102,8 @@ const TOOLS = [
 				high: z.number(),
 			}),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getOrderbook(args.pairId, args.priceRange);
 			return JSON.stringify(info);
@@ -136,12 +116,8 @@ const TOOLS = [
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getLimitOrders(args.pairIds);
 			return JSON.stringify(info);
@@ -158,12 +134,8 @@ const TOOLS = [
 			price: z.number(),
 			volume: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeLimitOrder(args.pairId, args.direction, args.price, args.volume);
 			return JSON.stringify(info);
@@ -182,12 +154,8 @@ const TOOLS = [
 			curPrice: z.number(),
 			slippage: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeMarketOrder(args.pairId, args.direction, args.volume, args.curPrice, args.slippage);
 			return JSON.stringify(info);
@@ -203,12 +171,8 @@ const TOOLS = [
 			direction: z.enum(["BUY", "SELL"]),
 			point: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.cancelLimitOrder(args.pairId, args.direction, args.point);
 			return JSON.stringify(info);
@@ -222,12 +186,8 @@ const TOOLS = [
 			networkId: z.number(),
 			pairId: z.string(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.cancelAllLimitOrder(args.pairId);
 			return JSON.stringify(info);
@@ -243,12 +203,8 @@ const TOOLS = [
 			direction: z.enum(["BUY", "SELL"]),
 			point: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.claimEarning(args.pairId, args.direction, args.point);
 			return JSON.stringify(info);
@@ -262,12 +218,8 @@ const TOOLS = [
 			networkId: z.number(),
 			pairId: z.string(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.claimAllEarnings(args.pairId);
 			return JSON.stringify(info);
@@ -283,12 +235,8 @@ const TOOLS = [
 			relativeFromInSec: z.number(),
 			relativeToInSec: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getFinishedOrders(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
@@ -304,12 +252,8 @@ const TOOLS = [
 			relativeFromInSec: z.number(),
 			relativeToInSec: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getMarketOrderHistory(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
@@ -324,12 +268,8 @@ const TOOLS = [
 			pairIds: z.array(z.string()),
 			relativeTimeInSec: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.prices.getPrices(args.pairIds, args.relativeTimeInSec);
 			return JSON.stringify(info);
@@ -347,12 +287,8 @@ const TOOLS = [
 			relativeFromInSec: z.number(),
 			relativeToInSec: z.number(),
 		}),
-		execute: async (args: any, context: {
-			session: {
-				privateKey: string;
-			} | undefined
-		}) => {
-			const sdk = await createSDK(context.session?.privateKey as string);
+		execute: async (args: any) => {
+			const sdk = await createSDK();
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.prices.getKlines(args.pairIds, args.resolution, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
@@ -362,15 +298,7 @@ const TOOLS = [
 
 const server = new FastMCP({
 	name: "Bitly MCP Server",
-	version: "0.1.0",
-	authenticate: async (request) => {
-		const privateKey = request.headers["ether-private-key"];
-		console.log("privateKey", privateKey);
-		// Whatever you return here will be accessible in the `context.session` object.
-		return {
-			privateKey,
-		}
-	},
+	version: "0.1.0"
 });
 
 for (const tool of TOOLS) {
