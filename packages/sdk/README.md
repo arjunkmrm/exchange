@@ -1,31 +1,73 @@
-# Kwenta SDK
+# Bitly Exchange SDK v2.0
 
-Note: This document is a work in progress, as the implementation of the Kwenta SDK is still in progress. Interfaces, types and overall structure are subject to change.
+The Bitly Exchange SDK provides a modern TypeScript/JavaScript interface for interacting with the Bitly Exchange protocol.
+
+## Key Features
+- TypeScript support
+- Multi-chain support
+- Real-time event subscriptions
+- Built-in error handling
+- Optimized for performance
 
 # Architecture
 
-The SDK is a collection of multiple classes, objects and functions which can generally be categorized as follows:
+The SDK is built around these core components:
 
 ## Context
 
-The context class (pending implementation) contains attributes that are used by other classes, especially services (see the section below), to determine what context they are being called in. For example, the context class contains information about the provider, signer, wallet address and network ID.
+The `Context` class provides:
+- Network configuration (chainId, provider)
+- Wallet management (signer, address)
+- Contract management (main contracts and multicall)
+- Event system for state changes
+- Error handling
+
+## Initialization
+```typescript
+import BitlySDK from '@bitly/sdk'
+import { providers, Wallet } from 'ethers'
+
+// Initialize with default provider
+const sdk = new BitlySDK({
+  networkId: 84532, // Base Sepolia
+  provider: new providers.JsonRpcProvider('https://base-sepolia.infura.io/v3/YOUR_API_KEY')
+})
+
+// Add wallet/signer
+await sdk.setSigner(new Wallet('YOUR_PRIVATE_KEY'))
+```
 
 ## Services
 
-Services are collection of methods that function together to enable. We have services for futures, exchange, synths and transactions. A service's methods are available under `sdk.[service-name]`. While services function independently for the most part, they may also call methods on other services.
+Services provide high-level functionality for interacting with the exchange:
 
-## Events
+- Market data fetching (`getMarketsInfo`, `getTokensInfo`)
+- Order management (`placeLimitOrder`, `placeMarketOrder`)
+- Order cancellation (`cancelLimitOrder`, `cancelAllLimitOrder`)
+- Earnings claiming (`claimEarning`, `claimAllEarnings`)
+- Order history (`getFinishedOrders`, `getMarketOrderHistory`)
 
-In certain situations where the SDK needs to inform a client about data changes (for example, exchange rate updates), we emit events that clients can listen to.
+Example usage:
+```typescript
+const services = sdk.services;
+await services.placeLimitOrder(marketAddress, direction, price, amount)
+```
 
 ## Contracts
 
-Based on the currently selected networkId, we maintain a list of available contracts in the context, used for subsequent contract calls. When there is an attempt to access a contract that is not available on the network, an error is thrown.
+The SDK provides typed interfaces for all core contracts:
+- Exchange contracts (BitlyExchange, TokenExchange)
+- Token contracts (ERC20, BTLY)
+- Bank contract
 
-## Synths
+Contracts are automatically resolved by network ID and support:
+- Type-safe method calls
+- Multicall batching
+- Network-specific deployments
 
-Similarly to contracts, we maintain a list of synths on the current network, which is used for fetching balances, synth names etc.
+## Events
 
-# Testing
+The SDK emits events for important state changes:
+- `network_changed` - When the network ID changes
+- Contract events via ethers.js
 
-One of the main benefits of extracting Kwenta's logic into an SDK is the ability to test business logic independently of the UI. The `tests` folder will contain a number of unit and integration tests that will help us remain confident in the functionality of the SDK, as well as our ability to output sensible errors when one or more of our dependencies do not behave as expected. These tests will also be updated frequently as new features are added and bugs are fixed.

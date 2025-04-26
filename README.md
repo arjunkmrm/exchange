@@ -1,95 +1,68 @@
-![CodeQL](https://github.com/kwenta/kwenta/workflows/CodeQL/badge.svg?branch=perps-v2) [![Discord](https://img.shields.io/discord/413890591840272394.svg?color=768AD4&label=discord&logo=https%3A%2F%2Fdiscordapp.com%2Fassets%2F8c9701b98ad4372b58f13fd9f65f966e.svg)](https://discordapp.com/channels/413890591840272394/)
-[![Twitter Follow](https://img.shields.io/twitter/follow/kwenta_io.svg?label=kwenta_io&style=social)](https://twitter.com/kwenta_io)
-[![GitPOAP Badge](https://public-api.gitpoap.io/v1/repo/Kwenta/kwenta/badge)](https://www.gitpoap.io/gh/Kwenta/kwenta)
+# Exchange V2
 
-# Kwenta
+A monorepo containing the Exchange V2 platform with multiple packages.
 
-A dApp enabling derivatives trading — powered by the Synthetix protocol.
+## Project Structure
 
-The decentralized trading UI is available at [kwenta.eth.limo](https://kwenta.eth.limo).
+This repository contains:
 
-ENS link: [kwenta.eth](https://app.ens.domains/name/kwenta.eth).
+- `app`: Next.js frontend application
+- `mcp`: Model Context Protocol server
+- `sdk`: JavaScript/TypeScript SDK for interacting with the platform
 
-The latest IPFS hash can be found under [releases](https://github.com/Kwenta/kwenta/releases).
+## Features
 
-## Contributing
+- Next.js frontend with TypeScript
+- MCP server for backend services
+- SDK for programmatic access to platform features
+- Monorepo structure managed with pnpm
 
-Kwenta welcomes contributors. Regardless of the time you have available, everyone can provide meaningful contributions to the project by submitting bug reports, feature requests or even the smallest of fixes! To submit your contribution, please fork, fix, commit and create a pull-request describing your work in detail. For more details, please have a look at the [Contribution guidelines](CONTRIBUTING.md).
+## Installation
 
-## Tech stack
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/bitly/exchange-v2.git
+   ```
 
-- Next.js
-- React
-- Redux
-- Kwenta SDK
-- Styled-Components
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-## Ethereum stack
+3. Configure environment variables (see Configuration section)
 
-- [ethers.js v5](https://github.com/ethers-io/ethers.js) - Ethereum wallet implementation.
-- [Rainbowkit](https://github.com/rainbow-me/rainbowkit) - for ethereum wallet onboarding.
+## Configuration
 
-## Development
+Create a `.env` file in the root with required variables:
 
-- [Contributing to the Kwenta frontend](https://docs.kwenta.io/developers/contributing-to-the-kwenta-frontend) - Kwenta Code Style Guidelines
-- [The devDAO](https://docs.kwenta.io/developers/devdao-contribute) - How to contribute
-
-### Install dependencies
-
-```bash
-pnpm install
+```
+NEXT_PUBLIC_API_URL=...
 ```
 
-### Set up environment variables
+## Usage
 
-Copy the `.env.local.example` file in the `packages/app` directory to `.env.local` (which will be ignored by Git):
-
-```bash
-cd packages/app
-cp .env.local.example .env.local
-```
-
-Then, open `.env.local` and add the missing environment variables:
-
-Required:
-
-- `NEXT_PUBLIC_PROVIDER_ID` - Specifies the default provider, options are `INFURA` or `BLAST_API`
-- `NEXT_PUBLIC_INFURA_PROJECT_ID` - Infura project id (get it from [infura.io](https://infura.io/)) or
-- `NEXT_PUBLIC_BLASTAPI_PROJECT_ID` - Blast API project id (get it from [blastapi.io](https://blastapi.io/))
-- `NEXT_PUBLIC_SOCKET_API_KEY` - Socket API key (get it from [socket.tech](https://docs.socket.tech/socket-api/v2#api-key)
-- `NEXT_PUBLIC_SATSUMA_API_KEY` - API key for Satsuma subgraph queries
-- `NEXT_PUBLIC_THEGRAPH_API_KEY` - API key for The Graph's decentralized service
-- `NEXT_PUBLIC_DEFAULT_PRICE_SERVICE` - Specifies the default price server, options are `KWENTA` or `PYTH`
-- `NEXT_PUBLIC_SERVICES_PROXY` - Specify Kwenta proxy server
-
-### Run
-
+### Running the app
 ```bash
 cd packages/app
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### Build
-
+### Running MCP server
 ```bash
-cd packages/app
-pnpm build
+cd packages/mcp
 pnpm start
 ```
 
-### Unit Testing
+## API Reference
 
-```bash
-cd packages/app
-pnpm test:jest
-```
+See [SDK documentation](./packages/sdk/README.md) for API details.
 
-For unit tests we use a combination of Jest and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+## Contributing
 
-Page tests should be added to the `testing` folder at the root as it is not possible to co-locate tests and pages in nextjs. Other tests should be co-located in a \_\_tests\_\_ folder next to their related file.
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
 
-## Contact
+## License
 
-Join the community on the [Kwenta Discord server](https://discord.gg/kwentaio)!
+MIT

@@ -1,7 +1,11 @@
 {
-	"name": "bitly",
+	"name": "bitly-exchange",
 	"version": "0.0.0",
-	"description": "Bitly",
+	"description": "Bitly Fully-Onchain Orderbook Based Crypto Exchange",
+	"keywords": [
+		"orderbook", "exchange", "bitly", "crypto", "onchain"
+	],
+	"license": "MIT",
 	"main": "index.js",
 	"scripts": {
 		"check-types": "pnpm run --filter \"@bitly/*\" check-types",
@@ -11,8 +15,7 @@
 		"lint:fix": "eslint packages --ext ts,.tsx --fix",
 		"dev": "pnpm run --filter \"@bitly/*\" --stream --parallel dev"
 	},
-	"keywords": [],
-	"author": "",
+	"author": "Bitly Team",
 	"husky": {
 		"hooks": {
 			"pre-commit": "pnpm lint"
