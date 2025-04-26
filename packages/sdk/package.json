@@ -1,7 +1,7 @@
 {
 	"name": "@bitly/sdk",
 	"type": "module",
-	"version": "1.0.13",
+	"version": "0.0.1",
 	"description": "SDK for headless interaction with Bitly",
 	"main": "dist/index.js",
 	"directories": {
