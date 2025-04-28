@@ -18,11 +18,7 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"baseUrl": "src",
-		"incremental": true,
-		"paths": {
-			"@bitly/sdk": ["../sdk/src/index.ts"],
-			"@bitly/sdk/*": ["../sdk/src/*"]
-		}
+		"incremental": true
 	},
 	"include": [
 		"src/**/*"

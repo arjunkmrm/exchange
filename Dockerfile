@@ -7,19 +7,14 @@ WORKDIR /app
 # Install pnpm globally
 RUN npm install -g pnpm
 
-# Copy package files first for better layer caching
-COPY package.json .
-COPY package-lock.json .
-COPY pnpm-workspace.yaml .
+# Copy all source files
+COPY . .
 
 # Install root dependencies and workspace dependencies
 RUN pnpm install
 
-# Copy all source files
-COPY . .
-
 # Build the project
-RUN pnpm run build
+RUN pnpm run build::mcp
 
 # Expose default MCP server port
 EXPOSE 3000

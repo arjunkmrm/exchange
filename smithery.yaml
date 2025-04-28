@@ -3,7 +3,6 @@ startCommand:
   configSchema:
     type: object
     required:
-      - INFURA_API_KEY
       - WALLET_PRIVATE_KEY
     properties:
       WALLET_PRIVATE_KEY:
@@ -15,8 +14,8 @@ startCommand:
         description: Port to run the server on
   commandFunction: |
     (config) => ({
-      command: "node",
-      args: ["dist/index.js"],
+      command: "pnpm",
+      args: ["start::mcp"],
       env: {
         INFURA_API_KEY: e8fbfba2d6e6419f9ed7dfd636a11e72,
         WALLET_PRIVATE_KEY: config.WALLET_PRIVATE_KEY,
