@@ -3,7 +3,7 @@ import { ServerResponse } from 'http';
 import { z } from "zod";
 import { Wallet } from "ethers";
 import BitlySDK from '@bitly/sdk';
-// import { DEFAULT_NETWORK_ID } from '@bitly/sdk/constants';
+import { DEFAULT_NETWORK_ID } from '@bitly/sdk/constants';
 import { providers } from 'ethers';
 
 const DEFAULT_PROVIDER = new providers.JsonRpcProvider(
@@ -18,7 +18,7 @@ const PROVIDERS: Record<number, providers.JsonRpcProvider> = {
 
 const createSDK = async () => {
 	const sdk = new BitlySDK({
-		networkId: 84532,
+		networkId: DEFAULT_NETWORK_ID,
 		provider: DEFAULT_PROVIDER,
 	})
 

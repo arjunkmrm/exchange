@@ -13,7 +13,12 @@
 		"format": "prettier --write \"**/*.{ts,tsx}\"",
 		"lint": "eslint . --ext ts,.tsx && pnpm check-types",
 		"lint:fix": "eslint packages --ext ts,.tsx --fix",
-		"dev": "pnpm run --filter \"@bitly/*\" --stream --parallel dev"
+		"dev": "pnpm run --filter \"@bitly/*\" --stream --parallel dev",
+		"build::mcp": "pnpm run --filter \"@bitly/mcp\" build",
+		"build::sdk": "pnpm run --filter \"@bitly/sdk\" build",
+		"build::app": "pnpm run --filter \"@bitly/app\" build",
+		"build": "pnpm run --filter \"@bitly/*\" build",
+		"start::mcp": "pnpm run --filter \"@bitly/mcp\" start"
 	},
 	"author": "Bitly Team",
 	"husky": {

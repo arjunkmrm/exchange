@@ -12,8 +12,7 @@
 		"prepublishOnly": "pinst --disable",
 		"postpublish": "pinst --enable",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build",
-		"preinstall": "pnpm --filter \"@bitly/sdk\" build"
+		"build-storybook": "storybook build"
 	},
 	"dependencies": {
 		"@bitly/sdk": "workspace:*",

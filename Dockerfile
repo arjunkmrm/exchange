@@ -4,21 +4,25 @@ FROM node:18-alpine
 # Set working directory inside container
 WORKDIR /app
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
 # Copy package files first for better layer caching
 COPY package.json .
 COPY package-lock.json .
+COPY pnpm-workspace.yaml .
 
-# Install dependencies
-RUN npm install
+# Install root dependencies and workspace dependencies
+RUN pnpm install
 
 # Copy all source files
 COPY . .
 
 # Build the project
-RUN npm run build
+RUN pnpm run build
 
 # Expose default MCP server port
 EXPOSE 3000
 
 # Start the MCP server
-CMD ["node", "dist/index.js"]
+CMD ["pnpm", "start::mcp"]
