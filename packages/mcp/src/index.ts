@@ -4,10 +4,9 @@ import { z } from "zod";
 import { Wallet } from "ethers";
 import BitlySDK from '@bitly/sdk';
 import { providers } from 'ethers';
-import { config } from 'dotenv';
 
 const DEFAULT_PROVIDER = new providers.JsonRpcProvider(
-	`https://base-sepolia.infura.io/v3/${config().parsed?.['INFURA_API_KEY']}`,
+	`https://base-sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
 	84532
 );
 
@@ -23,7 +22,7 @@ const createSDK = async () => {
 	})
 
 	try {
-		await sdk.setSigner(new Wallet(config().parsed?.['WALLET_PRIVATE_KEY'] as string));
+		await sdk.setSigner(new Wallet(process.env.WALLET_PRIVATE_KEY as string));
 	} catch (error) {
 		const res = new ServerResponse({} as any);
 		res.statusCode = 401;
