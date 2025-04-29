@@ -3,11 +3,11 @@ import { ServerResponse } from 'http';
 import { z } from "zod";
 import { Wallet } from "ethers";
 import BitlySDK from '@bitly/sdk';
-import { DEFAULT_NETWORK_ID } from '@bitly/sdk/constants';
 import { providers } from 'ethers';
+import { config } from 'dotenv';
 
 const DEFAULT_PROVIDER = new providers.JsonRpcProvider(
-	`https://base-sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
+	`https://base-sepolia.infura.io/v3/${config().parsed?.['INFURA_API_KEY']}`,
 	84532
 );
 
@@ -18,12 +18,12 @@ const PROVIDERS: Record<number, providers.JsonRpcProvider> = {
 
 const createSDK = async () => {
 	const sdk = new BitlySDK({
-		networkId: DEFAULT_NETWORK_ID,
+		networkId: 84532,
 		provider: DEFAULT_PROVIDER,
 	})
 
 	try {
-		await sdk.setSigner(new Wallet(process.env.WALLET_PRIVATE_KEY as string));
+		await sdk.setSigner(new Wallet(config().parsed?.['WALLET_PRIVATE_KEY'] as string));
 	} catch (error) {
 		const res = new ServerResponse({} as any);
 		res.statusCode = 401;

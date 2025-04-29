@@ -369,12 +369,15 @@ importers:
       ai:
         specifier: ^4.3.10
         version: 4.3.10(react@18.2.0)(zod@3.24.3)
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
       ethers:
         specifier: ^5.7.2
         version: 5.7.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       fastmcp:
         specifier: latest
-        version: 1.22.4
+        version: 1.23.1
       zod:
         specifier: latest
         version: 3.24.3
@@ -5275,6 +5278,10 @@ packages:
     resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
 
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
+    engines: {node: '>=12'}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -5812,8 +5819,8 @@ packages:
   fast-stable-stringify@1.0.0:
     resolution: {integrity: sha512-wpYMUmFu5f00Sm0cj2pfivpmawLZ0NKdviQ4w9zJeR8JVtOpOxHmLaJuj0vxvGqMJQWyP/COUkF75/57OKyRag==}
 
-  fastmcp@1.22.4:
-    resolution: {integrity: sha512-5KnuyaMIuaSM55l/zIa/z3r8eAugJO940urnRhHGSPx9kw/Ax3CFXbSUlJxs9HrgAXjNTAP0ImWZozYMsam18A==}
+  fastmcp@1.23.1:
+    resolution: {integrity: sha512-m7cx4ZzKSsWL3WXZQznbF0fYLlJzCcO/9g/JlwTnH9aDi76MqDYTosB0jCujsc/xy3gWvGsoIfGKjn6QAuWHUw==}
     hasBin: true
 
   fastq@1.15.0:
@@ -18320,6 +18327,8 @@ snapshots:
 
   dotenv@16.3.1: {}
 
+  dotenv@16.5.0: {}
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -19249,7 +19258,7 @@ snapshots:
 
   fast-stable-stringify@1.0.0: {}
 
-  fastmcp@1.22.4:
+  fastmcp@1.23.1:
     dependencies:
       '@modelcontextprotocol/sdk': 1.10.2
       '@standard-schema/spec': 1.0.0

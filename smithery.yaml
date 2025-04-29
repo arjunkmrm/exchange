@@ -8,17 +8,12 @@ startCommand:
       WALLET_PRIVATE_KEY:
         type: string
         description: Private key for wallet authentication
-      port:
-        type: number
-        default: 3000
-        description: Port to run the server on
   commandFunction: |
     (config) => ({
-      command: "pnpm",
-      args: ["start::mcp"],
+      command: "node",
+      args: ["packages/mcp/dist/index.js"],
       env: {
         INFURA_API_KEY: e8fbfba2d6e6419f9ed7dfd636a11e72,
         WALLET_PRIVATE_KEY: config.WALLET_PRIVATE_KEY,
-        PORT: config.port
       }
     })
