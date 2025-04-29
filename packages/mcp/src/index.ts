@@ -35,7 +35,7 @@ const createSDK = async () => {
 const TOOLS = [
 	{
 		name: "get_balance",
-		description: "Get balance deposited to Bitly Exchange base on provided networkId and token address.",
+		description: "Retrieves the current token balance deposited in Bitly Exchange for a specific token contract. Requires network ID (chain ID) and ERC20 token contract address. Returns a stringified JSON object mapping token addresses to their real (human-readable) balance amounts.",
 		parameters: z.object({
 			networkId: z.number(),
 			tokenAddress: z.string(),
@@ -49,7 +49,7 @@ const TOOLS = [
 	},
 	{
 		name: "get_trade_pairs_info",
-		description: "Get trade pairs info.",
+		description: "Fetches trading pair information including market addresses, display names, and base/quote token details. Requires network ID and array of pair IDs. Returns an array of ExchangeMarketType objects containing marketAddress, displayName, tokenX, and tokenY information.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
@@ -63,7 +63,7 @@ const TOOLS = [
 	},
 	{
 		name: "get_tokens_info",
-		description: "Get tokens info.",
+		description: "Retrieves metadata and on-chain information for specified ERC20 tokens. Requires network ID and array of token contract addresses. Returns an array of TokenInfoTypeWithAddress objects containing symbol, name, decimals, and address for each token.",
 		parameters: z.object({
 			networkId: z.number(),
 			tokensAddress: z.array(z.string()),
@@ -77,7 +77,7 @@ const TOOLS = [
 	},
 	{
 		name: "get_trade_volumes",
-		description: "Get trade volumes.",
+		description: "Calculates trading volumes for specified pairs over a given time period. Requires network ID, array of pair IDs, and relative time window in seconds. Returns a MarketsVolumes object mapping market addresses to their real (human-readable) volume amounts.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
@@ -92,7 +92,7 @@ const TOOLS = [
 	},
 	{
 		name: "get_orderbook",
-		description: "Get orderbook.",
+		description: "Retrieves the complete order book for a trading pair within specified price range. Requires network ID, pair ID, and price range (low/high). Returns an OrderbookType object with arrays of asks and bids, each containing direction, price and amount information.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -110,7 +110,7 @@ const TOOLS = [
 	},
 	{
 		name: "get_my_open_orders",
-		description: "Get my open orders.",
+		description: "Lists all currently open limit orders for the authenticated wallet across specified trading pairs. Requires network ID and array of pair IDs. Returns an ExchangeOrderDetails object mapping market addresses to arrays of objects with the following properties: sold (number), earned (number), selling (number), price (number), and direction (OrderDirection).",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
@@ -125,7 +125,7 @@ const TOOLS = [
 	{
 		// public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number)
 		name: "place_limit_order",
-		description: "Place limit order.",
+		description: "Submits a new limit order to the exchange. Requires network ID, pair ID, direction (BUY/SELL), price, and volume. Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -144,7 +144,7 @@ const TOOLS = [
 		// public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
 		// slippage: number): Promise<ContractTransaction>
 		name: "place_market_order",
-		description: "Place market order.",
+		description: "Executes an immediate market order at current best available price. Requires network ID, pair ID, direction (BUY/SELL), volume, current price estimate, and maximum acceptable slippage percentage. Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -163,7 +163,7 @@ const TOOLS = [
 	{
 		// public async cancelLimitOrder(market: string, direction: OrderDirection, point: number)
 		name: "cancel_limit_order",
-		description: "Cancel limit order.",
+		description: "Cancels a specific open limit order identified by its market, direction and price point. Requires network ID, pair ID, direction (BUY/SELL), and exact price point. Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -180,7 +180,7 @@ const TOOLS = [
 	{
 		// public async cancelAllLimitOrder(market: string): Promise<ContractTransaction>
 		name: "cancel_all_limit_order",
-		description: "Cancel all limit order.",
+		description: "Cancels all open limit orders for the authenticated wallet in a specific market. Requires network ID and pair ID. Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -195,7 +195,7 @@ const TOOLS = [
 	{
 		// public async claimEarning(market: string, direction: OrderDirection, point: number): Promise<ContractTransaction>
 		name: "claim_earning",
-		description: "Claim earning.",
+		description: "Claims trading rewards for a specific filled limit order. Requires network ID, pair ID, direction (BUY/SELL), and exact price point. Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -212,7 +212,7 @@ const TOOLS = [
 	{
 		// public async claimAllEarnings(market: string): Promise<ContractTransaction>
 		name: "claim_all_earnings",
-		description: "Claim all earnings.",
+		description: "Claims all available trading rewards for the authenticated wallet in a specific market. Requires network ID and pair ID. Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -227,7 +227,7 @@ const TOOLS = [
 	{
 		// public async getFinishedOrders(markets: string[], relativeFromInSec: number, relativeToInSec: number)
 		name: "get_finished_orders",
-		description: "Get finished orders.",
+		description: "Retrieves historical order data for filled/cancelled orders within a specified time range. Requires network ID, array of pair IDs, and from/to timestamps (in seconds relative to now). Returns an ExchangeOrdersType object mapping market addresses to arrays of order information including direction, volume, price, timestamp, and transaction hash.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
@@ -244,7 +244,7 @@ const TOOLS = [
 	{
 		// public async getMarketOrderHistory(markets: string[], relativeFromInSec: number, relativeToInSec: number)
 		name: "get_market_order_history",
-		description: "Get all finished history from market.",
+		description: "Fetches trade history for specified markets. Requires network ID, array of pair IDs, and from/to timestamps (in seconds relative to now). Returns an ExchangeOrdersType object mapping market addresses to arrays of order information including direction, volume, price, timestamp, and transaction hash.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
@@ -261,7 +261,7 @@ const TOOLS = [
 	{
 		// public async getPrices(markets: string[], relativeTimeInSec: number): Promise<PricesMap> {
 		name: "get_prices",
-		description: "Get prices.",
+		description: "Retrieves current or historical price data for specified trading pairs. Requires network ID, array of pair IDs, and timestamp (in seconds relative to now). Returns a PricesMap object mapping market addresses to their current price values.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
@@ -278,7 +278,7 @@ const TOOLS = [
 		// public async getKlines(markets: string[], resolution: KLINE_SOLUTION, relativeFromInSec: number,
 		// relativeToInSec: number): 
 		name: "get_klines",
-		description: "Get klines.",
+		description: "Fetches OHLCV (Open-High-Low-Close-Volume) candle data for technical analysis. Requires network ID, array of pair IDs, candle resolution (60s, 240s, 1D), and from/to timestamps. Returns arrays of CandleResult objects containing open, high, low, close, volume, symbol, and time information.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
