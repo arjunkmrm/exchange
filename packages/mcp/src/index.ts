@@ -49,7 +49,7 @@ const TOOLS = [
 	},
 	{
 		name: "get_trade_pairs_info",
-		description: "Fetches trading pair information including market addresses, display names, and base/quote token details. Requires network ID and array of pair IDs. Returns an array of ExchangeMarketType objects containing marketAddress, displayName, tokenX, and tokenY information.",
+		description: "Fetches trading pair information including market addresses, display names, and base/quote token details. Requires network ID and array of pair IDs. Returns an array of ExchangeMarketType objects containing marketAddress, displayName, tokenX, and tokenY information. Leave pairIds to empty array to get all pairs.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairIds: z.array(z.string()),
@@ -63,7 +63,7 @@ const TOOLS = [
 	},
 	{
 		name: "get_tokens_info",
-		description: "Retrieves metadata and on-chain information for specified ERC20 tokens. Requires network ID and array of token contract addresses. Returns an array of TokenInfoTypeWithAddress objects containing symbol, name, decimals, and address for each token.",
+		description: "Retrieves metadata and on-chain information for specified ERC20 tokens. Requires network ID and array of token contract addresses. Returns an array of TokenInfoTypeWithAddress objects containing symbol, name, decimals, and address for each token. Leave tokensAddress to empty array to get all tokens.",
 		parameters: z.object({
 			networkId: z.number(),
 			tokensAddress: z.array(z.string()),
