@@ -15,14 +15,14 @@ const PROVIDERS: Record<number, providers.JsonRpcProvider> = {
 };
 
 
-const createSDK = async () => {
+const createSDK = async (networkId: number) => {
 	const sdk = new BitlySDK({
 		networkId: 84532,
 		provider: DEFAULT_PROVIDER,
 	})
 
 	try {
-		await sdk.setSigner(new Wallet(process.env.WALLET_PRIVATE_KEY as string));
+		await sdk.setSigner(new Wallet(process.env.WALLET_PRIVATE_KEY as string, PROVIDERS[networkId]));
 	} catch (error) {
 		const res = new ServerResponse({} as any);
 		res.statusCode = 401;
@@ -41,7 +41,7 @@ const TOOLS = [
 			tokenAddress: z.string(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const balance = await sdk.wallet.balancesInBank([args.tokenAddress]);
 			return JSON.stringify(balance);
@@ -55,7 +55,7 @@ const TOOLS = [
 			pairIds: z.array(z.string()),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getMarketsInfo(args.pairIds);
 			return JSON.stringify(info);
@@ -69,7 +69,7 @@ const TOOLS = [
 			tokensAddress: z.array(z.string()),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getTokensInfo(args.tokensAddress);
 			return JSON.stringify(info);
@@ -84,7 +84,7 @@ const TOOLS = [
 			relativeTimeInSec: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getVolumes(args.pairIds, args.relativeTimeInSec);
 			return JSON.stringify(info);
@@ -102,7 +102,7 @@ const TOOLS = [
 			}),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getOrderbook(args.pairId, args.priceRange);
 			return JSON.stringify(info);
@@ -116,7 +116,7 @@ const TOOLS = [
 			pairIds: z.array(z.string()),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getLimitOrders(args.pairIds);
 			return JSON.stringify(info);
@@ -134,7 +134,7 @@ const TOOLS = [
 			volume: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeLimitOrder(args.pairId, args.direction, args.price, args.volume);
 			return JSON.stringify(info);
@@ -154,7 +154,7 @@ const TOOLS = [
 			slippage: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeMarketOrder(args.pairId, args.direction, args.volume, args.curPrice, args.slippage);
 			return JSON.stringify(info);
@@ -171,7 +171,7 @@ const TOOLS = [
 			point: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.cancelLimitOrder(args.pairId, args.direction, args.point);
 			return JSON.stringify(info);
@@ -186,7 +186,7 @@ const TOOLS = [
 			pairId: z.string(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.cancelAllLimitOrder(args.pairId);
 			return JSON.stringify(info);
@@ -203,7 +203,7 @@ const TOOLS = [
 			point: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.claimEarning(args.pairId, args.direction, args.point);
 			return JSON.stringify(info);
@@ -218,7 +218,7 @@ const TOOLS = [
 			pairId: z.string(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.claimAllEarnings(args.pairId);
 			return JSON.stringify(info);
@@ -235,7 +235,7 @@ const TOOLS = [
 			relativeToInSec: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getFinishedOrders(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
@@ -252,7 +252,7 @@ const TOOLS = [
 			relativeToInSec: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.getMarketOrderHistory(args.pairIds, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);
@@ -268,7 +268,7 @@ const TOOLS = [
 			relativeTimeInSec: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.prices.getPrices(args.pairIds, args.relativeTimeInSec);
 			return JSON.stringify(info);
@@ -287,7 +287,7 @@ const TOOLS = [
 			relativeToInSec: z.number(),
 		}),
 		execute: async (args: any) => {
-			const sdk = await createSDK();
+			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.prices.getKlines(args.pairIds, args.resolution, args.relativeFromInSec, args.relativeToInSec);
 			return JSON.stringify(info);

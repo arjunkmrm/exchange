@@ -32,6 +32,15 @@ createMCPClient({
 		toolCallId: "1",
 		messages: [{role: 'user', content: "test"}]
 	}));
+
+	const claimAllEarningsTool = tools['claim_all_earnings'];
+	console.log(await claimAllEarningsTool.execute({
+		networkId: 84532,
+		pairId: "0x91185E644F14CC538B24A821A61278EB2F0e1436",
+	}, {
+		toolCallId: "1",
+		messages: [{role: 'user', content: "test"}]
+	}));
 	
 	await client.close();
 })
