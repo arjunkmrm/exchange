@@ -96,15 +96,13 @@ const TOOLS = [
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
-			priceRange: z.object({
-				low: z.number(),
-				high: z.number(),
-			}),
+			priceRangeLow: z.number(),
+			priceRangeHigh: z.number(),
 		}),
 		execute: async (args: any) => {
 			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
-			const info = await sdk.exchange.getOrderbook(args.pairId, args.priceRange);
+			const info = await sdk.exchange.getOrderbook(args.pairId, {low: args.priceRangeLow, high: args.priceRangeHigh});
 			return JSON.stringify(info);
 		}
 	},
