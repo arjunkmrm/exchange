@@ -140,7 +140,7 @@ const TOOLS = [
 			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeLimitOrder(args.pairId, args.direction, args.price, args.volume);
-			await setTimeout(sdk.exchange.updateKline(args.pairId), (BLOCK_TIME[args.networkId] ?? DEFAULT_BLOCK_TIME) + 1000);
+			await setTimeout(sdk.prices.updateKline(args.pairId), (BLOCK_TIME[args.networkId] ?? DEFAULT_BLOCK_TIME) + 1000);
 			return JSON.stringify(info);
 		}
 	},
@@ -161,7 +161,7 @@ const TOOLS = [
 			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeMarketOrder(args.pairId, args.direction, args.volume, args.curPrice, args.slippage);
-			await setTimeout(sdk.exchange.updateKline(args.pairId), (BLOCK_TIME[args.networkId] ?? DEFAULT_BLOCK_TIME) + 1000);
+			await setTimeout(sdk.prices.updateKline(args.pairId), (BLOCK_TIME[args.networkId] ?? DEFAULT_BLOCK_TIME) + 1000);
 			return JSON.stringify(info);
 		}
 	},
