@@ -9,9 +9,14 @@ const DEFAULT_PROVIDER = new providers.JsonRpcProvider(
 	`https://base-sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
 	84532
 );
+const DEFAULT_BLOCK_TIME = 2000;
 
 const PROVIDERS: Record<number, providers.JsonRpcProvider> = {
 	84532: DEFAULT_PROVIDER,
+};
+
+const BLOCK_TIME: Record<number, number> = {
+	84532: 2000, // Base Sepolia
 };
 
 
@@ -135,6 +140,7 @@ const TOOLS = [
 			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeLimitOrder(args.pairId, args.direction, args.price, args.volume);
+			await setTimeout(sdk.exchange.updateKline(args.pairId), (BLOCK_TIME[args.networkId] ?? DEFAULT_BLOCK_TIME) + 1000);
 			return JSON.stringify(info);
 		}
 	},
@@ -155,6 +161,7 @@ const TOOLS = [
 			const sdk = await createSDK(args.networkId);
 			await sdk.setProvider(PROVIDERS[args.networkId]);
 			const info = await sdk.exchange.placeMarketOrder(args.pairId, args.direction, args.volume, args.curPrice, args.slippage);
+			await setTimeout(sdk.exchange.updateKline(args.pairId), (BLOCK_TIME[args.networkId] ?? DEFAULT_BLOCK_TIME) + 1000);
 			return JSON.stringify(info);
 		}
 	},
