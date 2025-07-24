@@ -52,7 +52,7 @@ export const getContractsByNetwork = (
         Exchange: (ADDRESSES.EXCHANGE[networkId.toString()]
             ? BitlyExchange__factory.connect(ADDRESSES.EXCHANGE[networkId.toString()], provider)
             : undefined) as BitlyExchange | undefined,
-        BitlyBank: (ADDRESSES.BTLY[networkId.toString()]
+        BitlyBank: (ADDRESSES.BANK[networkId.toString()]
             ? Bank__factory.connect(ADDRESSES.BANK[networkId.toString()], provider)
             : undefined) as Bank | undefined,
         BTLYToken: (ADDRESSES.BTLY[networkId.toString()]

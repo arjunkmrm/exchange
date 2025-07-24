@@ -25,6 +25,7 @@ export const monitorTransaction = async ({
 	try {
 		txHash = (await transaction()).hash
 	} catch (e) {
+		console.error('Transaction failed:', e)
 		const options = {
 			containerId: 'notifications',
 			autoClose: 5000,
