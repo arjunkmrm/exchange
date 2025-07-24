@@ -38,8 +38,8 @@ const BLOCK_TIME: Record<number, number> = {
 
 const createSDK = async (networkId: number) => {
 	const sdk = new BitlySDK({
-		networkId: DEFAULT_NETWORK_ID,
-		provider: DEFAULT_PROVIDER,
+		networkId: networkId,
+		provider: PROVIDERS[networkId],
 	})
 
 	try {
