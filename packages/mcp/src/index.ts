@@ -5,24 +5,40 @@ import { Wallet } from "ethers";
 import BitlySDK from '@bitly/sdk';
 import { providers } from 'ethers';
 
+const DEFAULT_NETWORK_ID = 84532; // Base Sepolia
 const DEFAULT_PROVIDER = new providers.JsonRpcProvider(
 	`https://base-sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
-	84532
+	DEFAULT_NETWORK_ID
 );
 const DEFAULT_BLOCK_TIME = 2000;
 
 const PROVIDERS: Record<number, providers.JsonRpcProvider> = {
-	84532: DEFAULT_PROVIDER,
+	[DEFAULT_NETWORK_ID]: DEFAULT_PROVIDER,
+	8453: new providers.JsonRpcProvider(
+		`https://base-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
+		8453
+	),
+	137: new providers.JsonRpcProvider(
+		`https://polygon-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
+		137
+	),
+	690: new providers.JsonRpcProvider(
+		`https://rpc.redstonechain.com`,
+		690
+	),
 };
 
 const BLOCK_TIME: Record<number, number> = {
 	84532: 2000, // Base Sepolia
+	8453: 2000, // Base Mainnet
+	137: 2000, // Polygon Mainnet
+	690: 2000, // Redstone Chain
 };
 
 
 const createSDK = async (networkId: number) => {
 	const sdk = new BitlySDK({
-		networkId: 84532,
+		networkId: DEFAULT_NETWORK_ID,
 		provider: DEFAULT_PROVIDER,
 	})
 
