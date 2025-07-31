@@ -140,6 +140,8 @@ export default class ExchangeService {
         for (let i = 0; i < limOrdersViews.length; i++) {
             const orderViewsPerMarket = limOrdersViews[i];
             const market = targetMarkets[i].marketAddress;
+			const decimalsY = targetMarkets[i].tokenY.decimals;
+			const decimalsX = targetMarkets[i].tokenX.decimals;
             const orderDetails: PairEarningsType[] = await PairReadContracts(
                 this.sdk, 
 				[market], 
@@ -151,11 +153,17 @@ export default class ExchangeService {
                 const direction = originToken == targetMarkets[i].tokenY.address 
                     ? OrderDirection.buy 
                     : OrderDirection.sell;
+				const decimalsOrigin = originToken == targetMarkets[i].tokenY.address
+					? decimalsY
+					: decimalsX;
+				const decimalsTarget = originToken == targetMarkets[i].tokenY.address
+					? decimalsX
+					: decimalsY;
                 return {
                     direction,
-                    earned: toRealAmount(e.earned),
-                    sold: toRealAmount(e.sold),
-                    selling: toRealAmount(e.selling),
+                    earned: toRealAmount(e.earned, decimalsTarget),
+                    sold: toRealAmount(e.sold, decimalsOrigin),
+                    selling: toRealAmount(e.selling, decimalsOrigin),
 					price: point2Price(orderViewsPerMarket[j].point),
                     ...orderViewsPerMarket[j]
                 } as PairEarningsTypeWithOrderInfo;
