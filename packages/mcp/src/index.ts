@@ -144,7 +144,7 @@ const TOOLS = [
 	{
 		// public async placeLimitOrder(market: string, direction: OrderDirection, price: number, volume: number)
 		name: "place_limit_order",
-		description: "Submits a new limit order to the exchange. Requires network ID, pair ID, direction (BUY/SELL), price, and volume. Returns a stringified ContractTransaction object containing the transaction details.",
+		description: "Submits a new limit order to the exchange. Requires network ID, pair ID, direction (BUY/SELL), price, and volume(in base token(X) if direction is SELL, in quote token(Y) if direction is BUY). Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
@@ -165,7 +165,7 @@ const TOOLS = [
 		// public async placeMarketOrder(market: string, direction: OrderDirection, volume: number, curPrice: number, 
 		// slippage: number): Promise<ContractTransaction>
 		name: "place_market_order",
-		description: "Executes an immediate market order at current best available price. Requires network ID, pair ID, direction (BUY/SELL), volume, current price estimate, and maximum acceptable slippage percentage. Returns a stringified ContractTransaction object containing the transaction details.",
+		description: "Executes an immediate market order at current best available price. Requires network ID, pair ID, direction (BUY/SELL), volume(in base token(X) if direction is SELL, in quote token(Y) if direction is BUY), current price estimate, and maximum acceptable slippage percentage(500 means 5% slippage, etc.). Returns a stringified ContractTransaction object containing the transaction details.",
 		parameters: z.object({
 			networkId: z.number(),
 			pairId: z.string(),
