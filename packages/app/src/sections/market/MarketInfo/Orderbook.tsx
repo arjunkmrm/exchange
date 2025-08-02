@@ -107,7 +107,6 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 									{formatNumber(Math.abs(amountShow), {
 										suggestDecimals: true,
 										truncateOver: 1e6,
-										maxDecimals: 6,
 									})}
 								</DirectionalValue>
 							)

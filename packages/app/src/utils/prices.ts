@@ -3,6 +3,13 @@ import { STABLE_COINS } from '@bitly/sdk/constants'
 import { DecimalsForAsset } from 'constants/currency'
 import { DEFAULT_CRYPTO_DECIMALS, DEFAULT_FIAT_DECIMALS, DEFAULT_NUMBER_DECIMALS } from 'constants/defaults'
 import { FormatCurrencyOptions, FormatNumberOptions, OrderType } from 'types/common'
+import Decimal from 'decimal.js'
+
+Decimal.set({
+	rounding: Decimal.ROUND_HALF_UP,
+	toExpNeg: -1e15,
+	toExpPos: 1e15,
+})
 
 const thresholds = [
 	{ value: 1e12, divisor: 1e12, unit: 'T', decimals: 2 },
@@ -101,7 +108,7 @@ export const formatNumber = (value: number, options?: FormatNumberOptions) => {
 		? Math.min(defaultDecimals, options.maxDecimals)
 		: defaultDecimals
 
-	const withCommas = commifyAndPadDecimals(valueBeforeAsString.toString(), decimals)
+	const withCommas = commifyAndPadDecimals((new Decimal(valueBeforeAsString.toString())).toString(), decimals)
 
 	formattedValue.push(withCommas)
 
