@@ -17,7 +17,7 @@ import {
 	OrderbookType,
 	PriceRange,
 } from '../types/exchange';
-import { DEFAULT_REFERRAL_ADDRESS } from '../constants';
+import { DEFAULT_DECIMAL, DEFAULT_REFERRAL_ADDRESS } from '../constants';
 import { ExchangeReadContracts, getMarketLog, internalFetchMarketsAndTokens, PairReadContracts, PairWriteContract } from '../utils/contract';
 import { TARGET_MARKET_NOT_FOUND } from '../common/errors';
 import { ContractTransaction } from 'ethers';
@@ -110,20 +110,23 @@ export default class ExchangeService {
 			return emptyOrderbook;
 		}
 
+		const decimalX = targetMarket.tokenX.decimals;
+		const decimalY = targetMarket.tokenY.decimals;
+
 		const points: number[] = Array.from({ 
-			length: (price2Point(priceRange.high) - price2Point(priceRange.low)) / 10 + 1 }, 
-			(_, i) => price2Point(priceRange.low, 10) + i*10
+			length: (price2Point(priceRange.high, decimalX, decimalY) - price2Point(priceRange.low, decimalX, decimalY)) / 10 + 1 }, 
+			(_, i) => price2Point(priceRange.low, decimalX, decimalY, 10) + i*10
 		);
 
 		const pointOrders: PointOrderType[] = 
             await PairReadContracts(this.sdk, [targetMarket.marketAddress], ['pointOrder'], points.map(e=>[e]));
 
 		const asks = pointOrders
-			.map((e, i)=>({amount: toRealAmount(e.X.selling, targetMarket.tokenX.decimals), price: point2Price(points[i])}))
+			.map((e, i)=>({amount: toRealAmount(e.X.selling, targetMarket.tokenX.decimals), price: point2Price(points[i], decimalX, decimalY)}))
 			.filter(e=>e.amount > 0)
 			.sort((a, b) => b.price - a.price);
         const bids = pointOrders
-			.map((e, i)=>({amount: toRealAmount(e.Y.selling, targetMarket.tokenY.decimals), price: point2Price(points[i])}))
+			.map((e, i)=>({amount: toRealAmount(e.Y.selling, targetMarket.tokenY.decimals), price: point2Price(points[i], decimalX, decimalY)}))
 			.filter(e=>e.amount > 0)
 			.sort((a, b) => a.price - b.price);
 		return {asks, bids};
@@ -164,7 +167,7 @@ export default class ExchangeService {
                     earned: toRealAmount(e.earned, decimalsTarget),
                     sold: toRealAmount(e.sold, decimalsOrigin),
                     selling: toRealAmount(e.selling, decimalsOrigin),
-					price: point2Price(orderViewsPerMarket[j].point),
+					price: point2Price(orderViewsPerMarket[j].point, decimalsX, decimalsY),
                     ...orderViewsPerMarket[j]
                 } as PairEarningsTypeWithOrderInfo;
             });
@@ -178,8 +181,11 @@ export default class ExchangeService {
 	{
         const targetMarket = this.markets.find(e=>e.marketAddress===market);
 
+		const decimalX = targetMarket?.tokenX.decimals || DEFAULT_DECIMAL;
+		const decimalY = targetMarket?.tokenY.decimals || DEFAULT_DECIMAL;
+
         const originToken = direction == OrderDirection.buy ? targetMarket?.tokenY : targetMarket?.tokenX;
-        const point = price2Point(price);
+        const point = price2Point(price, decimalX, decimalY);
         const amount = toPlainAmount(volume, originToken?.decimals);
 
         return await PairWriteContract(this.sdk, market, 'limitOrder', [originToken?.address, point, amount]);
@@ -193,8 +199,11 @@ export default class ExchangeService {
             throw new Error(TARGET_MARKET_NOT_FOUND);
         }
 
+		const decimalX = targetMarket.tokenX.decimals;
+		const decimalY = targetMarket.tokenY.decimals;
+
         const originToken = direction == OrderDirection.buy ? targetMarket.tokenY : targetMarket.tokenX;
-        const startPoint = price2Point(curPrice);
+        const startPoint = price2Point(curPrice, decimalX, decimalY);
         const amount = toPlainAmount(volume, originToken.decimals);
         const holder = DEFAULT_REFERRAL_ADDRESS;
         const referral = DEFAULT_REFERRAL_ADDRESS;
@@ -257,6 +266,8 @@ export default class ExchangeService {
 				this.sdk, market.marketAddress, fromBlock, toBlock, 'EarningClaimed(address,int24,uint128,address,uint256)',
 				[undefined, undefined, undefined, this.sdk.context.walletAddress]
 			);
+			const decimalX = market.tokenX.decimals;
+			const decimalY = market.tokenY.decimals;
 			orders[market.marketAddress] = 
 				logs.map(l=>{
 					const targetToken: string = l.args['targetToken'];
@@ -264,12 +275,12 @@ export default class ExchangeService {
 						? OrderDirection.buy 
 						: OrderDirection.sell;
 					const decimal = targetToken == market.tokenX.address
-						? market.tokenX.decimals
-						: market.tokenY.decimals;
+						? decimalX
+						: decimalY;
 					return {
 						direction,
 						volume: toRealAmount(l.args['earning'], decimal),
-						price: point2Price(l.args['point']),
+						price: point2Price(l.args['point'], decimalX, decimalY),
 						timestamp: l.args['timestamp'],
 						txn: l.transactionHash
 					};
@@ -294,12 +305,14 @@ export default class ExchangeService {
 				const direction = originToken == market.tokenX.address 
 					? OrderDirection.sell 
 					: OrderDirection.buy;
+				const decimalX = market.tokenX.decimals;
+				const decimalY = market.tokenY.decimals;
 				const decimal = market.tokenY.decimals
 				
 				return {
 					direction,
 					volume: toRealAmount(l.args['amount'], decimal),
-					price: point2Price(l.args['point']),
+					price: point2Price(l.args['point'], decimalX, decimalY),
 					timestamp: l.args['timestamp'].toNumber(),
 					txn: l.transactionHash
 				};

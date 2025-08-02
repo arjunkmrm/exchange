@@ -77,10 +77,17 @@ export default class PricesService {
 		const prices: Record<string, number> = {};
         for (let i = 0; i < marketInvovledList.length; i++) {
             const startOff = startOffs[i];
-            const market = marketInvovledList[i];
+            const marketAddress = marketInvovledList[i];
             const point = points[i];
-            const price = startOff ? point2Price(point) : 0;
-            prices[market] = price;
+            const market = allMarkets.find(m => m.marketAddress === marketAddress);
+            if (!market) {
+                console.error(`Market info not found for address: ${marketAddress}`);
+                continue;
+            }
+            const decimalX = market.tokenX.decimals;
+            const decimalY = market.tokenY.decimals;
+            const price = startOff ? point2Price(point, decimalX, decimalY) : 0;
+            prices[marketAddress] = price;
         }
 
 		return prices;
@@ -187,7 +194,7 @@ export default class PricesService {
                 }
                 
                 bar.volume += toRealAmount(log.args.amount.toString(), decimal);
-                const curPrice = point2Price(log.args.point);
+                const curPrice = point2Price(log.args.point, market.tokenX.decimals, market.tokenY.decimals);
                 bar.close = curPrice;
                 bar.high = curPrice > bar.high ? curPrice : bar.high;
                 bar.low = curPrice < bar.low ? curPrice : bar.low;

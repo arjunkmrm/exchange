@@ -9,11 +9,12 @@ export function notNill<Value>(value: Value | null | undefined): value is Value 
 	return !!value
 }
 
-export const point2Price = (point: number) => {
-    return Math.pow(CONTRACT_POINT_BASE_NUMBER, point);
+export const point2Price = (point: number, decimalX: number, decimalY: number) => {
+    return Math.pow(CONTRACT_POINT_BASE_NUMBER, point) * Math.pow(10, decimalX - decimalY);
 };
 
-export const price2Point = (price: number, margin: number = 1) => {
+export const price2Point = (price: number, decimalX: number, decimalY: number, margin: number = 1) => {
+    price = price * Math.pow(10, decimalY - decimalX);
     const pt = Number((Math.log(price) / Math.log(1.0001)).toFixed());
 	return Math.floor(pt / margin) * margin;
 };
