@@ -37,9 +37,20 @@ const BLOCK_TIME: Record<number, number> = {
 
 
 const createSDK = async (networkId: number) => {
+	const provider = PROVIDERS[networkId];
+	const feeData = await provider.getFeeData();
+	provider.getFeeData = async () => {
+		// Force using legacy mode to send the transaction (type 0)
+		return {
+			lastBaseFeePerGas: null,
+			maxFeePerGas: null,
+			maxPriorityFeePerGas: null,
+			gasPrice: feeData.gasPrice,
+		};
+	};
 	const sdk = new BitlySDK({
 		networkId: networkId,
-		provider: PROVIDERS[networkId],
+		provider: provider,
 	})
 
 	try {
