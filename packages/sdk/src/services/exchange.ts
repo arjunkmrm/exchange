@@ -124,11 +124,11 @@ export default class ExchangeService {
 		const asks = pointOrders
 			.map((e, i)=>({amount: toRealAmount(e.X.selling, targetMarket.tokenX.decimals), price: point2Price(points[i], decimalX, decimalY)}))
 			.filter(e=>e.amount > 0)
-			.sort((a, b) => b.price - a.price);
+			.sort((a, b) => a.price - b.price);
         const bids = pointOrders
 			.map((e, i)=>({amount: toRealAmount(e.Y.selling, targetMarket.tokenY.decimals), price: point2Price(points[i], decimalX, decimalY)}))
 			.filter(e=>e.amount > 0)
-			.sort((a, b) => a.price - b.price);
+			.sort((a, b) => b.price - a.price);
 		return {asks, bids};
 	}
 
