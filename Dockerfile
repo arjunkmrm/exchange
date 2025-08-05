@@ -17,7 +17,8 @@ RUN pnpm install
 RUN pnpm run build::mcp
 
 # Expose default MCP server port
-EXPOSE 3000
+ENV PORT=8080
+EXPOSE 8080
 
 # Start the MCP server
 CMD ["pnpm", "start::mcp"]

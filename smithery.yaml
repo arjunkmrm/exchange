@@ -1,5 +1,9 @@
+runtime: "container"
+build:
+  dockerfile: "Dockerfile"
+  dockerBuildPath: "."
 startCommand:
-  type: stdio
+  type: http
   configSchema:
     type: object
     required:

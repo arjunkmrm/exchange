@@ -339,5 +339,8 @@ for (const tool of TOOLS) {
 }
 
 server.start({
-	transportType: "stdio",
+	transportType: "httpStream",
+	httpStream: {
+		port: 8080
+	}
 });
