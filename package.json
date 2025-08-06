@@ -2,6 +2,7 @@
 	"name": "bitly-exchange",
 	"version": "0.0.0",
 	"type": "module",
+	"module": "./packages/mcp/src/index.ts",
 	"description": "Bitly Fully-Onchain Orderbook Based Crypto Exchange",
 	"keywords": [
 		"orderbook",
@@ -14,7 +15,7 @@
 	"main": "index.js",
 	"scripts": {
 		"check-types": "pnpm run --filter \"@bitly/*\" check-types",
-		"prepare": "husky install",
+		"prepare": "husky install && pnpm build",
 		"format": "prettier --write \"**/*.{ts,tsx}\"",
 		"lint": "eslint . --ext ts,.tsx && pnpm check-types",
 		"lint:fix": "eslint packages --ext ts,.tsx --fix",
