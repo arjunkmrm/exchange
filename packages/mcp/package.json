@@ -1,5 +1,6 @@
 {
   "type": "module",
+  "module": "./src/index.ts",
   "name": "@bitly/mcp",
   "version": "0.0.1",
   "description": "Bitly MCP (Model Context Protocol) Server Implementation",
@@ -7,20 +8,15 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "prebuild": "pnpm run --filter \"@bitly/sdk\" build",
-    "build": "tsc",
-    "dev": "ts-node src/index.ts",
-    "start": "node dist/index.js",
-    "test": "pnpm build && node dist/test.js",
-    "prestart": "pnpm build",
-	"inspect": "npx fastmcp inspect dist/index.js"
+    "build": "npx @smithery/cli build",
+    "dev": "npx @smithery/cli dev",
+    "prestart": "pnpm build"
   },
   "dependencies": {
     "@bitly/sdk": "workspace:*",
-    "ai": "^4.3.10",
-    "dotenv": "^16.5.0",
     "ethers": "^5.7.2",
-    "fastmcp": "latest",
-    "zod": "latest"
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",

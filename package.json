@@ -1,9 +1,14 @@
 {
 	"name": "bitly-exchange",
 	"version": "0.0.0",
+	"type": "module",
 	"description": "Bitly Fully-Onchain Orderbook Based Crypto Exchange",
 	"keywords": [
-		"orderbook", "exchange", "bitly", "crypto", "onchain"
+		"orderbook",
+		"exchange",
+		"bitly",
+		"crypto",
+		"onchain"
 	],
 	"license": "MIT",
 	"main": "index.js",
@@ -13,12 +18,12 @@
 		"format": "prettier --write \"**/*.{ts,tsx}\"",
 		"lint": "eslint . --ext ts,.tsx && pnpm check-types",
 		"lint:fix": "eslint packages --ext ts,.tsx --fix",
-		"dev": "pnpm run --filter \"@bitly/*\" --stream --parallel dev",
 		"build::mcp": "pnpm run --filter \"@bitly/mcp\" build",
 		"build::sdk": "pnpm run --filter \"@bitly/sdk\" build",
 		"build::app": "pnpm run --filter \"@bitly/app\" build",
 		"build": "pnpm run --filter \"@bitly/*\" build",
-		"start::mcp": "pnpm run --filter \"@bitly/mcp\" start"
+		"dev::mcp": "pnpm run --filter \"@bitly/mcp\" dev",
+		"dev::app": "pnpm run --filter \"@bitly/app\" dev"
 	},
 	"author": "Bitly Team",
 	"husky": {
@@ -49,6 +54,7 @@
 		"husky": "8.0.3",
 		"lint-staged": "13.2.3",
 		"prettier": "2.8.8",
+		"tsx": "^4.20.3",
 		"typescript": "5.1.6"
 	},
 	"pnpm": {
