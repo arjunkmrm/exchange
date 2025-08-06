@@ -15,7 +15,7 @@
 	"main": "index.js",
 	"scripts": {
 		"check-types": "pnpm run --filter \"@bitly/*\" check-types",
-		"prepare": "husky install && pnpm build",
+		"prepare": "husky install && pnpm build::sdk && pnpm build::mcp",
 		"format": "prettier --write \"**/*.{ts,tsx}\"",
 		"lint": "eslint . --ext ts,.tsx && pnpm check-types",
 		"lint:fix": "eslint packages --ext ts,.tsx --fix",
