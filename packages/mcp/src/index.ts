@@ -184,7 +184,7 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
 
 		server.tool(
 			"place_limit_order",
-			"Submits a new limit order to the exchange. Requires network ID, pair ID, direction (BUY/SELL), price, and volume(in base token(X) if direction is SELL, in quote token(Y) if direction is BUY). Returns a stringified ContractTransaction object containing the transaction details.",
+			"Submits a new limit order to the exchange. Requires network ID, pair ID, direction (BUY/SELL), price, and volume(**NOTE**: in base token(X) if direction is SELL, in quote token(Y) if direction is BUY). Returns a stringified ContractTransaction object containing the transaction details.",
 			{
 				networkId: z.number().describe("The blockchain network ID (chain ID)"),
 				pairId: z.string().describe("Trading pair ID"),
@@ -206,7 +206,7 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
 
 		server.tool(
 			"place_market_order",
-			"Executes an immediate market order at current best available price. Requires network ID, pair ID, direction (BUY/SELL), volume(in base token(X) if direction is SELL, in quote token(Y) if direction is BUY), current price estimate, and maximum acceptable slippage percentage(500 means 5% slippage, etc.). Returns a stringified ContractTransaction object containing the transaction details.",
+			"Executes an immediate market order at current best available price. Requires network ID, pair ID, direction (BUY/SELL), volume(**NOTE**: in base token(X) if direction is SELL, in quote token(Y) if direction is BUY), current price estimate, and maximum acceptable slippage percentage(500 means 5% slippage, etc.). Returns a stringified ContractTransaction object containing the transaction details.",
 			{
 				networkId: z.number().describe("The blockchain network ID (chain ID)"),
 				pairId: z.string().describe("Trading pair ID"),
