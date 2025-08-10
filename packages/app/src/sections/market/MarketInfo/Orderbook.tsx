@@ -44,7 +44,7 @@ const Orderbook: FC<OrderbookTableProps> = ({ mobile, display }) => {
 	}, [orderbookQueryStatus, loading, width])
 
 	const data = useMemo(() => {
-		return orderbook.asks.map(e=>({amount: e.amount, price: e.price, buy: false}))
+		return orderbook.asks.map(e=>({amount: e.amount, price: e.price, buy: false})).reverse()
 			.concat(orderbook.bids.map(e=>({amount: e.amount, price: e.price, buy: true})))
 	}, [orderbook])
 
