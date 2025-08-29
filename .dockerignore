@@ -5,8 +5,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Build outputs
-dist
+# Build outputs (but keep packages/sdk/dist)
+packages/mcp/dist
+packages/app/dist
 build
 .next
 out
