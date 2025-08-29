@@ -156,8 +156,8 @@ export type ChainsType = {
 export const chain: ChainsType = {
 	sepolia: sepoliaWithIcon,
 	redstone: redstoneWithIcon,
-	base: baseWithIcon,
-	polygon: polygonWithIcon,
+	// base: baseWithIcon,
+	// polygon: polygonWithIcon,
 }
 
 const { chains, provider } = configureChains(Object.values(chain), [
