@@ -1,16 +1,21 @@
 #!/usr/bin/env node
+import express from 'express';
+import cors from 'cors';
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import { z } from "zod";
 import { Wallet } from "ethers";
 import BitlySDK from '@bitly/sdk';
 import { providers } from 'ethers';
 import { OrderDirection } from "../../sdk/dist/types/exchange";
 
+const PORT = process.env.PORT || 8081;
+
 export const configSchema = z.object({
 	walletPrivateKey: z.string(),
 });
 
-export default function ({ config }: { config: z.infer<typeof configSchema> }) {
+function createMcpServer(config: z.infer<typeof configSchema>) {
 	try {
 		const DEFAULT_NETWORK_ID = 84532; // Base Sepolia
 		const INFURA_API_KEY = 'e8fbfba2d6e6419f9ed7dfd636a11e72';
@@ -42,7 +47,6 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
 			137: 2000, // Polygon Mainnet
 			690: 2000, // Redstone Chain
 		};
-
 
 		const server = new McpServer({
 			name: "Bitly MCP Server",
@@ -375,9 +379,118 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
 			}
 		);
 
-		return server.server;
+		return server;
 	} catch (e) {
 		console.error(e);
 		throw e;
 	}
-};
+}
+
+// Parse configuration from URL query parameter (base64 encoded)
+function parseConfig(req: express.Request): z.infer<typeof configSchema> | null {
+	try {
+		const configParam = req.query.config as string;
+		
+		if (!configParam) {
+			console.log('No config parameter found');
+			return null;
+		}
+
+		const decodedConfig = Buffer.from(configParam, 'base64').toString('utf-8');
+		const parsedConfig = JSON.parse(decodedConfig);
+		
+		// Validate config against schema
+		return configSchema.parse(parsedConfig);
+	} catch (error) {
+		console.error('Error parsing config:', error);
+		return null;
+	}
+}
+
+// Create Express app
+const app = express();
+
+// Enable CORS for Smithery
+app.use(cors({
+	origin: '*',
+	credentials: true,
+	methods: ['GET', 'POST', 'OPTIONS'],
+	allowedHeaders: ['Content-Type', 'Authorization', '*'],
+	exposedHeaders: ['mcp-session-id', 'mcp-protocol-version']
+}));
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+	res.json({ 
+		status: 'healthy', 
+		timestamp: new Date().toISOString(),
+		service: 'Bitly MCP Server'
+	});
+});
+
+// MCP endpoint
+app.use('/mcp', async (req, res) => {
+	try {
+		// Parse configuration
+		const config = parseConfig(req);
+		
+		if (!config) {
+			res.status(400).json({ 
+				error: 'Missing or invalid configuration. Please provide a valid walletPrivateKey in the config parameter.' 
+			});
+			return;
+		}
+
+		// Create MCP server instance with config
+		const mcpServer = createMcpServer(config);
+		
+		// Create SSE transport for HTTP streaming
+		const transport = new SSEServerTransport('/mcp', res);
+		
+		// Connect server to transport
+		await mcpServer.connect(transport);
+		
+	} catch (error) {
+		console.error('Error handling MCP request:', error);
+		res.status(500).json({ 
+			error: 'Internal server error',
+			message: error instanceof Error ? error.message : 'Unknown error'
+		});
+	}
+});
+
+// Default route
+app.get('/', (req, res) => {
+	res.json({
+		name: 'Bitly MCP Server',
+		version: '0.1.0',
+		endpoints: {
+			mcp: '/mcp',
+			health: '/health'
+		}
+	});
+});
+
+// Start server
+const server = app.listen(PORT, () => {
+	console.log(`Bitly MCP Server running on port ${PORT}`);
+	console.log(`MCP endpoint: http://localhost:${PORT}/mcp`);
+	console.log(`Health check: http://localhost:${PORT}/health`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+	console.log('Received SIGTERM, shutting down gracefully');
+	server.close(() => {
+		console.log('Server closed');
+		process.exit(0);
+	});
+});
+
+process.on('SIGINT', () => {
+	console.log('Received SIGINT, shutting down gracefully');
+	server.close(() => {
+		console.log('Server closed');
+		process.exit(0);
+	});
+});

@@ -1,1 +1,15 @@
-runtime: typescript
+runtime: "container"
+build:
+  dockerfile: "packages/mcp/Dockerfile"
+  dockerBuildPath: "."
+startCommand:
+  type: "http"
+configSchema:
+  type: "object"
+  properties:
+    walletPrivateKey:
+      type: "string"
+      description: "Private key for the wallet to use for trading operations"
+  required: ["walletPrivateKey"]
+exampleConfig:
+  walletPrivateKey: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
