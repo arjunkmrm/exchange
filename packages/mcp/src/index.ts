@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 import { Wallet } from "ethers";
 import BitlySDK from '@bitly/sdk';
@@ -444,11 +444,20 @@ app.use('/mcp', async (req, res) => {
 		// Create MCP server instance with config
 		const mcpServer = createMcpServer(config);
 		
-		// Create SSE transport for HTTP streaming
-		const transport = new SSEServerTransport('/mcp', res);
-		
+		// Create streamable HTTP transport
+		const transport = new StreamableHTTPServerTransport({
+			sessionIdGenerator: undefined,
+		});
+
+		// Clean up on request close
+		res.on('close', () => {
+			transport.close();
+			mcpServer.close();
+		});
+
 		// Connect server to transport
 		await mcpServer.connect(transport);
+		await transport.handleRequest(req, res, req.body);
 		
 	} catch (error) {
 		console.error('Error handling MCP request:', error);
