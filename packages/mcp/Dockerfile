@@ -28,10 +28,13 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages/mcp/node_modules ./packages/mcp/node_modules
 COPY --from=deps /app/packages/sdk/node_modules ./packages/sdk/node_modules
 
-# Copy source code and pre-built SDK
-COPY packages/sdk/dist ./packages/sdk/dist
-COPY packages/sdk/package.json ./packages/sdk/package.json
+# Copy source code
+COPY packages/sdk ./packages/sdk
 COPY packages/mcp ./packages/mcp
+
+# Build SDK first (dependency)
+WORKDIR /app/packages/sdk
+RUN pnpm build
 
 # Build MCP server
 WORKDIR /app/packages/mcp
